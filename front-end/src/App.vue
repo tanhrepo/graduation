@@ -2,6 +2,7 @@
   <div id="app">
     <menu1></menu1>
     <div>
+      <h3> git测试</h3>
       <router-view/>
     </div>
   </div>
