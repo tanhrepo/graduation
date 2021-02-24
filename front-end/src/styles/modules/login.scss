@@ -1,0 +1,121 @@
+.login {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #fff;
+  display: -webkit-flex;
+  display: flex;
+  .login-left {
+    height: 100%;
+    position: relative;
+    -webkit-flex: 1;
+    flex: 1;
+    .login-logo {
+      position: absolute;
+      left: 30px;
+      top: 30px;
+      height: 30px;
+      line-height: 30px;
+      z-index: 3;
+      img {
+        height: 100%;
+        vertical-align: middle;
+      }
+      span {
+        padding-left: 10px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+    .login-illustration {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+    }
+  }
+  .login-right {
+    width: 560px;
+    height: 100%;
+    position: relative;
+    .login-box {
+      width: 320px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      article,
+      .welcome-chinese,
+      .ct-product-name {
+        color: #455a74;
+        text-align-last: justify;
+      }
+    }
+    .welcome-txt {
+      line-height: 1em;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .welcome-chinese {
+      font-size: 16px;
+      letter-spacing: 4px;
+      line-height: 40px;
+    }
+    .login-code {
+      width: 33%;
+      display: inline-block;
+      height: 32px;
+      float: right;
+    }
+    .login-way {
+      justify-content: flex-end;
+    }
+    .el-checkbox {
+      font-weight: 400;
+      color: #7b93a7;
+    }
+    .log-btn {
+      background-image: linear-gradient(-45deg, #47b2fb 0%, #2f95fa 100%);
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.24);
+      border-radius: 4px;
+      width: 100%;
+      letter-spacing: 3px;
+      font-size: 18px;
+      height: 40px;
+      margin-bottom: 30px;
+    }
+    .iconfont.icon-user,
+    .iconfont.icon-lock,
+    .iconfont.icon-safe {
+      font-size: 24px;
+    }
+    .copyright {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      width: 320px;
+      opacity: 0.58;
+      font-size: 12px;
+      color: #7b93a7;
+      text-align: center;
+      line-height: 20px;
+      transform: translate(-50%);
+      p,
+      span {
+        font-family: Arial;
+        font-weight: 300;
+      }
+      img {
+        width: 52px;
+        height: 16px;
+        margin-left: 4px;
+      }
+    }
+  }
+}

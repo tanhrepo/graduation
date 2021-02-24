@@ -1,0 +1,10 @@
+{
+  "ENV": "ReTiNA",
+  "IS_NGINX": 1,
+  "API": {
+    "RETINA_XX": {
+      "alias": "/api_retina_xx",
+      "url": "http://10.1.192.95:9800/aiplan"
+    }
+  }
+}

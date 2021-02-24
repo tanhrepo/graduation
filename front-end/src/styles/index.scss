@@ -1,0 +1,10 @@
+/**
+ * 本文件是项目样式构建主入口文件
+**/
+
+/* 全局reset样式表 */
+@import './reset.scss';
+/* highcharts样式表 */
+@import './highcharts.scss';
+/* 通用样式表 */
+@import './common.scss';

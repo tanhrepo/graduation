@@ -1,0 +1,167 @@
+.highcharts-container {
+  width: 100%;
+  height: 100%;
+}
+.highcharts-title {
+  font-size: 0 !important;
+}
+
+.highcharts-areaspline-series,
+.highcharts-spline-series {
+  .highcharts-halo {
+    display: none;
+  }
+}
+
+/* 隐藏svg-tooltip 渲染元素为g>rect */
+.highcharts-tooltip {
+  margin-top: 10px;
+  > span:first-child {
+    margin-bottom: 16px;
+    padding: 10px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .highcharts-tooltip-box {
+    display: none;
+  }
+}
+
+/* html实现tooltip */
+.fe-hc-tooltip {
+  padding: 3px 4px 0;
+  color: #fff;
+  * {
+    line-height: 1;
+  }
+  .fe-hc-tooltip-item {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    i {
+      width: 6px;
+      height: 6px;
+      margin-right: 4px;
+      border-radius: 6px;
+    }
+    .fe-hc-val {
+      font-weight: 600;
+      margin-left: 3px;
+    }
+  }
+}
+
+/* highcharts 线条 */
+.highcharts-series-group .highcharts-series .highcharts-graph {
+  stroke-width: 2px !important;
+}
+
+.highcharts-credits {
+  display: none;
+}
+
+/* highcharts-legend 默认长方形 */
+.fe-hc-legend {
+  width: 12px;
+  height: 2px;
+  margin-right: 4px;
+  border-radius: 2px;
+}
+/* 正方形legend */
+.fe-hc-legend-square {
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 2px;
+}
+/* graph-legend */
+.fe-hc-legend-graph {
+  position: relative;
+  margin: 0 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #31cf9a;
+  background: #fff;
+  &::before,
+  &::after {
+    position: absolute;
+    content: '';
+    width: 5px;
+    height: 2px;
+    top: 2px;
+    background: #31cf9a;
+  }
+  &::before {
+    left: -7px;
+  }
+  &::after {
+    right: -7px;
+  }
+}
+/* 使用自定义legend */
+.highcharts-legend-item {
+  .highcharts-graph,
+  .highcharts-point {
+    display: none;
+  }
+}
+
+/* hightcharts-circle-legend */
+.fe-hc-legend-circle {
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-radius: 50%;
+}
+
+.fe-hc-legend,
+.fe-hc-legend-circle,
+.fe-hc-legend-label,
+.fe-hc-legend-square,
+.fe-hc-legend-graph {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.highcharts-legend-item span {
+  font-size: 12px !important;
+  color: #455a74 !important;
+  font-weight: 400 !important;
+  line-height: 1;
+}
+
+.highcharts-legend-item-hidden .fe-hc-legend,
+.highcharts-legend-item-hidden .fe-hc-legend-square,
+.highcharts-legend-item-hidden .fe-hc-legend-graph::before,
+.highcharts-legend-item-hidden .fe-hc-legend-graph::after {
+  background: #bac0c7 !important;
+}
+.highcharts-legend-item-hidden .fe-hc-legend-graph {
+  border-color: #bac0c7 !important;
+}
+.highcharts-legend-item-hidden span {
+  color: #bac0c7 !important;
+}
+
+/* 坐标轴label */
+.highcharts-axis-labels text {
+  color: #455a74 !important;
+  fill: #455a74 !important;
+}
+
+/* 使用html模式强制保证x轴最后一位label显示效果 */
+.highcharts-axis-labels.highcharts-xaxis-labels {
+  span:first-child,
+  span:last-child {
+    text-overflow: initial !important;
+    overflow: visible !important;
+  }
+  span:last-child {
+    transform: translateX(-4px) rotate(0) !important;
+  }
+  span:first-child {
+    transform: translateX(12px) rotate(0) !important;
+  }
+}
