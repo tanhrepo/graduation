@@ -2,18 +2,18 @@
   <div class="login">
     <div class="login-left">
       <div class="login-logo">
-        <img src="@/assets/images/login/logo.png" /><span>5G行业专网运营管理系统</span>
+        <img src="" /><span>5G行业专网运营管理系统</span>
       </div>
-      <img src="@/assets/images/login/login_bg.jpg" class="login-illustration" />
+      <img src="" class="login-illustration" />
     </div>
     <div class="login-right">
       <div class="login-box">
         <div class="product-name">
           <article>
-            <img src="@/assets/images/login/login_logo.png" width="100%" />
+            <img src="" width="100%" />
           </article>
-          <p class="welcome-chinese">欢迎登录5G行业专网运营管理系统</p>
-          <p class="welcome-txt">AISWare ANOP</p>
+          <p class="welcome-chinese">欢迎登录风物志博客社区</p>
+          <p class="welcome-txt">AI WIND</p>
         </div>
 
         <el-form class="login-form" :model="loginForm" :rules="rules" ref="loginForm">
@@ -66,9 +66,9 @@
       </div>
       <div class="copyright">
         <p class="fe-flex-center">
-          <span>© 2021 亚信科技控股有限公司 版权所有</span>
+          <span>© 2021 重庆师范大学 谭虹 版权所有</span>
         </p>
-        <p>A Product of AsiaInfo.</p>
+        <p>A Product of TanHong.</p>
       </div>
     </div>
   </div>
@@ -187,7 +187,7 @@ export default {
             this.getCode()
           })
         } else {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         }
       })

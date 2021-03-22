@@ -1,6 +1,6 @@
 # anshop
 
-5G Agile Network Shop-- 5G 专网商城
+毕业设计-社区博客类系统
 
 ## Project setup
 
@@ -28,9 +28,7 @@ npm run lint
 
 ### 编码规范
 
-- @vue/cli 4.x node>= v10.x
-- 推荐：编辑器 vscode ,插件 Vetur Prettier Eslint GitLens Rainbow-Brackets better-comments
-  (建议 vscode 编辑器一个窗口打开一个工程：保证单个项目的配置文件生效)
+- @vue/cli 4.x node>= v10.x  吗，。
 - 对于.vscode 配置 仅在 master 分支作为第一次工程 init 展示，后续各团队自行在分支处理，添
   加 .gitignore 或者删除均可，`请注意.gitignore中打包dist目录名与outputDir的一致性`
 - 遵循 OPRD 前端工程规范,可参考[https://cn.vuejs.org/v2/style-guide/]
@@ -43,4 +41,3 @@ npm run lint
 - 所有新增后台接口模块请记得同时配置 config.x.json -API 和 dev.proxy.js
 - vuex 使用 module 模式
 - 页面跳转无特殊情况下全部使用 name 模式，避免使用 route.query 进行参数传递
-- 各团队打包配置请自行添加 build 命令进行环境区分

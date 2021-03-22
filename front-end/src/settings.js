@@ -2,7 +2,7 @@ module.exports = {
   /**
    * @description 产品名称
    */
-  title: '5G-OPERATION-ADMIN',
+  title: 'GRADUATION-PROJECT',
   /**
    * @description 记住密码状态下的token在Cookie中存储的天数，默认1天
    */
