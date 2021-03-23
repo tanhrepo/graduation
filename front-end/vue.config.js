@@ -4,11 +4,13 @@ const resolve = dir => {
   return path.join(__dirname, dir)
 }
 const DevServerProxy = require('./dev.proxy.js')
+const port = process.env.port || process.env.npm_config_port || 8013 // 端口
 
 module.exports = {
+
   devServer: {
     open: true,
-    port: 8013,
+    port: port,
     proxy: DevServerProxy,
     overlay: {
       warnings: false,
@@ -37,7 +39,7 @@ module.exports = {
   },
   chainWebpack: config => {
     config.plugin('html').tap(args => {
-      args[0].title = '5G专网商城'
+      args[0].title = '风物社区'
       return args
     })
     config.optimization.splitChunks({

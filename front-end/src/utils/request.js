@@ -2,11 +2,12 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import { getToken } from '@/utils/auth'
 import Config from '@/settings'
-import apiConfig from '@/api/axios.config.js'
+// import apiConfig from '@/api/axios.config.js'
 // import qs from 'qs'
 
 const service = axios.create({
-  baseURL: apiConfig.commonConfig.baseURL,
+  // axios中请求配置有baseURL选项，表示请求URL公共部分
+  baseURL: process.env.VUE_APP_BASE_API,
   timeout: Config.timeout
 })
 

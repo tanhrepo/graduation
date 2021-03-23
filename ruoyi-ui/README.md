@@ -2,7 +2,7 @@
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/y_project/RuoYi-Vue
+git clone https://gitee.com/thonger/graduation.git
 
 # 进入项目目录
 cd ruoyi-ui

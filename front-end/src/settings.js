@@ -18,5 +18,5 @@ module.exports = {
   /**
    * @description 请求超时时间，毫秒（默认1分钟）
    */
-  timeout: 60000,
+  timeout: 260000,
 }

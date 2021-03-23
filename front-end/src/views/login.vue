@@ -82,6 +82,7 @@ import Config from '@/settings'
 import { setToken } from '@/utils/auth'
 import { getAction, postAction } from "@/api/manage"
 import Services from '@/api/services'
+import {getCodeImg} from '@/api/login'
 
 const getCode = Services.login.getCode
 const login = Services.login.login
@@ -118,6 +119,7 @@ export default {
     this.getCode()
     // 获取用户名密码等Cookie
     this.getCookie()
+    this.getCodeImgS()
   },
   methods: {
     ...mapMutations('user', ['setUserInfo',]),
@@ -190,6 +192,11 @@ export default {
           // console.log('error submit!!')
           return false
         }
+      })
+    },
+    getCodeImgS(){
+      getCodeImg(getCode).then(res => {
+        console.log(res)
       })
     }
   }
