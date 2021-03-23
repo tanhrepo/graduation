@@ -1,74 +1,38 @@
 <template>
   <div class="login">
-    <div class="login-left">
-      <div class="login-logo">
-        <img src="" /><span>5G行业专网运营管理系统</span>
+    <div class="container right-panel-active">
+      <!-- Sign Up -->
+      <div class="container__form container--signup">
+        <form action="#" class="form" id="form1">
+          <h2 class="form__title">Sign Up</h2>
+          <input type="text" placeholder="User" class="input" />
+          <input type="email" placeholder="Email" class="input" />
+          <input type="password" placeholder="Password" class="input" />
+          <button class="btn">Sign Up</button>
+        </form>
       </div>
-      <img src="" class="login-illustration" />
-    </div>
-    <div class="login-right">
-      <div class="login-box">
-        <div class="product-name">
-          <article>
-            <img src="" width="100%" />
-          </article>
-          <p class="welcome-chinese">欢迎登录风物志博客社区</p>
-          <p class="welcome-txt">AI WIND</p>
-        </div>
 
-        <el-form class="login-form" :model="loginForm" :rules="rules" ref="loginForm">
-          <el-form-item prop="username">
-            <el-input v-model="loginForm.username" placeholder="请输入账号"
-              ><i slot="prefix" class="iconfont icon-user"></i
-            ></el-input>
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
-              type="password"
-              v-model="loginForm.password"
-              placeholder="请输入密码"
-              @keyup.enter.native="handleLogin"
-              ><i slot="prefix" class="iconfont icon-lock"></i
-            ></el-input>
-          </el-form-item>
-          <el-form-item prop="code">
-            <el-input
-              v-model="loginForm.code"
-              auto-complete="off"
-              placeholder="请输入验证码"
-              style="width: 63%"
-              maxlength="4"
-              @keyup.enter.native="handleLogin"
-              ><i slot="prefix" class="iconfont icon-safe"></i
-            ></el-input>
-            <div class="login-code">
-              <img :src="codeUrl" @click="getCode" />
-            </div>
-          </el-form-item>
-          <div class="fe-mb">
-            <el-checkbox label="记住密码" v-model="loginForm.rememberMe"
-              >记住密码</el-checkbox
-            >
-          </div>
-          <el-form-item style="width: 100%">
-            <el-button
-              :loading="loading"
-              size="medium"
-              type="primary"
-              style="width: 100%"
-              @click.native.prevent="handleLogin"
-            >
-              <span v-if="!loading">登 录</span>
-              <span v-else>登 录 中...</span>
-            </el-button>
-          </el-form-item>
-        </el-form>
+      <!-- Sign In -->
+      <div class="container__form container--signin">
+        <form action="#" class="form" id="form2">
+          <h2 class="form__title">Sign In</h2>
+          <input type="email" placeholder="Email" class="input" />
+          <input type="password" placeholder="Password" class="input" />
+          <a href="#" class="link">Forgot your password?</a>
+          <button class="btn">Sign In</button>
+        </form>
       </div>
-      <div class="copyright">
-        <p class="fe-flex-center">
-          <span>© 2021 重庆师范大学 谭虹 版权所有</span>
-        </p>
-        <p>A Product of TanHong.</p>
+
+      <!-- Overlay -->
+      <div class="container__overlay">
+        <div class="overlay">
+          <div class="overlay__panel overlay--left">
+            <button class="btn" id="signIn">Sign In</button>
+          </div>
+          <div class="overlay__panel overlay--right">
+            <button class="btn" id="signUp">Sign Up</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -110,6 +74,7 @@ export default {
     }
   },
   created () {
+
     // 本地环境便于使用默认设置账号密码
     // if (this.$config.ENV === 'dev') {
     this.loginForm.username = 'admin'
@@ -120,6 +85,10 @@ export default {
     // 获取用户名密码等Cookie
     this.getCookie()
     this.getCodeImgS()
+
+  },
+  mounted() {
+    this.loginView()
   },
   methods: {
     ...mapMutations('user', ['setUserInfo',]),
@@ -198,6 +167,26 @@ export default {
       getCodeImg(getCode).then(res => {
         console.log(res)
       })
+    },
+    // 界面动画
+    loginView(){
+      const signInBtn = document.getElementById("signIn");
+      const signUpBtn = document.getElementById("signUp");
+      const fistForm = document.getElementById("form1");
+      const secondForm = document.getElementById("form2");
+      const container = document.querySelector(".container");
+
+      signInBtn.addEventListener("click", () => {
+        container.classList.remove("right-panel-active");
+      });
+
+      signUpBtn.addEventListener("click", () => {
+        container.classList.add("right-panel-active");
+      });
+
+      fistForm.addEventListener("submit", (e) => e.preventDefault());
+      secondForm.addEventListener("submit", (e) => e.preventDefault());
+
     }
   }
 }
@@ -205,4 +194,24 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/styles/modules/login.scss';
+:root {
+  /* COLORS */
+  --white: #e9e9e9;
+  --gray: #333;
+  --blue: #0367a6;
+  --lightblue: #008997;
+
+  /* RADII */
+  --button-radius: 0.7rem;
+
+  /* SIZES */
+  --max-width: 758px;
+  --max-height: 420px;
+
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+  Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+
 </style>

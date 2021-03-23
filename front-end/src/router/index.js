@@ -22,10 +22,12 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     next()
   } else if (!token) {
-    next({
-      path: '/login',
-      replace: true
-    })
+    // next({
+    //   path: '/login',
+    //   replace: true
+    // })
+    console.log("未登录")
+    next()
   } else {
     next()
   }
