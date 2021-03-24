@@ -5,19 +5,29 @@
       <div class="container__form container--signup">
         <form action="#" class="form" id="form1">
           <h2 class="form__title">Sign Up</h2>
-          <input type="text" placeholder="User" class="input" />
-          <input type="email" placeholder="Email" class="input" />
-          <input type="password" placeholder="Password" class="input" />
+          <label>
+            <input type="text" placeholder="User" class="input" >
+          </label>
+          <label>
+            <input type="email" placeholder="Email" class="input" >
+          </label>
+          <label>
+            <input type="password" placeholder="Password" class="input" >
+          </label>
           <button class="btn">Sign Up</button>
         </form>
       </div>
 
       <!-- Sign In -->
-      <div class="container__form container--signin">
+      <div class="container__form container--sign-in">
         <form action="#" class="form" id="form2">
           <h2 class="form__title">Sign In</h2>
-          <input type="email" placeholder="Email" class="input" />
-          <input type="password" placeholder="Password" class="input" />
+          <label>
+            <input type="email" placeholder="Email" class="input" />
+          </label>
+          <label>
+            <input type="password" placeholder="Password" class="input" />
+          </label>
           <a href="#" class="link">Forgot your password?</a>
           <button class="btn">Sign In</button>
         </form>
