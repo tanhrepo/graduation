@@ -3,7 +3,7 @@
     <div class="fe-align-center">
       <h1 class="fe-flex fe-align-center mr-50">
         <span class="fe-logo"></span>
-        <span>5G行业专网运营管理系统</span>
+        <span>风物社区</span>
       </h1>
 
       <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
@@ -25,18 +25,18 @@
     </div>
 
     <div class="fe-align-center">
-      <el-dropdown placement="bottom">
-        <div class="fe-align-center fe-navbar-user">
-          <i class="el-icon-user-solid"></i>
-          <span>{{ userInfo.userName }}</span>
-          <i class="el-icon-caret-bottom"></i>
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="logout" @click.native="handleLogout"
-            >退出登录</el-dropdown-item
-          >
-        </el-dropdown-menu>
-      </el-dropdown>
+<!--      <el-dropdown placement="bottom">-->
+<!--        <div class="fe-align-center fe-navbar-user">-->
+<!--          <i class="el-icon-user-solid"></i>-->
+<!--          <span>{{ userInfo.userName }}</span>-->
+<!--          <i class="el-icon-caret-bottom"></i>-->
+<!--        </div>-->
+<!--        <el-dropdown-menu slot="dropdown">-->
+<!--          <el-dropdown-item command="logout" @click.native="handleLogout"-->
+<!--            >退出登录</el-dropdown-item-->
+<!--          >-->
+<!--        </el-dropdown-menu>-->
+<!--      </el-dropdown>-->
     </div>
   </div>
 </template>
@@ -168,8 +168,9 @@ export default {
   }
 }
 .fe-logo {
-  width: 125px;
+  width: 35px;
   height: 28px;
-  background: url('~@/assets/images/5G_logo.svg') 0 0 no-repeat;
+  background: url('~@/assets/images/feng_log.svg') 0 0 no-repeat;
+  background-size: auto 100%;
 }
 </style>

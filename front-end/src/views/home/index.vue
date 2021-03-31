@@ -12,7 +12,7 @@ export default {
     }
   },
   created() {
-    this.GenerateRoutes({})
+    // this.GenerateRoutes({})
   },
   methods:{
     // 路由

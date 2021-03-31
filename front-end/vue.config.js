@@ -4,7 +4,7 @@ const resolve = dir => {
   return path.join(__dirname, dir)
 }
 const DevServerProxy = require('./dev.proxy.js')
-const port = process.env.port || process.env.npm_config_port || 8013 // 端口
+const port = process.env.port || process.env.npm_config_port || 8060 // 端口
 
 module.exports = {
 
