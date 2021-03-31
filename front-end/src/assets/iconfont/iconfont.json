@@ -1,0 +1,16 @@
+{
+  "id": "2456466",
+  "name": "graduation",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6748359",
+      "name": "风",
+      "font_class": "wind",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    }
+  ]
+}

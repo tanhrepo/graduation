@@ -1,6 +1,11 @@
 <!-- 首页 -->
 <template>
-  <div class="">首页</div>
+  <div class="">首页
+    <svg class="icon fe-font-lg"  aria-hidden="true">
+      <use xlink:href="#icon-wind"></use>
+    </svg>
+    <span class="iconfont icon-wind" style="color: #169bfa"></span>
+  </div>
 </template>
 
 <script>
