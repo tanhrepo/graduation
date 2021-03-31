@@ -1,8 +1,10 @@
 <template>
-  <div class="fe-navbar fe-flex-between fe-align-center">
+  <div class="fe-navbar fe-bd-b fe-flex-between fe-align-center">
     <div class="fe-align-center">
       <h1 class="fe-flex fe-align-center mr-50">
-        <span class="fe-logo"></span>
+        <svg class="icon fe-logo"  aria-hidden="true">
+          <use xlink:href="#icon-wind"></use>
+        </svg>
         <span>风物社区</span>
       </h1>
 
@@ -15,7 +17,7 @@
             :disabled="item.meta.disabled"
           >
             <template slot="title">{{ item.meta.title }}</template>
-            <MenuList :menulist="item.children"></MenuList>
+            <MenuList :MenuList="item.children"></MenuList>
           </el-submenu>
           <el-menu-item v-else :key="item.name" :index="item.name">{{
             item.meta.title
@@ -76,7 +78,7 @@ export default {
     this.setActiveIndex()
     console.log('this.$router', this.$router)
 
-    this.menus = this.$router.options.routes.filter(r => r.path != '/' && r.children)
+    this.menus = this.$router.options.routes.filter(r => r.path !== '/' && r.children)
   },
   methods: {
     ...mapMutations('user', ['setUserInfo']),
@@ -168,9 +170,6 @@ export default {
   }
 }
 .fe-logo {
-  width: 35px;
-  height: 28px;
-  background: url('~@/assets/images/feng_log.svg') 0 0 no-repeat;
-  background-size: auto 100%;
+  font-size: 24px;
 }
 </style>

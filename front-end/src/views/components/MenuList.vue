@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-for="item of menulist">
+    <template v-for="item of menuList">
       <el-submenu v-if="item.children  && !item.meta.hideSubMenu" :key="item.path" :index="item.path">
         <template slot="title">{{ item.meta.title }}</template>
         <!--递归调用-->
@@ -15,7 +15,7 @@
 export default {
   name: 'MenuList',
   props: {
-    menulist: {
+    menuList: {
       type: Array,
       required: true,
       default: () => []
