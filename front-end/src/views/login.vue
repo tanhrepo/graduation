@@ -3,7 +3,7 @@
     <div class="container right-panel-active">
       <!-- Sign Up -->
       <div class="container__form container--signup">
-        <form action="#" class="form" id="form1">
+        <el-form action="#" class="form" id="form1">
           <h2 class="form__title">Sign Up</h2>
           <label>
             <input type="text" placeholder="User" class="input" >
@@ -15,7 +15,7 @@
             <input type="password" placeholder="Password" class="input" >
           </label>
           <button class="btn">Sign Up</button>
-        </form>
+        </el-form>
       </div>
 
       <!-- Sign In -->
@@ -88,13 +88,13 @@ export default {
     // 本地环境便于使用默认设置账号密码
     // if (this.$config.ENV === 'dev') {
     this.loginForm.username = 'admin'
-    this.loginForm.password = 'ReTiNA2021'
+    this.loginForm.password = 'admin123!@# '
     // }
     // 获取验证码
-    this.getCode()
+    // this.getCode()
     // 获取用户名密码等Cookie
-    this.getCookie()
-    this.getCodeImgS()
+    // this.getCookie()
+    // this.getCodeImgS()
 
   },
   mounted() {

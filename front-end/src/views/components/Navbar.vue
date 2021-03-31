@@ -1,9 +1,11 @@
 <template>
-  <div class="fe-navbar fe-flex-between fe-align-center">
+  <div class="fe-navbar fe-bd-b fe-flex-between fe-align-center">
     <div class="fe-align-center">
       <h1 class="fe-flex fe-align-center mr-50">
-        <span class="fe-logo"></span>
-        <span>5G行业专网运营管理系统</span>
+        <svg class="icon fe-logo"  aria-hidden="true">
+          <use xlink:href="#icon-wind"></use>
+        </svg>
+        <span>风物社区</span>
       </h1>
 
       <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
@@ -15,7 +17,7 @@
             :disabled="item.meta.disabled"
           >
             <template slot="title">{{ item.meta.title }}</template>
-            <MenuList :menulist="item.children"></MenuList>
+            <MenuList :MenuList="item.children"></MenuList>
           </el-submenu>
           <el-menu-item v-else :key="item.name" :index="item.name">{{
             item.meta.title
@@ -25,18 +27,18 @@
     </div>
 
     <div class="fe-align-center">
-      <el-dropdown placement="bottom">
-        <div class="fe-align-center fe-navbar-user">
-          <i class="el-icon-user-solid"></i>
-          <span>{{ userInfo.userName }}</span>
-          <i class="el-icon-caret-bottom"></i>
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="logout" @click.native="handleLogout"
-            >退出登录</el-dropdown-item
-          >
-        </el-dropdown-menu>
-      </el-dropdown>
+<!--      <el-dropdown placement="bottom">-->
+<!--        <div class="fe-align-center fe-navbar-user">-->
+<!--          <i class="el-icon-user-solid"></i>-->
+<!--          <span>{{ userInfo.userName }}</span>-->
+<!--          <i class="el-icon-caret-bottom"></i>-->
+<!--        </div>-->
+<!--        <el-dropdown-menu slot="dropdown">-->
+<!--          <el-dropdown-item command="logout" @click.native="handleLogout"-->
+<!--            >退出登录</el-dropdown-item-->
+<!--          >-->
+<!--        </el-dropdown-menu>-->
+<!--      </el-dropdown>-->
     </div>
   </div>
 </template>
@@ -76,7 +78,7 @@ export default {
     this.setActiveIndex()
     console.log('this.$router', this.$router)
 
-    this.menus = this.$router.options.routes.filter(r => r.path != '/' && r.children)
+    this.menus = this.$router.options.routes.filter(r => r.path !== '/' && r.children)
   },
   methods: {
     ...mapMutations('user', ['setUserInfo']),
@@ -168,8 +170,6 @@ export default {
   }
 }
 .fe-logo {
-  width: 125px;
-  height: 28px;
-  background: url('~@/assets/images/5G_logo.svg') 0 0 no-repeat;
+  font-size: 24px;
 }
 </style>
