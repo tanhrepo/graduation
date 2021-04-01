@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusiArticleMapper">
+
+    <resultMap type="BusiArticle" id="BusiArticleResult">
+        <result property="articleId"    column="article_id"    />
+        <result property="articleContent"    column="article_content"    />
+        <result property="articleImgurls"    column="article_imgurls"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="articleLable"    column="article_lable"    />
+        <result property="articleTitle"    column="article_title"    />
+        <result property="articleViewCount"    column="article_view_count"    />
+        <result property="articleCommentCount"    column="article_comment_count"    />
+        <result property="articleCollectCount"    column="article_collect_count"    />
+        <result property="articleTransmitCount"    column="article_transmit_count"    />
+        <result property="articleTrampleCount"    column="article_trample_count"    />
+        <result property="articleVediourls"    column="article_vediourls"    />
+    </resultMap>
+
+    <sql id="selectBusiArticleVo">
+        select article_id, article_content, article_imgurls, create_user, create_time, update_time, article_lable, article_title, article_view_count, article_comment_count, article_collect_count, article_transmit_count, article_trample_count, article_vediourls from busi_article
+    </sql>
+
+    <select id="selectBusiArticleList" parameterType="BusiArticle" resultMap="BusiArticleResult">
+        <include refid="selectBusiArticleVo"/>
+        <where>
+            <if test="articleContent != null  and articleContent != ''"> and article_content = #{articleContent}</if>
+            <if test="articleImgurls != null  and articleImgurls != ''"> and article_imgurls = #{articleImgurls}</if>
+            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
+            <if test="articleLable != null  and articleLable != ''"> and article_lable = #{articleLable}</if>
+            <if test="articleTitle != null  and articleTitle != ''"> and article_title = #{articleTitle}</if>
+            <if test="articleViewCount != null "> and article_view_count = #{articleViewCount}</if>
+            <if test="articleCommentCount != null "> and article_comment_count = #{articleCommentCount}</if>
+            <if test="articleCollectCount != null "> and article_collect_count = #{articleCollectCount}</if>
+            <if test="articleTransmitCount != null "> and article_transmit_count = #{articleTransmitCount}</if>
+            <if test="articleTrampleCount != null "> and article_trample_count = #{articleTrampleCount}</if>
+            <if test="articleVediourls != null  and articleVediourls != ''"> and article_vediourls = #{articleVediourls}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiArticleById" parameterType="Long" resultMap="BusiArticleResult">
+        <include refid="selectBusiArticleVo"/>
+        where article_id = #{articleId}
+    </select>
+
+    <insert id="insertBusiArticle" parameterType="BusiArticle" useGeneratedKeys="true" keyProperty="articleId">
+        insert into busi_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleContent != null and articleContent != ''">article_content,</if>
+            <if test="articleImgurls != null and articleImgurls != ''">article_imgurls,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="articleLable != null">article_lable,</if>
+            <if test="articleTitle != null">article_title,</if>
+            <if test="articleViewCount != null">article_view_count,</if>
+            <if test="articleCommentCount != null">article_comment_count,</if>
+            <if test="articleCollectCount != null">article_collect_count,</if>
+            <if test="articleTransmitCount != null">article_transmit_count,</if>
+            <if test="articleTrampleCount != null">article_trample_count,</if>
+            <if test="articleVediourls != null">article_vediourls,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleContent != null and articleContent != ''">#{articleContent},</if>
+            <if test="articleImgurls != null and articleImgurls != ''">#{articleImgurls},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="articleLable != null">#{articleLable},</if>
+            <if test="articleTitle != null">#{articleTitle},</if>
+            <if test="articleViewCount != null">#{articleViewCount},</if>
+            <if test="articleCommentCount != null">#{articleCommentCount},</if>
+            <if test="articleCollectCount != null">#{articleCollectCount},</if>
+            <if test="articleTransmitCount != null">#{articleTransmitCount},</if>
+            <if test="articleTrampleCount != null">#{articleTrampleCount},</if>
+            <if test="articleVediourls != null">#{articleVediourls},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiArticle" parameterType="BusiArticle">
+        update busi_article
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="articleContent != null and articleContent != ''">article_content = #{articleContent},</if>
+            <if test="articleImgurls != null and articleImgurls != ''">article_imgurls = #{articleImgurls},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="articleLable != null">article_lable = #{articleLable},</if>
+            <if test="articleTitle != null">article_title = #{articleTitle},</if>
+            <if test="articleViewCount != null">article_view_count = #{articleViewCount},</if>
+            <if test="articleCommentCount != null">article_comment_count = #{articleCommentCount},</if>
+            <if test="articleCollectCount != null">article_collect_count = #{articleCollectCount},</if>
+            <if test="articleTransmitCount != null">article_transmit_count = #{articleTransmitCount},</if>
+            <if test="articleTrampleCount != null">article_trample_count = #{articleTrampleCount},</if>
+            <if test="articleVediourls != null">article_vediourls = #{articleVediourls},</if>
+        </trim>
+        where article_id = #{articleId}
+    </update>
+
+    <delete id="deleteBusiArticleById" parameterType="Long">
+        delete from busi_article where article_id = #{articleId}
+    </delete>
+
+    <delete id="deleteBusiArticleByIds" parameterType="String">
+        delete from busi_article where article_id in
+        <foreach item="articleId" collection="array" open="(" separator="," close=")">
+            #{articleId}
+        </foreach>
+    </delete>
+</mapper>
