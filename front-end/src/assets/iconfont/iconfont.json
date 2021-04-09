@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4398246",
+      "name": "修改密码",
+      "font_class": "verification",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "4400656",
+      "name": "个人信息",
+      "font_class": "nickname",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "4397522",
+      "name": "个人中心",
+      "font_class": "user",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "4397747",
+      "name": "密码",
+      "font_class": "password",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
       "icon_id": "6748359",
       "name": "风",
       "font_class": "wind",
