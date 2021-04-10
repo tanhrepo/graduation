@@ -2,7 +2,7 @@
   <div class="fe-navbar fe-bd-b fe-flex-between fe-align-center">
     <div class="fe-align-center">
       <h1 class="fe-flex fe-align-center mr-50">
-        <svg class="icon fe-logo"  aria-hidden="true">
+        <svg class="icon fe-logo" aria-hidden="true">
           <use xlink:href="#icon-wind"></use>
         </svg>
         <span>风物社区</span>
@@ -11,45 +11,31 @@
       <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
         <template v-for="item in menus">
           <el-submenu
-            v-if="item.children && !item.meta.hideSubMenu"
-            :key="item.path"
-            :index="item.path"
-            :disabled="item.meta.disabled"
+              v-if="item.children && !item.meta.hideSubMenu"
+              :key="item.path"
+              :index="item.path"
+              :disabled="item.meta.disabled"
           >
             <template slot="title">{{ item.meta.title }}</template>
             <MenuList :MenuList="item.children"></MenuList>
           </el-submenu>
           <el-menu-item v-else :key="item.name" :index="item.name">{{
-            item.meta.title
-          }}</el-menu-item>
+              item.meta.title
+            }}
+          </el-menu-item>
         </template>
       </el-menu>
-    </div>
-
-    <div class="fe-align-center">
-<!--      <el-dropdown placement="bottom">-->
-<!--        <div class="fe-align-center fe-navbar-user">-->
-<!--          <i class="el-icon-user-solid"></i>-->
-<!--          <span>{{ userInfo.userName }}</span>-->
-<!--          <i class="el-icon-caret-bottom"></i>-->
-<!--        </div>-->
-<!--        <el-dropdown-menu slot="dropdown">-->
-<!--          <el-dropdown-item command="logout" @click.native="handleLogout"-->
-<!--            >退出登录</el-dropdown-item-->
-<!--          >-->
-<!--        </el-dropdown-menu>-->
-<!--      </el-dropdown>-->
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 import MenuList from './MenuList'
-import { deleteAction } from "@/api/manage"
+import {deleteAction} from "@/api/manage"
 import Services from '@/api/services'
 import Cookies from 'js-cookie'
-import { removeToken } from '@/utils/auth'
+import {removeToken} from '@/utils/auth'
 
 const loginOut = Services.login.loginOut
 
@@ -58,14 +44,14 @@ export default {
   components: {
     MenuList
   },
-  data () {
+  data() {
     return {
       activeIndex: '',
       menus: []
     }
   },
   watch: {
-    $route () {
+    $route() {
       this.setActiveIndex()
     }
   },
@@ -74,7 +60,7 @@ export default {
       userInfo: state => state.userInfo
     }),
   },
-  created () {
+  created() {
     this.setActiveIndex()
     console.log('this.$router', this.$router)
 
@@ -82,17 +68,19 @@ export default {
   },
   methods: {
     ...mapMutations('user', ['setUserInfo']),
-    setActiveIndex () {
+    setActiveIndex() {
       const Matched = this.$route.matched
       this.activeIndex = Matched.length >= 2 ? this.getActiveIndex() : this.$route.name
     },
-    getActiveIndex () {
+    getActiveIndex() {
       const Matched = this.$route.matched
       let data = getChildren(this.$router.options.routes, Matched[0].name)
       let name
-      function getChildren (data, name) {
+
+      function getChildren(data, name) {
         return data.find(ele => ele.name === name)
       }
+
       for (let i = 1; i <= Matched.length - 1; i++) {
         name = Matched[i].name
         if (data.children) {
@@ -103,14 +91,14 @@ export default {
       }
       return data.name
     },
-    handleSelect (index) {
+    handleSelect(index) {
       if (index !== this.activeIndex) {
         this.activeIndex = index
-        this.$router.push({ name: index })
+        this.$router.push({name: index})
       }
     },
     // 退出登录
-    handleLogout () {
+    handleLogout() {
       deleteAction(loginOut).then(() => {
         this.$confirm('是否确定退出登录?', '提示', {
           confirmButtonText: '确定',
@@ -149,26 +137,30 @@ export default {
 
 <style lang="scss">
 .fe-navbar {
-  padding: 0 24px;
   height: 60px;
   color: $menu_font_color;
   background-color: $menu_bg_color;
+
   h1 {
     font-size: 16px;
     font-weight: 500;
     white-space: nowrap;
+
     span:last-child {
       margin-left: 1em;
     }
   }
+
   .fe-navbar-user {
     color: #fff;
     cursor: pointer;
+
     span {
       margin-left: 4px;
     }
   }
 }
+
 .fe-logo {
   font-size: 24px;
 }

@@ -1,0 +1,48 @@
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+@import '~element-ui/packages/theme-chalk/src/index';
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+html,
+body,
+#app,
+.retina {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  min-width: 1000px;
+  // min-height: 600px;
+  color: #455a74;
+  background: #f2f6f8;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+button {
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a.download {
+  color: inherit;
+  text-decoration: none;
+}
