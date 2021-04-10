@@ -1,5 +1,5 @@
 <template>
-  <div class="fe-navbar fe-bd-b fe-flex-between fe-align-center">
+  <div class="fe-navbar fe-flex-between fe-align-center">
     <div class="fe-align-center">
       <h1 class="fe-flex fe-align-center mr-50">
         <svg class="icon fe-logo" aria-hidden="true">
@@ -138,8 +138,10 @@ export default {
 <style lang="scss">
 .fe-navbar {
   height: 60px;
+  width: 1000px;
+  margin: 0 auto;
   color: $menu_font_color;
-  background-color: $menu_bg_color;
+  z-index: 2000;
 
   h1 {
     font-size: 16px;

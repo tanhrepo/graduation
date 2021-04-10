@@ -1,6 +1,7 @@
 /* 宽高继承 */
 .fe-page {
-  width: 100%;
+  width: 1000px;
+  margin: 0 auto;
   height: 100%;
   overflow: hidden;
 }
@@ -55,7 +56,10 @@
 .fe-no-shrink {
   flex-shrink: 0;
 }
-
+.nav{
+  background-color: $menu_bg_color;
+  box-shadow:  0 0 25px #dcdcdc;
+}
 /* flex-子元素水平方向左右布局 */
 .fe-flex-between {
   display: flex;

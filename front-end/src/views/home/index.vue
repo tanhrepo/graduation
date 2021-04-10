@@ -1,6 +1,6 @@
-<!-- 首页 -->
+<!-- 首页(推荐) -->
 <template>
-  <div class="">首页
+  <div class="fe-page fe-scroll-y" style="background-color: #169bfa">首页
     <svg class="icon fe-font-lg"  aria-hidden="true">
       <use xlink:href="#icon-wind"></use>
     </svg>

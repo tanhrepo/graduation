@@ -169,11 +169,14 @@ export default {
     // this.autoView()
   },
   methods: {
-    // 注册
+    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          // alert('submit!');
+          if(formName === 'signIn'){
+            this.getSignIn()
+          }
         } else {
           console.log('error submit!!');
           return false;
@@ -184,6 +187,14 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    //登录
+    getSignIn(){
+      this.$router.push({name:'index'})
+    },
+    // 注册
+    getSignUp(){
+
+    }
   }
 
 }
