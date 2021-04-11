@@ -30,8 +30,8 @@ export default {
           userImg:require("@/assets/images/user/user_11.jpg"),
           nickname:'张三',
           signature:'这是张三的签名',
-          content:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
-
+          content:'路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
+          img:[require("@/assets/images/item/item_01.png"),require("@/assets/images/item/item_02.png"),require("@/assets/images/item/item_03.png"),require("@/assets/images/item/item_04.png"),require("@/assets/images/item/item_05.png"),require("@/assets/images/item/item_05.png"),require("@/assets/images/item/item_01.png"),require("@/assets/images/item/item_02.png"),require("@/assets/images/item/item_03.png"),require("@/assets/images/item/item_04.png"),]
         },
         {
           articleId:2,

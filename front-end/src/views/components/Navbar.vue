@@ -34,7 +34,7 @@
       <el-dropdown class="h-100">
       <span class="el-dropdown-link user-item fe-flex-center">
 
-        <img src="~@/assets/images/user/user_01.svg" class="user-img" alt="">
+        <img src="~@/assets/images/user/user_11.jpg" class="user-img" alt="">
       </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>黄金糕</el-dropdown-item>
@@ -177,20 +177,27 @@ export default {
     .user-img {
       width: 45px;
       height: 45px;
-      box-shadow: 3px 3px 5px #d5d5d5,
-      -3px -3px 5px #ebebeb;
       border-radius: 50%;
     }
   }
 
   h1 {
     font-size: 16px;
+    line-height: 24px;
     font-weight: 500;
     white-space: nowrap;
 
     span:last-child {
       margin-left: 1em;
     }
+  }
+
+  .el-menu-item{
+    transition: 0s;
+  }
+  .el-menu--horizontal > .el-menu-item.is-active{
+    border-bottom: 0;
+    font-size: 18px;
   }
 
   .fe-navbar-user {

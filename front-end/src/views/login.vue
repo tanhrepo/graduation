@@ -189,7 +189,7 @@ export default {
     },
     //登录
     getSignIn(){
-      this.$router.push({name:'index'})
+      this.$router.push({name:'homeIndex'})
     },
     // 注册
     getSignUp(){

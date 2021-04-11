@@ -10,14 +10,29 @@
       </div>
       <p><el-button type="primary" plain size="mini">关注</el-button></p>
     </div>
-    <p>{{ ItemData.content }}</p>
+    <p class="text-item-content" @click="isHidden = !isHidden" :class="{'text-item-content-hidden':isHidden}">
+      {{ ItemData.content }}
+    </p>
+    <div class="item-img">
+      <viewer class="item-img">
+        <div v-for="(item,index) in ItemData.img" :key="index" class="item-img-item" >
+          <img :src="item" alt="">
+        </div>
+      </viewer>
+    </div>
+
   </div>
 </template>
 
 <script>
 export default {
   name: "TextItem",
-  props: ['ItemData']
+  props: ['ItemData'],
+  data(){
+    return{
+      isHidden:true
+    }
+  }
 }
 </script>
 
@@ -59,6 +74,37 @@ export default {
 
     .el-button{
       border-radius: 12px;
+    }
+  }
+
+  .text-item-content{
+    font-size: 14px;
+    color: #2d3e53;
+    line-height: 22px;
+  }
+  .text-item-content-hidden{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .item-img{
+    display: flex;
+    flex-wrap: wrap;
+    .item-img-item{
+      width: 100px;
+      height: 100px;
+      margin: 12px 12px 0 0;
+      border-radius: 5px;
+      overflow: hidden;
+
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
+      }
     }
   }
 }
