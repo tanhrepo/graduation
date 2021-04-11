@@ -26,6 +26,24 @@
         </template>
       </el-menu>
     </div>
+
+    <div class="nav-right">
+      <el-input @keyup.enter.native="getSearch(searchItem)" v-model="searchItem">
+        <i slot="suffix" @click="getSearch(searchItem)" class="el-input__icon el-icon-search"></i>
+      </el-input>
+      <el-dropdown class="h-100">
+      <span class="el-dropdown-link user-item fe-flex-center">
+
+        <img src="~@/assets/images/user/user_01.svg" class="user-img" alt="">
+      </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>黄金糕</el-dropdown-item>
+          <el-dropdown-item>狮子头</el-dropdown-item>
+          <el-dropdown-item>螺蛳粉</el-dropdown-item>
+          <el-dropdown-item @click="handleLogout" divided>退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
   </div>
 </template>
 
@@ -47,7 +65,8 @@ export default {
   data() {
     return {
       activeIndex: '',
-      menus: []
+      menus: [],
+      searchItem:'',
     }
   },
   watch: {
@@ -68,6 +87,10 @@ export default {
   },
   methods: {
     ...mapMutations('user', ['setUserInfo']),
+    // 搜索
+    getSearch(item){
+      console.log(item)
+    },
     setActiveIndex() {
       const Matched = this.$route.matched
       this.activeIndex = Matched.length >= 2 ? this.getActiveIndex() : this.$route.name
@@ -143,6 +166,23 @@ export default {
   color: $menu_font_color;
   z-index: 2000;
 
+  .user-item {
+    width: 80px;
+    height: 100%;
+    cursor: pointer;
+
+    &:hover{
+      background-color: #F5F5F5;
+    }
+    .user-img {
+      width: 45px;
+      height: 45px;
+      box-shadow: 3px 3px 5px #d5d5d5,
+      -3px -3px 5px #ebebeb;
+      border-radius: 50%;
+    }
+  }
+
   h1 {
     font-size: 16px;
     font-weight: 500;
@@ -160,6 +200,27 @@ export default {
     span {
       margin-left: 4px;
     }
+  }
+
+  .nav-right{
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .el-input{
+      margin-right: 6px;
+    }
+    .el-input__inner{
+      border-radius: 16px;
+    }
+    .el-input__icon{
+      cursor: pointer;
+
+      &:hover{
+        font-size: 16px;
+      }
+    }
+
   }
 }
 

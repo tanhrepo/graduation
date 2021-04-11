@@ -1,9 +1,15 @@
 /* 宽高继承 */
 .fe-page {
-  width: 1000px;
-  margin: 0 auto;
+  width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+/* 宽高继承 */
+.fe-page-container {
+  width: 1000px;
+  margin: 0 auto;
+  height: auto !important;
 }
 
 /* 页面滚动 */
@@ -11,7 +17,16 @@
   height: 100%;
   overflow-y: auto;
 }
-
+/* 左边内容 */
+.fe-container-left {
+  width: 700px;
+  height: auto;
+}
+/* 右边内容 */
+.fe-container-right {
+  width: 280px;
+  height: auto;
+}
 /* 主视图区域 */
 .fe-view {
   width: 100%;
@@ -58,7 +73,7 @@
 }
 .nav{
   background-color: $menu_bg_color;
-  box-shadow:  0 0 25px #dcdcdc;
+  border-bottom: 1px solid $--border-color-base;
 }
 /* flex-子元素水平方向左右布局 */
 .fe-flex-between {
@@ -227,6 +242,10 @@
 }
 .fe-pt-md {
   padding-top: $gap-md;
+}
+.fe-ptd-30 {
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 .fe-pr-md {
   padding-right: $gap-md;

@@ -1,6 +1,6 @@
 <template>
   <div class="retina fe-flex-column">
-    <div class="fe-no-shrink">
+    <div class="fe-no-shrink nav">
       <Navbar></Navbar>
       <!-- <Breadcrumb></Breadcrumb> -->
     </div>

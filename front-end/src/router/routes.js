@@ -1,5 +1,5 @@
 import Main from '@/views/components/Main'
-// import Layout from '@/components/Layout'
+import Layout from '@/components/Layout'
 const routes = [
   {
     path: '/',
@@ -25,13 +25,23 @@ const routes = [
     },
     children: [
       {
-        path: 'index',
-        name: 'index',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/home/index'),
+        path: 'home',
+        name: 'home',
+        component: Layout,
         meta: {
           title: '推荐',
-          index: 0
         },
+        children:[
+          {
+            path: '/dashboard/index',
+            name: 'homeIndex',
+            component: () => import(/* webpackChunkName: "dashboard" */ '@/views/home/index'),
+            meta: {
+              title: '推荐',
+              index: 0
+            },
+          }
+        ]
       }
     ]
   },
