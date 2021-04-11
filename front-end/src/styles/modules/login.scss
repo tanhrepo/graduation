@@ -21,6 +21,7 @@
   width: 100%;
   min-width: 1200px;
   height: 100%;
+  overflow-y: auto;
   background-color: #FFFFFF;
   display: flex;
   font-family: "Roboto", sans-serif;
@@ -106,11 +107,14 @@
 
 
 .verification {
-  width: 33%;
+  width: 102px;
   height: 38px;
   float: right;
+  overflow: hidden;
+  margin-left: 10px;
 
   img {
+    height: 100%;
     cursor: pointer;
     vertical-align: middle;
   }

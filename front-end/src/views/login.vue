@@ -26,15 +26,15 @@
                         v-model="signIn.password">
               </el-input>
             </el-form-item>
-            <el-form-item prop="verification">
+            <el-form-item prop="code">
               <el-input size="large"
                         prefix-icon="iconfont icon-verification"
                         placeholder="验证码"
-                        style="width: 67%"
-                        v-model="signIn.verification">
+                        style="width: 158px"
+                        v-model="signIn.code">
               </el-input>
               <div class="verification">
-                <!--              <img :src="codeUrl" @click="getCode" class="login-code-img"/>-->
+                <img :src="codeUrl" @click="getCode" />
               </div>
             </el-form-item>
             <el-row class="fe-flex-between">
@@ -80,15 +80,15 @@
                         v-model="signUp.checkPass">
               </el-input>
             </el-form-item>
-            <el-form-item prop="verification">
+            <el-form-item prop="code">
               <el-input size="large"
                         prefix-icon="iconfont icon-verification"
                         placeholder="验证码"
-                        style="width: 67%"
-                        v-model="signUp.verification">
+                        style="width: 158px"
+                        v-model="signUp.code">
               </el-input>
               <div class="verification">
-                <!--              <img :src="codeUrl" @click="getCode" class="login-code-img"/>-->
+                <img :src="codeUrl" @click="getCode" />
               </div>
             </el-form-item>
             <el-row class="fe-flex-between">
@@ -106,6 +106,9 @@
 
 <script>
 
+import Cookies from "js-cookie";
+import {getCodeImg} from "@/api/login";
+import {decrypt, encrypt} from "@/utils/jsencrypt";
 
 export default {
   data() {
@@ -133,36 +136,40 @@ export default {
       formShow: true,
       // 登录
       signIn: {
-        username: '',
-        password: '',
-        verification: '',
+        username: 'admin',
+        password: 'admin123',
+        code: "",
+        uuid: ""
       },
       // 注册
       signUp: {
         username: '',
         password: '',
-        checkPass:'',
+        checkPass: '',
         nickname: '',
-        verification: '',
+        code: '',
       },
-
+      // 验证码
+      codeUrl: "",
       // 登录校验
-      SignInRules:{
-        username:[{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        verification:[{ required: true, message: '请输入验证码', trigger: 'blur' }]
+      SignInRules: {
+        username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+        password: [{required: true, message: '请输入密码', trigger: 'blur'}],
+        code: [{required: true, message: '请输入验证码', trigger: 'blur'}]
       },
       // 注册校验
       SignUpRules: {
-        username:[{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        nickname:[{ required: true, message: '请输入昵称', trigger: 'blur' }],
-        password: [{ validator: validatePass, trigger: 'blur' }],
-        checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-        verification:[{ required: true, message: '请输入验证码', trigger: 'blur' }]
+        username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+        nickname: [{required: true, message: '请输入昵称', trigger: 'blur'}],
+        password: [{validator: validatePass, trigger: 'blur'}],
+        checkPass: [{validator: validatePass2, trigger: 'blur'}],
+        code: [{required: true, message: '请输入验证码', trigger: 'blur'}]
       }
     }
   },
   created() {
+    this.getCode();
+    this.getCookie();
 
   },
   mounted() {
@@ -174,7 +181,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // alert('submit!');
-          if(formName === 'signIn'){
+          if (formName === 'signIn') {
             this.getSignIn()
           }
         } else {
@@ -186,14 +193,53 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.$store.dispatch("LogOut");
+      this.getCode()
     },
     //登录
-    getSignIn(){
-      this.$router.push({name:'homeIndex'})
+    getSignIn() {
+      if (this.signIn) {
+        Cookies.set("username", this.signIn.username, {expires: 7});
+        Cookies.set("password", encrypt(this.signIn.password), {expires: 7});
+      } else {
+        Cookies.remove("username");
+        Cookies.remove("password");
+      }
+      this.$store.dispatch("Login", this.signIn).then(() => {
+        // this.$router.push({name: 'homeIndex'})
+        console.log(1)
+      }).catch(() => {
+        this.getCode();
+        console.log(2)
+      });
+
     },
     // 注册
-    getSignUp(){
+    getSignUp() {
 
+    },
+
+    getCode() {
+      getCodeImg().then(res => {
+        this.codeUrl = "data:image/gif;base64," + res.img;
+        this.signIn.uuid = res.uuid;
+      });
+    },
+    getCookie() {
+      const username = Cookies.get("username");
+      const password = Cookies.get("password");
+      this.signIn = {
+        username: username === undefined ? this.loginForm.username : username,
+        password: password === undefined ? this.loginForm.password : decrypt(password),
+      };
+    },
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true;
+
+        }
+      });
     }
   }
 

@@ -6,9 +6,16 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "8594072",
+      "name": "验证码",
+      "font_class": "verification",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
       "icon_id": "4398246",
       "name": "修改密码",
-      "font_class": "verification",
+      "font_class": "password-open",
       "unicode": "e63c",
       "unicode_decimal": 58940
     },
