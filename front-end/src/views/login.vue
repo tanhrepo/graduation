@@ -55,11 +55,11 @@
                         v-model="signUp.username">
               </el-input>
             </el-form-item>
-            <el-form-item prop="nickname">
+            <el-form-item prop="nickName">
               <el-input size="large"
                         prefix-icon="iconfont icon-nickname"
                         placeholder="昵称"
-                        v-model="signUp.nickname">
+                        v-model="signUp.nickName">
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
@@ -107,8 +107,10 @@
 <script>
 
 import Cookies from "js-cookie";
-import {getCodeImg} from "@/api/login";
+import {getCodeImg, login} from "@/api/login";
+import { register } from "@/api/system/register";
 import {decrypt, encrypt} from "@/utils/jsencrypt";
+import {setToken} from "@/utils/auth";
 
 export default {
   data() {
@@ -136,8 +138,8 @@ export default {
       formShow: true,
       // 登录
       signIn: {
-        username: 'admin',
-        password: 'admin123',
+        username: '',
+        password: '',
         code: "",
         uuid: ""
       },
@@ -146,8 +148,9 @@ export default {
         username: '',
         password: '',
         checkPass: '',
-        nickname: '',
+        nickName: '',
         code: '',
+        uuid: ""
       },
       // 验证码
       codeUrl: "",
@@ -160,7 +163,7 @@ export default {
       // 注册校验
       SignUpRules: {
         username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
-        nickname: [{required: true, message: '请输入昵称', trigger: 'blur'}],
+        nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}],
         password: [{validator: validatePass, trigger: 'blur'}],
         checkPass: [{validator: validatePass2, trigger: 'blur'}],
         code: [{required: true, message: '请输入验证码', trigger: 'blur'}]
@@ -183,6 +186,8 @@ export default {
           // alert('submit!');
           if (formName === 'signIn') {
             this.getSignIn()
+          }else {
+            this.postSignUp()
           }
         } else {
           console.log('error submit!!');
@@ -210,28 +215,45 @@ export default {
         console.log(1)
       }).catch(() => {
         this.getCode();
-        console.log(2)
       });
 
     },
     // 注册
-    getSignUp() {
-
+    postSignUp() {
+      const username = this.signUp.username.trim()
+      const password = this.signUp.password
+      const nickName = this.signUp.nickName
+      const code = this.signUp.code
+      const uuid = this.signUp.uuid
+      return new Promise((resolve, reject) => {
+        register(username, password,nickName, code, uuid).then(res => {
+          this.$message({
+            message: '注册成功',
+            type: 'success'
+          });
+          this.resetForm()
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
 
     getCode() {
       getCodeImg().then(res => {
         this.codeUrl = "data:image/gif;base64," + res.img;
         this.signIn.uuid = res.uuid;
+        this.signUp.uuid = res.uuid;
       });
     },
     getCookie() {
-      const username = Cookies.get("username");
-      const password = Cookies.get("password");
-      this.signIn = {
-        username: username === undefined ? this.loginForm.username : username,
-        password: password === undefined ? this.loginForm.password : decrypt(password),
-      };
+      if(Cookies.get("username")){
+        const username = Cookies.get("username");
+        const password = Cookies.get("password");
+        this.signIn = {
+          username: username === undefined ? this.loginForm.username : username,
+          password: password === undefined ? this.loginForm.password : decrypt(password),
+        };
+      }
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
