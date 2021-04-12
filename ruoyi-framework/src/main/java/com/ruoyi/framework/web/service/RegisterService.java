@@ -61,6 +61,7 @@ public class RegisterService {
 //            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
 //        }
         SysUser user = new SysUser();
+        user.setNickName(registerUser.getNickName());
         user.setUserName(registerUser.getUsername());
         user.setCreateBy(user.getUserName());//自己注册
         user.setPassword(SecurityUtils.encryptPassword(registerUser.getPassword()));
