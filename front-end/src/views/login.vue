@@ -39,7 +39,7 @@
             </el-form-item>
             <el-row class="fe-flex-between">
               <el-button size="medium" type="success" @click="submitForm('signIn')">登录</el-button>
-              <el-button size="medium" @click="resetForm('signIn')">重置</el-button>
+              <el-button size="medium" type="success" plain @click="resetForm('signIn')">重置</el-button>
             </el-row>
             <p class="message">没有注册？<span @click="formShow = !formShow">去注册</span></p>
           </el-form>
@@ -93,7 +93,7 @@
             </el-form-item>
             <el-row class="fe-flex-between">
               <el-button size="medium" type="success" @click="submitForm('signUp')">注册</el-button>
-              <el-button size="medium" @click="resetForm('signUp')">重置</el-button>
+              <el-button size="medium" type="success" plain @click="resetForm('signUp')">重置</el-button>
             </el-row>
             <p class="message">已经注册？<span @click="formShow = !formShow">去登录</span></p>
           </el-form>
@@ -171,9 +171,12 @@ export default {
     }
   },
   created() {
-    this.getCode();
-    this.getCookie();
-
+    this.$store.dispatch("LogOut").then(() => {
+      this.getCode();
+      this.getCookie();
+    }).catch(() => {
+      this.getCode();
+    });
   },
   mounted() {
     // this.autoView()
@@ -211,7 +214,7 @@ export default {
         Cookies.remove("password");
       }
       this.$store.dispatch("Login", this.signIn).then(() => {
-        // this.$router.push({name: 'homeIndex'})
+        this.$router.push({name: 'homeIndex'})
         console.log(1)
       }).catch(() => {
         this.getCode();
@@ -255,14 +258,6 @@ export default {
         };
       }
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true;
-
-        }
-      });
-    }
   }
 
 }

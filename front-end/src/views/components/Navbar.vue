@@ -19,7 +19,7 @@
             <template slot="title">{{ item.meta.title }}</template>
             <MenuList :MenuList="item.children"></MenuList>
           </el-submenu>
-          <el-menu-item v-else :key="item.name" :index="item.name">{{
+          <el-menu-item v-else-if="!item.meta.isHidden" :key="item.name" :index="item.name">{{
               item.meta.title
             }}
           </el-menu-item>

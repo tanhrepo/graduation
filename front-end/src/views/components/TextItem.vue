@@ -80,7 +80,8 @@ export default {
   .text-item-content{
     font-size: 14px;
     color: #2d3e53;
-    line-height: 22px;
+    line-height: 25px;
+    white-space: pre-line;
   }
   .text-item-content-hidden{
     overflow: hidden;

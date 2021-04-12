@@ -6,11 +6,39 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "8594072",
+      "icon_id": "20478714",
+      "name": "014-water glass",
+      "font_class": "wind",
+      "unicode": "e6e5",
+      "unicode_decimal": 59109
+    },
+    {
+      "icon_id": "20021144",
       "name": "验证码",
       "font_class": "verification",
-      "unicode": "e624",
-      "unicode_decimal": 58916
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
+      "icon_id": "2711332",
+      "name": "新增",
+      "font_class": "add",
+      "unicode": "e649",
+      "unicode_decimal": 58953
+    },
+    {
+      "icon_id": "14151862",
+      "name": "向上",
+      "font_class": "back-top",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "19992275",
+      "name": "刷新",
+      "font_class": "refresh",
+      "unicode": "e810",
+      "unicode_decimal": 59408
     },
     {
       "icon_id": "4398246",
@@ -39,13 +67,6 @@
       "font_class": "password",
       "unicode": "e632",
       "unicode_decimal": 58930
-    },
-    {
-      "icon_id": "6748359",
-      "name": "风",
-      "font_class": "wind",
-      "unicode": "e62a",
-      "unicode_decimal": 58922
     }
   ]
 }

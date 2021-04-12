@@ -21,7 +21,7 @@ const routes = [
       title: '推荐',
       breadcrumb: false,
       hideSubMenu: true,
-      single: true // 无子菜单
+      single: true, // 无子菜单
     },
     children: [
       {
@@ -192,7 +192,32 @@ const routes = [
   {
     path: '*',
     component: () => import('@/views/404.vue')
-  }
+  },
+  // 新建文章
+  {
+    path: '/edit',
+    name: 'edit',
+    component: Main,
+    redirect: '/edit/article',
+    meta: {
+      title: '编辑',
+      breadcrumb: false,
+      hideSubMenu: true,
+      single: true, // 无子菜单
+      // isHidden:true,
+    },
+    children: [
+      {
+        path: 'article',
+        name: 'article',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/article/AddArticle'),
+        meta: {
+          title: '新建文章',
+          index: 1000
+        },
+      }
+    ]
+  },
 ]
 
 export default routes
