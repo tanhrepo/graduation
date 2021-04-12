@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * 【请填写功能名称】Service业务层处理
+ * 【文章】Service业务层处理
  *
  * @author dfm
  * @date 2021-04-01
@@ -22,10 +22,10 @@ public class BusiArticleServiceImpl implements IBusiArticleService
     private BusiArticleMapper busiArticleMapper;
 
     /**
-     * 查询【请填写功能名称】
+     * 查询【文章】
      *
-     * @param articleId 【请填写功能名称】ID
-     * @return 【请填写功能名称】
+     * @param articleId 【文章】ID
+     * @return 【文章】
      */
     @Override
     public BusiArticle selectBusiArticleById(Long articleId)
@@ -34,10 +34,10 @@ public class BusiArticleServiceImpl implements IBusiArticleService
     }
 
     /**
-     * 查询【请填写功能名称】列表
+     * 查询【文章】列表
      *
-     * @param busiArticle 【请填写功能名称】
-     * @return 【请填写功能名称】
+     * @param busiArticle 【文章】
+     * @return 【文章】
      */
     @Override
     public List<BusiArticle> selectBusiArticleList(BusiArticle busiArticle)
@@ -45,10 +45,28 @@ public class BusiArticleServiceImpl implements IBusiArticleService
         return busiArticleMapper.selectBusiArticleList(busiArticle);
     }
 
+
     /**
-     * 新增【请填写功能名称】
+     * 查询图文区 文章列表
+     * @return
+     */
+    @Override
+    public List<BusiArticle> selectPhotoBusiArticleList() {
+        return busiArticleMapper.selectPhotoBusiArticleList();
+    }
+
+    /**
+     * 查询视频区 文章列表
+     * @return
+     */
+    @Override
+    public List<BusiArticle> selectVedioBusiArticleList() {
+        return busiArticleMapper.selectVedioBusiArticleList();
+    }
+    /**
+     * 新增【文章】
      *
-     * @param busiArticle 【请填写功能名称】
+     * @param busiArticle 【文章】
      * @return 结果
      */
     @Override
@@ -59,9 +77,9 @@ public class BusiArticleServiceImpl implements IBusiArticleService
     }
 
     /**
-     * 修改【请填写功能名称】
+     * 修改【文章】
      *
-     * @param busiArticle 【请填写功能名称】
+     * @param busiArticle 【文章】
      * @return 结果
      */
     @Override
@@ -72,9 +90,9 @@ public class BusiArticleServiceImpl implements IBusiArticleService
     }
 
     /**
-     * 批量删除【请填写功能名称】
+     * 批量删除【文章】
      *
-     * @param articleIds 需要删除的【请填写功能名称】ID
+     * @param articleIds 需要删除的【文章】ID
      * @return 结果
      */
     @Override
@@ -84,9 +102,9 @@ public class BusiArticleServiceImpl implements IBusiArticleService
     }
 
     /**
-     * 删除【请填写功能名称】信息
+     * 删除【文章】信息
      *
-     * @param articleId 【请填写功能名称】ID
+     * @param articleId 【文章】ID
      * @return 结果
      */
     @Override

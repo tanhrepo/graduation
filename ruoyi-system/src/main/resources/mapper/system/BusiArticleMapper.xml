@@ -42,6 +42,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
+    <select id="selectPhotoBusiArticleList" resultMap="BusiArticleResult">
+        <include refid="selectBusiArticleVo"/>
+        where article_vediourls is null
+    </select>
+
+    <select id="selectVedioBusiArticleList" resultMap="BusiArticleResult">
+        <include refid="selectBusiArticleVo"/>
+        where article_vediourls is not null
+    </select>
+
+
+
+
     <select id="selectBusiArticleById" parameterType="Long" resultMap="BusiArticleResult">
         <include refid="selectBusiArticleVo"/>
         where article_id = #{articleId}

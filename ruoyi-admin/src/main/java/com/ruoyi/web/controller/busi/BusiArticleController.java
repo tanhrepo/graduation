@@ -51,6 +51,32 @@ public class BusiArticleController extends BaseController
     }
 
     /**
+     * 查询图文区【文章】列表
+     */
+    @ApiOperation(" 查询图文区【文章】列表")
+    @PreAuthorize("@ss.hasPermi('system:article:list')")
+    @GetMapping("/photoList")
+    public TableDataInfo photoList()
+    {
+        startPage();
+        List<BusiArticle> list = busiArticleService.selectPhotoBusiArticleList();
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询视频区【文章】列表
+     */
+    @ApiOperation(" 查询视频区【文章】列表")
+    @PreAuthorize("@ss.hasPermi('system:article:list')")
+    @GetMapping("/vedioList")
+    public TableDataInfo vedioList()
+    {
+        startPage();
+        List<BusiArticle> list = busiArticleService.selectVedioBusiArticleList();
+        return getDataTable(list);
+    }
+
+    /**
      * 导出【文章】列表
      */
     @ApiOperation(" 导出【文章】列表")
