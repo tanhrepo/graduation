@@ -1,9 +1,9 @@
 package com.ruoyi.common.core.domain.model;
 
 /**
- * 用户登录对象
+ * 用户注册对象
  *
- * @author ruoyi
+ * @author dfm
  */
 public class RegisterBody
 {
