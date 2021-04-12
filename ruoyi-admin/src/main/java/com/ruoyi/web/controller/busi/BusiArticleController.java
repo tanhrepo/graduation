@@ -2,8 +2,10 @@ package com.ruoyi.web.controller.busi;
 
 import java.util.List;
 
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.BusiArticle;
 import com.ruoyi.system.service.IBusiArticleService;
+import com.ruoyi.web.controller.tool.StrUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,6 +49,71 @@ public class BusiArticleController extends BaseController
     {
         startPage();
         List<BusiArticle> list = busiArticleService.selectBusiArticleList(busiArticle);
+        for (BusiArticle article:list
+        ) {
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(article.getArticleImgurls())){
+                String articleImgurls = article.getArticleImgurls();
+                article.setImgs(StrUtils.stringToStringArray(articleImgurls));
+            }
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(article.getArticleVediourls())){
+                String vediourls = article.getArticleVediourls();
+                article.setImgs(StrUtils.stringToStringArray(vediourls));
+            }
+        }
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询图文区【文章】列表
+     */
+    @ApiOperation(" 查询图文区【文章】列表")
+    @PreAuthorize("@ss.hasPermi('system:article:list')")
+    @GetMapping("/photoList")
+    public TableDataInfo photoList()
+    {
+        startPage();
+        List<BusiArticle> list = busiArticleService.selectPhotoBusiArticleList();
+        for (BusiArticle busiArticle:list
+        ) {
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(busiArticle.getArticleImgurls())){
+                String articleImgurls = busiArticle.getArticleImgurls();
+                busiArticle.setImgs(StrUtils.stringToStringArray(articleImgurls));
+            }
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
+                String vediourls = busiArticle.getArticleVediourls();
+                busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+            }
+        }
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询视频区【文章】列表
+     */
+    @ApiOperation(" 查询视频区【文章】列表")
+    @PreAuthorize("@ss.hasPermi('system:article:list')")
+    @GetMapping("/vedioList")
+    public TableDataInfo vedioList()
+    {
+        startPage();
+        List<BusiArticle> list = busiArticleService.selectVedioBusiArticleList();
+        for (BusiArticle busiArticle:list
+             ) {
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(busiArticle.getArticleImgurls())){
+                String articleImgurls = busiArticle.getArticleImgurls();
+                busiArticle.setImgs(StrUtils.stringToStringArray(articleImgurls));
+            }
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
+                String vediourls = busiArticle.getArticleVediourls();
+                busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+            }
+        }
         return getDataTable(list);
     }
 
@@ -72,7 +139,18 @@ public class BusiArticleController extends BaseController
     @GetMapping(value = "/{articleId}")
     public AjaxResult getInfo(@PathVariable("articleId") Long articleId)
     {
-        return AjaxResult.success(busiArticleService.selectBusiArticleById(articleId));
+        BusiArticle busiArticle = busiArticleService.selectBusiArticleById(articleId);
+        //检验是否 empty
+        if(StringUtils.isNotEmpty(busiArticle.getArticleImgurls())){
+            String articleImgurls = busiArticle.getArticleImgurls();
+            busiArticle.setImgs(StrUtils.stringToStringArray(articleImgurls));
+        }
+        //检验是否 empty
+        if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
+            String vediourls = busiArticle.getArticleVediourls();
+            busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+        }
+        return AjaxResult.success(busiArticle);
     }
 
     /**
@@ -84,6 +162,14 @@ public class BusiArticleController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody BusiArticle busiArticle)
     {
+        //参数 校验
+        if(StringUtils.isNotEmpty(busiArticle.getImgs())){
+            busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+        }
+        //参数 校验
+        if(StringUtils.isNotEmpty(busiArticle.getVedios())){
+            busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+        }
         return toAjax(busiArticleService.insertBusiArticle(busiArticle));
     }
 
@@ -96,6 +182,14 @@ public class BusiArticleController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody BusiArticle busiArticle)
     {
+        //参数 校验
+        if(StringUtils.isNotEmpty(busiArticle.getImgs())){
+            busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+        }
+        //参数 校验
+        if(StringUtils.isNotEmpty(busiArticle.getVedios())){
+            busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+        }
         return toAjax(busiArticleService.updateBusiArticle(busiArticle));
     }
 

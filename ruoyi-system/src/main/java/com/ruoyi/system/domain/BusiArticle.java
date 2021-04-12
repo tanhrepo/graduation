@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -70,6 +71,12 @@ public class BusiArticle extends BaseEntity
     @ApiModelProperty("踩数")
     @Excel(name = "踩数")
     private Long articleTrampleCount;
+
+    @ApiModelProperty("图片url 数组作为参数")
+    private String[] imgs;
+
+    @ApiModelProperty("视频url数组 作为参数")
+    private String[] vedios;
 
     /** 视频链接 */
     @ApiModelProperty("视频链接")
@@ -183,6 +190,22 @@ public class BusiArticle extends BaseEntity
     public String getArticleVediourls()
     {
         return articleVediourls;
+    }
+
+    public String[] getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(String[] imgs) {
+        this.imgs = imgs;
+    }
+
+    public String[] getVedios() {
+        return vedios;
+    }
+
+    public void setVedios(String[] vedios) {
+        this.vedios = vedios;
     }
 
     @Override
