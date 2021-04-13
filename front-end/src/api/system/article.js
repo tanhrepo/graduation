@@ -8,7 +8,8 @@ export function getArticleList() {
   })
 }
 
-export function register(data) {
+// 新增文章
+export function addArticle(data) {
   return request({
     url: '/system/article',
     method: 'post',

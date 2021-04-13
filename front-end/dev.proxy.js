@@ -5,6 +5,6 @@ module.exports = {
     pathRewrite: {
       ['^' + process.env.VUE_APP_BASE_API]: ''
     },
-    logLevel: 'debug', // 需要websocket 开启
+    // logLevel: 'debug', // 需要websocket 开启
   }
 }

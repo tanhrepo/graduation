@@ -10,6 +10,7 @@ import router from "./router"
 import store from "./store"
 import Viewer from "v-viewer"// 图片预览
 import "viewerjs/dist/viewer.css"// 图片预览
+import './permission' // permission control
 
 
 

@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15391361",
+      "name": "话题",
+      "font_class": "topic",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
       "icon_id": "20478714",
       "name": "014-water glass",
       "font_class": "wind",
