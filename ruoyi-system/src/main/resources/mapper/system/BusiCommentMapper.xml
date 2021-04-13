@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusiCommentMapper">
+    
+    <resultMap type="BusiComment" id="BusiCommentResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="articleId"    column="article_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="content"    column="content"    />
+        <result property="imgurls"    column="imgurls"    />
+        <result property="praiseCount"    column="praise_count"    />
+        <result property="trampleCount"    column="trample_count"    />
+        <result property="answerUser"    column="answer_user"    />
+    </resultMap>
+
+    <sql id="selectBusiCommentVo">
+        select id, parent_id, article_id, create_time, update_time, update_by, create_by, content, imgurls, praise_count, trample_count, answer_user from busi_comment
+    </sql>
+
+    <select id="selectBusiCommentList" parameterType="BusiComment" resultMap="BusiCommentResult">
+        <include refid="selectBusiCommentVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="imgurls != null  and imgurls != ''"> and imgurls = #{imgurls}</if>
+            <if test="praiseCount != null "> and praise_count = #{praiseCount}</if>
+            <if test="trampleCount != null "> and trample_count = #{trampleCount}</if>
+            <if test="answerUser != null "> and answer_user = #{answerUser}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiCommentById" parameterType="Long" resultMap="BusiCommentResult">
+        <include refid="selectBusiCommentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiComment" parameterType="BusiComment" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="articleId != null">article_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="content != null">content,</if>
+            <if test="imgurls != null">imgurls,</if>
+            <if test="praiseCount != null">praise_count,</if>
+            <if test="trampleCount != null">trample_count,</if>
+            <if test="answerUser != null">answer_user,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="articleId != null">#{articleId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="content != null">#{content},</if>
+            <if test="imgurls != null">#{imgurls},</if>
+            <if test="praiseCount != null">#{praiseCount},</if>
+            <if test="trampleCount != null">#{trampleCount},</if>
+            <if test="answerUser != null">#{answerUser},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiComment" parameterType="BusiComment">
+        update busi_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="articleId != null">article_id = #{articleId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="imgurls != null">imgurls = #{imgurls},</if>
+            <if test="praiseCount != null">praise_count = #{praiseCount},</if>
+            <if test="trampleCount != null">trample_count = #{trampleCount},</if>
+            <if test="answerUser != null">answer_user = #{answerUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiCommentById" parameterType="Long">
+        delete from busi_comment where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiCommentByIds" parameterType="String">
+        delete from busi_comment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
