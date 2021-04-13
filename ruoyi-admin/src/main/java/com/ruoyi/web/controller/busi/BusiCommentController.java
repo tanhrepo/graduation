@@ -6,6 +6,8 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.web.controller.tool.StrUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @author dfm
  * @date 2021-04-13
  */
+@Api("评论模块")
 @RestController
 @RequestMapping("/system/comment")
 public class BusiCommentController extends BaseController
@@ -44,6 +47,7 @@ public class BusiCommentController extends BaseController
     /**
      * 查询【评论】列表
      */
+    @ApiOperation("查询【评论】列表")
     @PreAuthorize("@ss.hasPermi('system:comment:list')")
     @GetMapping("/list")
     public TableDataInfo list(BusiComment busiComment)
@@ -74,6 +78,7 @@ public class BusiCommentController extends BaseController
     /**
      * 导出【评论】列表
      */
+    @ApiOperation("导出【评论】列表")
     @PreAuthorize("@ss.hasPermi('system:comment:export')")
     @Log(title = "【评论】", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
@@ -87,6 +92,7 @@ public class BusiCommentController extends BaseController
     /**
      * 获取【评论】详细信息
      */
+    @ApiOperation("获取【评论】详细信息")
     @PreAuthorize("@ss.hasPermi('system:comment:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
@@ -111,6 +117,7 @@ public class BusiCommentController extends BaseController
     /**
      * 新增【评论】
      */
+    @ApiOperation("新增【评论】")
     @PreAuthorize("@ss.hasPermi('system:comment:add')")
     @Log(title = "【评论】", businessType = BusinessType.INSERT)
     @PostMapping
@@ -127,6 +134,7 @@ public class BusiCommentController extends BaseController
     /**
      * 修改【评论】
      */
+    @ApiOperation(" 修改【评论】")
     @PreAuthorize("@ss.hasPermi('system:comment:edit')")
     @Log(title = "【评论】", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -143,6 +151,7 @@ public class BusiCommentController extends BaseController
     /**
      * 删除【评论】
      */
+    @ApiOperation(" 删除【评论】")
     @PreAuthorize("@ss.hasPermi('system:comment:remove')")
     @Log(title = "【评论】", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
