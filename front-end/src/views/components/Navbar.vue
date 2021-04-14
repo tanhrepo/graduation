@@ -34,7 +34,7 @@
       <el-dropdown class="h-100">
       <span class="el-dropdown-link user-item fe-flex-center">
 
-        <img src="~@/assets/images/user/user_11.jpg" class="user-img" alt="">
+        <img :src="avatar" class="user-img" alt="">
       </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>黄金糕</el-dropdown-item>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import store from "@/store";
 import {mapState, mapMutations} from 'vuex'
 import MenuList from './MenuList'
 import {deleteAction} from "@/api/manage"
@@ -67,6 +68,7 @@ export default {
       activeIndex: '',
       menus: [],
       searchItem:'',
+      avatar:store.getters.avatar,
     }
   },
   watch: {
