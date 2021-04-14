@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "10715416",
+      "name": "踩",
+      "font_class": "step",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "10715456",
+      "name": "星星",
+      "font_class": "star",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "10715457",
+      "name": "眼睛-睁眼",
+      "font_class": "eye",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "10715458",
+      "name": "消息",
+      "font_class": "message",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "10715459",
+      "name": "赞",
+      "font_class": "like",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "13269359",
+      "name": "分 享",
+      "font_class": "share",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
       "icon_id": "1004652",
       "name": "文件-视频",
       "font_class": "video-file",

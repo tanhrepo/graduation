@@ -19,31 +19,46 @@
                   v-model="ruleForm.articleContent"></el-input>
             </el-form-item>
             <el-form-item>
-              <div class="upload-con">
-                <el-upload
-                    ref="uploadImg"
-                    accept=".bmp, .gif, .jpg, .jpeg, .png"
-                    class="upload-demo"
-                    action=""
-                    :http-request="uploadFile"
-                    :on-change="handleChange"
-                    :file-list="fileListImg"
-                    :auto-upload="false"
-                    list-type="picture">
-                  <el-button slot="trigger" icon="iconfont icon-image" size="small" type="primary"></el-button>
-                </el-upload>
-                <el-upload
-                    ref="uploadVideo"
-                    class="upload-demo"
-                    action=""
-                    accept=".mp4,.avi,.wmv,.mpeg,.m4v,.mov,.asf,.flv,.f4v,.rmvb,.rm,.3gp,.vob"
-                    :http-request="uploadVideo"
-                    :on-change="handleChangeVideo"
-                    :file-list="fileListVideo"
-                    :auto-upload="false">
-                  <el-button slot="trigger" icon="iconfont icon-video" size="small" type="primary"></el-button>
-                </el-upload>
-              </div>
+              <el-upload
+                  ref="uploadImg"
+                  accept=".bmp, .gif, .jpg, .jpeg, .png"
+                  class="upload-demo"
+                  action=""
+                  :disabled="showImg"
+                  v-show="!showImg"
+                  :http-request="uploadFile"
+                  :on-change="handleChange"
+                  :on-remove="handleRemoveImg"
+                  :file-list="fileListImg"
+                  :auto-upload="false"
+                  list-type="picture">
+                <el-button class="upload-btn"
+                           slot="trigger"
+                           :disabled="showImg"
+                           icon="iconfont icon-image fe-mr-sm"
+                           size="small"
+                           type="primary">添加图片
+                </el-button>
+              </el-upload>
+              <el-upload
+                  ref="uploadVideo"
+                  class="upload-demo"
+                  action=""
+                  :disabled="showVideo"
+                  v-show="!showVideo"
+                  accept=".mp4,.avi,.wmv,.mpeg,.m4v,.mov,.asf,.flv,.f4v,.rmvb,.rm,.3gp,.vob"
+                  :http-request="uploadVideo"
+                  :on-change="handleChangeVideo"
+                  :on-remove="handleRemoveVideo"
+                  :file-list="fileListVideo"
+                  :auto-upload="false">
+                <el-button class="upload-btn"
+                           slot="trigger" :disabled="showVideo"
+                           icon="iconfont icon-video fe-mr-sm"
+                           size="small"
+                           type="primary">添加视频
+                </el-button>
+              </el-upload>
             </el-form-item>
             <el-form-item style="text-align: center;margin-top: 20px">
               <el-button type="primary" @click="submitForm()">立即发布</el-button>
@@ -70,6 +85,8 @@ export default {
   name: "AddArticle",
   data() {
     return {
+      showImg: false,
+      showVideo: false,
       fileListImg: [],
       fileListVideo: [],
       fileData: '',
@@ -138,6 +155,12 @@ export default {
       }
       this.fileListImg = []
       this.fileListVideo = []
+      this.urlListImg = 0
+      this.urlListVideo = 0
+      this.postImg = false
+      this.postVideo = false
+      this.showImg = false
+      this.showVideo = false
     },
     // 图片上传
     async uploadFile(item) {
@@ -147,6 +170,7 @@ export default {
       await putFile(formData).then(res => {
         console.log("res", res)
         this.ruleForm.imgs.push(res.url)
+        console.log()
         let i = 1
         this.urlListImg += i
         if (this.urlListImg === this.fileListImg.length) {
@@ -182,17 +206,17 @@ export default {
       this.$refs.uploadVideo.submit();
       if (!this.fileListImg.length && !this.fileListVideo.length) {
         console.log("直接上传")
-      }else if(this.fileListImg.length && !this.fileListVideo.length){
+      } else if (this.fileListImg.length && !this.fileListVideo.length) {
         this.postVideo = true
         console.log("没有视频")
-      }else if(!this.fileListImg.length && this.fileListVideo.length){
+      } else if (!this.fileListImg.length && this.fileListVideo.length) {
         this.postImg = true
         console.log("没有图片")
       }
     },
     // 有图片的时候
     fileUploadList() {
-      console.log(this.postImg , this.postVideo)
+      console.log(this.postImg, this.postVideo)
       if (this.postImg && this.postVideo) {
         console.log("文件上传")
         console.log(this.ruleForm)
@@ -204,12 +228,41 @@ export default {
       }
     },
     handleChange(file, fileList) {
-      this.fileListImg = fileList.slice(-3);
+      this.fileListImg = fileList.slice(-12);
+      if (this.fileListImg.length) {
+        this.showVideo = true
+      } else {
+        this.showVideo = false
+      }
+    },
+    handleRemoveImg(file, fileList) {
+      if (fileList.length) {
+        this.showVideo = true
+      } else {
+        this.showVideo = false
+      }
+    },
+    handleRemoveVideo(file, fileList) {
+      if (fileList.length) {
+        this.showImg = true
+      } else {
+        this.showImg = false
+      }
     },
     handleChangeVideo(file, fileList) {
-      this.fileListVideo = fileList.slice(-3);
+      this.fileListVideo = fileList.slice(-1);
+      if (this.fileListVideo.length) {
+        this.showImg = true
+      } else {
+        this.showImg = false
+      }
     },
+    handleProgress() {
+
+    }
   }
+
+
 }
 </script>
 
@@ -228,17 +281,20 @@ export default {
     border-radius: 6px;
   }
 
-  .upload-con {
+  ::v-deep .el-upload {
+    width: 100%;
+  }
+  .upload-demo{
+    margin-bottom: 12px;
+  }
+  .upload-btn {
+    width: 100%;
+    text-align: left;
     display: flex;
-    justify-content: space-between;
-
-    .upload-demo {
-      width: 49%;
-      &:nth-child(1){
-        text-align: right;
-      }
-    }
-
+    align-items: center;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
   }
 }
 
@@ -246,21 +302,21 @@ export default {
   padding: 12px;
   font-size: 14px;
   background-color: #37C1D3;
-  border-radius: 5px;
+  border-radius: 6px;
   margin-bottom: 14px;
   cursor: pointer;
   color: #FFFFFF;
 
-  &:hover{
-    background-color:#78DFE8 ;
+  &:hover {
+    background-color: #78DFE8;
   }
 }
 
-::v-deep .el-button--primary{
+::v-deep .el-button--primary {
   background-color: #37C1D3;
   border-color: #37C1D3;
 
-  &:hover{
+  &:hover {
     background-color: #78DFE8;
     border-color: #78DFE8;
   }

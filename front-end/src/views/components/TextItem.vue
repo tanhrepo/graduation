@@ -4,21 +4,27 @@
       <div class="title-container">
         <img :src="ItemData.userImg" alt="">
         <div class="flex-column-between title-text">
-          <span>{{ ItemData.nickname }}</span>
-          <span>{{ ItemData.signature }}</span>
+          <span>{{ ItemData.articleTitle }}</span>
+          <span>{{ ItemData.nickName }}</span>
         </div>
       </div>
       <p><el-button type="primary" plain size="mini">关注</el-button></p>
     </div>
     <p class="text-item-content" @click="isHidden = !isHidden" :class="{'text-item-content-hidden':isHidden}">
-      {{ ItemData.content }}
+      {{ ItemData.articleContent }}
     </p>
-    <div class="item-img">
+    <div class="item-img" v-if="ItemData.imgs.length">
       <viewer class="item-img">
-        <div v-for="(item,index) in ItemData.img" :key="index" class="item-img-item" >
+        <div v-for="(item,index) in ItemData.imgs" :key="index" class="item-img-item" >
           <img :src="item" alt="">
         </div>
       </viewer>
+    </div>
+    <div class="fe-flex-between item-control">
+      <span><i class="iconfont icon-share" /><span>2443</span></span>
+      <span><i class="iconfont icon-star" /><span>2443</span></span>
+      <span><i class="iconfont icon-message" /><span>2443</span></span>
+      <span><i class="iconfont icon-like" /><span>2443</span><i class="iconfont icon-step" /></span>
     </div>
 
   </div>
@@ -32,6 +38,10 @@ export default {
     return{
       isHidden:true
     }
+  },
+  mounted() {
+    console.log(1)
+    console.log(   this.ItemData)
   }
 }
 </script>
@@ -105,6 +115,18 @@ export default {
         width: 100%;
         height: 100%;
         object-fit:cover;
+      }
+    }
+  }
+
+  .item-control{
+    margin-top: 12px;
+    font-size: 16px;
+    span{
+      display: flex;
+      align-items: center;
+      span{
+        margin: 0 12px;
       }
     }
   }
