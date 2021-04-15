@@ -162,13 +162,13 @@ public class BusiArticleController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody BusiArticle busiArticle)
     {
-        //参数 校验
+        //参数imgs 校验
         if(StringUtils.isNotEmpty(busiArticle.getImgs())){
             busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
         }
-        //参数 校验
+        //参数vedios 校验
         if(StringUtils.isNotEmpty(busiArticle.getVedios())){
-            busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+            busiArticle.setArticleVediourls(StrUtils.stringArrayToString(busiArticle.getImgs()));
         }
         return toAjax(busiArticleService.insertBusiArticle(busiArticle));
     }
