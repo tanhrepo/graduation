@@ -28,7 +28,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="parentId != null "> and parent_id = #{parentId}</if>
             <if test="articleId != null "> and article_id = #{articleId}</if>
-            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="content != null  and content != ''">
+             and content like concat('%',#{content},'%')
+            </if>
+            <if test="createBy != null  and createBy != ''">
+                and create_by like concat('%',#{createBy},'%')
+            </if>
             <if test="imgurls != null  and imgurls != ''"> and imgurls = #{imgurls}</if>
             <if test="praiseCount != null "> and praise_count = #{praiseCount}</if>
             <if test="trampleCount != null "> and trample_count = #{trampleCount}</if>

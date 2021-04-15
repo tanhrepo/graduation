@@ -28,11 +28,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectBusiArticleList" parameterType="BusiArticle" resultMap="BusiArticleResult">
         <include refid="selectBusiArticleVo"/>
         <where>
-            <if test="articleContent != null  and articleContent != ''"> and article_content = #{articleContent}</if>
+            <if test="articleContent != null  and articleContent != ''">
+                and article_content  like concat('%', #{articleContent}, '%')
+            </if>
             <if test="articleImgurls != null  and articleImgurls != ''"> and article_imgurls = #{articleImgurls}</if>
-            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
-            <if test="articleLable != null  and articleLable != ''"> and article_lable = #{articleLable}</if>
-            <if test="articleTitle != null  and articleTitle != ''"> and article_title = #{articleTitle}</if>
+            <if test="createUser != null  and createUser != ''">
+                and create_user like concat('%',#{createUser},'%')
+            </if>
+            <if test="articleLable != null  and articleLable != ''">
+                and article_lable like concat('%',#{articleLable},'%')
+             </if>
+            <if test="articleTitle != null  and articleTitle != ''">
+                and article_title like concat('%',#{articleTitle},'%')
+             </if>
             <if test="articleViewCount != null "> and article_view_count = #{articleViewCount}</if>
             <if test="articleCommentCount != null "> and article_comment_count = #{articleCommentCount}</if>
             <if test="articleCollectCount != null "> and article_collect_count = #{articleCollectCount}</if>
