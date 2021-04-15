@@ -174,7 +174,7 @@ public class BusiArticleController extends BaseController
         //检验是否 empty
         if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
             String vediourls = busiArticle.getArticleVediourls();
-            busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+            busiArticle.setVedios(StrUtils.stringToStringArray(vediourls));
         }
         return AjaxResult.success(busiArticle);
     }
