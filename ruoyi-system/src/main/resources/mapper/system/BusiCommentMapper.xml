@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.BusiCommentMapper">
-    
+
     <resultMap type="BusiComment" id="BusiCommentResult">
         <result property="id"    column="id"    />
         <result property="parentId"    column="parent_id"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBusiCommentList" parameterType="BusiComment" resultMap="BusiCommentResult">
         <include refid="selectBusiCommentVo"/>
-        <where>  
+        <where>
             <if test="parentId != null "> and parent_id = #{parentId}</if>
             <if test="articleId != null "> and article_id = #{articleId}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
@@ -34,13 +34,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="trampleCount != null "> and trample_count = #{trampleCount}</if>
             <if test="answerUser != null "> and answer_user = #{answerUser}</if>
         </where>
+        order by create_time desc
     </select>
-    
+
     <select id="selectBusiCommentById" parameterType="Long" resultMap="BusiCommentResult">
         <include refid="selectBusiCommentVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertBusiComment" parameterType="BusiComment" useGeneratedKeys="true" keyProperty="id">
         insert into busi_comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -94,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteBusiCommentByIds" parameterType="String">
-        delete from busi_comment where id in 
+        delete from busi_comment where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
