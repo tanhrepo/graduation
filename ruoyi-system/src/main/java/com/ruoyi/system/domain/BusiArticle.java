@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -72,6 +73,11 @@ public class BusiArticle extends BaseEntity
     @Excel(name = "踩数")
     private Long articleTrampleCount;
 
+    /** 点赞量 */
+    @ApiModelProperty("点赞量")
+    @Excel(name = "点赞量")
+    private Long praiseCount;
+
     @ApiModelProperty("图片url 数组作为参数")
     private String[] imgs;
 
@@ -82,6 +88,27 @@ public class BusiArticle extends BaseEntity
     @ApiModelProperty("视频链接")
     @Excel(name = "视频链接")
     private String articleVediourls;
+
+    /** 视频链接 */
+    @ApiModelProperty("创建用户信息")
+    @Excel(name = "创建用户信息")
+    private SysUser user;
+
+    public Long getPraiseCount() {
+        return praiseCount;
+    }
+
+    public void setPraiseCount(Long praiseCount) {
+        this.praiseCount = praiseCount;
+    }
+
+    public SysUser getUser() {
+        return user;
+    }
+
+    public void setUser(SysUser user) {
+        this.user = user;
+    }
 
     public void setArticleId(Long articleId)
     {
