@@ -24,6 +24,18 @@
             <version>0.9</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.mahout</groupId>
+            <artifactId>mahout-integration</artifactId>
+            <version>0.9</version>
+        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.mahout/mahout-core &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.mahout</groupId>-->
+<!--            <artifactId>mahout-core</artifactId>-->
+<!--            <version>14.1</version>-->
+<!--        </dependency>-->
+
         <!-- spring-boot-devtools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

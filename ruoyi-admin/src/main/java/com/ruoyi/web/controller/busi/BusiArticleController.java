@@ -69,7 +69,7 @@ public class BusiArticleController extends BaseController
             //检验是否 empty
             if(StringUtils.isNotEmpty(article.getArticleVediourls())){
                 String vediourls = article.getArticleVediourls();
-                article.setImgs(StrUtils.stringToStringArray(vediourls));
+                article.setVedios(StrUtils.stringToStringArray(vediourls));
             }
             //创建用户不能为空
             SysUser user = userService.selectUserByUserName(article.getCreateUser());
@@ -98,7 +98,7 @@ public class BusiArticleController extends BaseController
             //检验是否 empty
             if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
                 String vediourls = busiArticle.getArticleVediourls();
-                busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+                busiArticle.setVedios(StrUtils.stringToStringArray(vediourls));
             }
             //创建用户不能为空
             SysUser user = userService.selectUserByUserName(busiArticle.getCreateUser());
@@ -134,7 +134,7 @@ public class BusiArticleController extends BaseController
             //检验是否 empty
             if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
                 String vediourls = busiArticle.getArticleVediourls();
-                busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+                busiArticle.setVedios(StrUtils.stringToStringArray(vediourls));
             }
             //创建用户不能为空
             SysUser user = userService.selectUserByUserName(busiArticle.getCreateUser());
@@ -194,7 +194,7 @@ public class BusiArticleController extends BaseController
         }
         //参数vedios 校验
         if(StringUtils.isNotEmpty(busiArticle.getVedios())){
-            busiArticle.setArticleVediourls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+            busiArticle.setArticleVediourls(StrUtils.stringArrayToString(busiArticle.getVedios()));
         }
         return toAjax(busiArticleService.insertBusiArticle(busiArticle));
     }
@@ -214,7 +214,7 @@ public class BusiArticleController extends BaseController
         }
         //参数 校验
         if(StringUtils.isNotEmpty(busiArticle.getVedios())){
-            busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+            busiArticle.setArticleVediourls(StrUtils.stringArrayToString(busiArticle.getVedios()));
         }
         return toAjax(busiArticleService.updateBusiArticle(busiArticle));
     }
