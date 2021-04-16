@@ -2,9 +2,13 @@ package com.ruoyi.web.controller.busi;
 
 import java.util.List;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.BusiArticle;
+import com.ruoyi.system.domain.BusiComment;
 import com.ruoyi.system.service.IBusiArticleService;
+import com.ruoyi.system.service.IBusiCommentService;
+import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.web.controller.tool.StrUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +43,12 @@ public class BusiArticleController extends BaseController
     @Autowired
     private IBusiArticleService busiArticleService;
 
+    @Autowired
+    private ISysUserService userService;
+
+    @Autowired
+    private IBusiCommentService commentService;
+
     /**
      * 查询【文章】列表
      */
@@ -59,8 +69,11 @@ public class BusiArticleController extends BaseController
             //检验是否 empty
             if(StringUtils.isNotEmpty(article.getArticleVediourls())){
                 String vediourls = article.getArticleVediourls();
-                article.setImgs(StrUtils.stringToStringArray(vediourls));
+                article.setVedios(StrUtils.stringToStringArray(vediourls));
             }
+            //创建用户不能为空
+            SysUser user = userService.selectUserByUserName(article.getCreateUser());
+            article.setUser(user);
         }
         return getDataTable(list);
     }
@@ -85,8 +98,18 @@ public class BusiArticleController extends BaseController
             //检验是否 empty
             if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
                 String vediourls = busiArticle.getArticleVediourls();
-                busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+                busiArticle.setVedios(StrUtils.stringToStringArray(vediourls));
             }
+            //创建用户不能为空
+            SysUser user = userService.selectUserByUserName(busiArticle.getCreateUser());
+            busiArticle.setUser(user);
+            //点赞量
+
+            //评论量
+//            BusiComment comment = new BusiComment();
+//            comment.setArticleId(busiArticle.getArticleId();
+//            List<BusiComment> busiComments = commentService.selectBusiCommentList(comment);
+//            busiArticle.setArticleCommentCount(Long.valueOf(busiComments.size()) );
         }
         return getDataTable(list);
     }
@@ -111,8 +134,11 @@ public class BusiArticleController extends BaseController
             //检验是否 empty
             if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
                 String vediourls = busiArticle.getArticleVediourls();
-                busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+                busiArticle.setVedios(StrUtils.stringToStringArray(vediourls));
             }
+            //创建用户不能为空
+            SysUser user = userService.selectUserByUserName(busiArticle.getCreateUser());
+            busiArticle.setUser(user);
         }
         return getDataTable(list);
     }
@@ -148,7 +174,7 @@ public class BusiArticleController extends BaseController
         //检验是否 empty
         if(StringUtils.isNotEmpty(busiArticle.getArticleVediourls())){
             String vediourls = busiArticle.getArticleVediourls();
-            busiArticle.setImgs(StrUtils.stringToStringArray(vediourls));
+            busiArticle.setVedios(StrUtils.stringToStringArray(vediourls));
         }
         return AjaxResult.success(busiArticle);
     }
@@ -168,7 +194,7 @@ public class BusiArticleController extends BaseController
         }
         //参数vedios 校验
         if(StringUtils.isNotEmpty(busiArticle.getVedios())){
-            busiArticle.setArticleVediourls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+            busiArticle.setArticleVediourls(StrUtils.stringArrayToString(busiArticle.getVedios()));
         }
         return toAjax(busiArticleService.insertBusiArticle(busiArticle));
     }
@@ -188,7 +214,7 @@ public class BusiArticleController extends BaseController
         }
         //参数 校验
         if(StringUtils.isNotEmpty(busiArticle.getVedios())){
-            busiArticle.setArticleImgurls(StrUtils.stringArrayToString(busiArticle.getImgs()));
+            busiArticle.setArticleVediourls(StrUtils.stringArrayToString(busiArticle.getVedios()));
         }
         return toAjax(busiArticleService.updateBusiArticle(busiArticle));
     }
