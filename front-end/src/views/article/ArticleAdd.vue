@@ -68,7 +68,7 @@
 
         </div>
         <div class="fe-container-right " style="background-color: #FFFFFF">
-          <img src="~@/assets/images/edit/edit.svg" width="100%" alt="">
+          <img src="~@/assets/images/article/edit.svg" width="100%" alt="">
 
         </div>
       </div>
@@ -82,7 +82,7 @@ import {addArticle} from "@/api/system/article";
 import {putFile} from "@/api/common/file";
 
 export default {
-  name: "AddArticle",
+  name: "ArticleAdd",
   data() {
     return {
       showImg: false,

@@ -56,7 +56,7 @@ export default {
       }
     },
     addArticle(){
-      this.$router.push({name:'article'})
+      this.$router.push({name:'add'})
     }
   },
 

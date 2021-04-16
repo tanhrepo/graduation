@@ -4,7 +4,9 @@
       <div class="title-container">
         <img :src="ItemData.userImg" alt="">
         <div class="flex-column-between title-text">
-          <span class="fe-url">{{ ItemData.articleTitle }}</span>
+          <!--          标题-->
+          <span @click="jumpDetail(ItemData.articleId)" class="fe-url">{{ ItemData.articleTitle }}</span>
+          <!--          昵称-->
           <span>{{ ItemData.nickName }}</span>
         </div>
       </div>
@@ -12,9 +14,11 @@
         <el-button type="primary" plain size="mini">关注</el-button>
       </p>
     </div>
+    <!--    文章内容-->
     <p class="text-item-content" @click="isHidden = !isHidden" :class="{'text-item-content-hidden':isHidden}">
       {{ ItemData.articleContent }}
     </p>
+    <!--    图片-->
     <div class="item-img" v-if="!ItemData.articleVediourls">
       <viewer class="item-img">
         <div v-for="(item,index) in ItemData.imgs" :key="index" class="item-img-item">
@@ -22,6 +26,7 @@
         </div>
       </viewer>
     </div>
+    <!--    视频-->
     <div v-if="ItemData.articleVediourls" class="item-video">
       <video-player class="video-player vjs-custom-skin"
                     ref="videoPlayer"
@@ -30,13 +35,13 @@
       >
       </video-player>
     </div>
+    <!--    控件-->
     <div class="fe-flex-between item-control">
       <span><i class="iconfont icon-share"/><span>{{ ItemData.articleTransmitCount }}</span></span>
       <span><i class="iconfont icon-star"/><span>{{ ItemData.articleCollectCount }}</span></span>
-      <span><i class="iconfont icon-message"/><span>{{ ItemData.articleCommentCount }}</span></span>
+      <span><i class="iconfont icon-message" @click="jumpDetail(ItemData.articleId)" /><span>{{ ItemData.articleCommentCount }}</span></span>
       <span><i class="iconfont icon-like"/><span>2345</span><i class="iconfont icon-step"/></span>
     </div>
-
   </div>
 </template>
 
@@ -77,8 +82,14 @@ export default {
     this.playerOptions['sources'][0]['src'] = this.ItemData.articleVediourls
   },
   methods: {
-
-
+    jumpDetail(id){
+      this.router.push({
+        name:'detail',
+        query:{
+          id,
+        }
+      })
+    }
   },
 
 }
@@ -151,7 +162,10 @@ export default {
       margin: 12px 12px 0 0;
       border-radius: 5px;
       overflow: hidden;
-
+      &:nth-child(6),
+      &:nth-child(12){
+        margin-right: 0;
+      }
       img {
         width: 100%;
         height: 100%;
@@ -168,9 +182,10 @@ export default {
       display: flex;
       align-items: center;
 
-      i:hover{
+      i:hover {
         color: #169bfa;
       }
+
       span {
         display: inline-block;
         width: 40px;
@@ -180,7 +195,7 @@ export default {
     }
   }
 
-  .item-video{
+  .item-video {
     border-radius: 6px;
     overflow: hidden;
     margin-top: 12px;

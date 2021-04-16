@@ -195,25 +195,33 @@ const routes = [
   },
   // 新建文章
   {
-    path: '/edit',
-    name: 'edit',
+    path: '/article',
+    name: 'article',
     component: Main,
-    redirect: '/edit/article',
     meta: {
       title: '编辑',
       breadcrumb: false,
       hideSubMenu: true,
       single: true, // 无子菜单
-      // isHidden:true,
+      isHidden:true,
     },
     children: [
       {
-        path: 'article',
-        name: 'article',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/article/AddArticle'),
+        path: 'add',
+        name: 'add',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/article/ArticleAdd'),
         meta: {
           title: '新建文章',
           index: 1000
+        },
+      },
+      {
+        path: 'detail',
+        name: 'detail',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/article/ArticleDetail'),
+        meta: {
+          title: '文章详情',
+          index: 999
         },
       }
     ]

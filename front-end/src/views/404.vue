@@ -7,7 +7,7 @@
     <div class="fe-page fe-flex-center">
       <div class="fe-view">
         <div class="page-error">
-          <img src="~@/assets/images/404.png" width="400" alt="404" />
+          <img src="~@/assets/images/404.svg" width="400" alt="404" />
           <div class="content">
             <h1>404</h1>
             <div class="mb-24 desc">抱歉，您访问的页面不存在</div>
