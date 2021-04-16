@@ -96,6 +96,7 @@ export default {
         articleLable: '',
         imgs: [],
         vedios: [],
+        articleVediourls: "",
         createUser: '',
       },
       rules: {
@@ -151,6 +152,7 @@ export default {
         articleLable: '',
         imgs: [],
         vedios: [],
+        articleVediourls: "",
         createUser: this.user.userInfo.userName
       }
       this.fileListImg = []
@@ -188,13 +190,9 @@ export default {
       formData.append('group', 'system')
       await putFile(formData).then(res => {
         console.log("res", res)
-        this.ruleForm.vedios.push(res.url)
-        let i = 1
-        this.urlListVideo += i
-        if (this.urlListVideo === this.fileListVideo.length) {
-          this.postVideo = true
-          this.fileUploadList()
-        }
+        this.ruleForm.articleVediourls = res.url
+        this.postVideo = true
+        this.fileUploadList()
       }).catch(error => {
         return error
       })

@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import { getRouters } from '@/api/menu'
 import TextItem from "@/views/components/TextItem";
 import BackTop from "@/views/components/BackTop";
+import {getArticleList} from "@/api/system/article";
 export default {
   components: {BackTop, TextItem},
   data(){
@@ -42,68 +42,24 @@ export default {
           signature:'这是李四的签名',
           articleContent:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
           imgs:[require("@/assets/images/item/item_01.png"),],
-
-        },
-        {
-          articleId:3,
-          username:'li',
-          userImg:require("@/assets/images/user/user_02.svg"),
-          nickName:'李四',
-          signature:'这是李四的签名',
-          articleContent:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
-          imgs:[],
-        },
-        {
-          articleId:4,
-          username:'li',
-          userImg:require("@/assets/images/user/user_02.svg"),
-          nickName:'李四',
-          signature:'这是李四的签名',
-          articleContent:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
-          imgs:[],
-
-        },
-        {
-          articleId:5,
-          username:'li',
-          userImg:require("@/assets/images/user/user_02.svg"),
-          nickName:'李四',
-          signature:'这是李四的签名',
-          articleContent:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
-          imgs:[],
-
-        },
-        {
-          articleId:6,
-          username:'li',
-          userImg:require("@/assets/images/user/user_02.svg"),
-          nickName:'李四',
-          signature:'这是李四的签名',
-          articleContent:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
-          imgs:[],
-
-        },
-        {
-          articleId:7,
-          username:'li',
-          userImg:require("@/assets/images/user/user_02.svg"),
-          nickName:'李四',
-          signature:'这是李四的签名',
-          articleContent:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
-          imgs:[],
-
+          articleVediourls:'http://localhost:8080/profile/upload/2021/04/15/4865dbcf-9c35-4b1b-b86e-c97b4f347401.mp4'
         },
       ]
     }
   },
   created() {
-    // this.GenerateRoutes({})
+    this.getData()
   },
   methods:{
-    // 路由
-    GenerateRoutes() {
-      getRouters().then(res => {
-        console.log(res)
+    // 数据获取
+    getData(){
+      return new Promise((resolve, reject) => {
+        getArticleList().then(res => {
+          console.log(res)
+          this.itemData = res.rows
+        }).catch(error => {
+          reject(error)
+        })
       })
     }
   }

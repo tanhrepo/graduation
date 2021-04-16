@@ -38,6 +38,12 @@
   padding: 12px 24px;
 }
 
+/* 页面链接 */
+.fe-url:hover{
+  color: #169bfa !important;
+  cursor: pointer;
+}
+
 /* 设置宽度为内容宽度 */
 .fe-inline-width {
   width: auto !important;

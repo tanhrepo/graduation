@@ -4,6 +4,7 @@
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body @opened="modalOpened">
       <el-row>
         <el-col :xs="24" :md="12" :style="{height: '350px'}">
+<!--          1-->
           <vue-cropper
             ref="cropper"
             :img="options.img"
