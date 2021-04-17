@@ -98,7 +98,6 @@ export default {
         vedios: [],
         articleVediourls: "",
         createUser: '',
-        createBy:''
       },
       rules: {
         articleTitle: [{required: true, message: '请输入标题', trigger: 'blur'}],
@@ -117,7 +116,6 @@ export default {
   },
   mounted() {
     this.ruleForm.createUser = this.user.userInfo.userName
-    this.ruleForm.createBy = this.user.userInfo.userId
   },
   methods: {
     // 提交表单，发布文章
@@ -206,6 +204,7 @@ export default {
       this.$refs.uploadVideo.submit();
       if (!this.fileListImg.length && !this.fileListVideo.length) {
         console.log("直接上传")
+        this.postForm()
       } else if (this.fileListImg.length && !this.fileListVideo.length) {
         this.postVideo = true
         console.log("没有视频")

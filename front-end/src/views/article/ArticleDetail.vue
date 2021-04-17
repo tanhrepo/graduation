@@ -43,22 +43,46 @@
             <div class="fe-flex-between detail-control">
               <span><i class="iconfont icon-share"/><span>{{ detail.articleTransmitCount }}</span></span>
               <span><i class="iconfont icon-star"/><span>{{ detail.articleCollectCount }}</span></span>
-              <span><i class="iconfont icon-message" @click="dialogVisible = !dialogVisible"/><span>{{ detail.articleCommentCount }}</span></span>
+              <span><i class="iconfont icon-message"
+                       @click="dialogVisible = !dialogVisible"/><span>{{ detail.articleCommentCount }}</span></span>
               <span><i class="iconfont icon-like"/><span>{{ detail.praiseCount - detail.articleTrampleCount }}</span><i
                   class="iconfont icon-step"/></span>
             </div>
           </div>
 
-          <el-dialog
-              title="提示"
-              :visible.sync="dialogVisible"
-              width="30%"
-          >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
+          <el-dialog title="评论：" :visible.sync="dialogVisible">
+            <el-form :model="addForm">
+              <el-form-item>
+                <el-input
+                    type="textarea"
+                    placeholder="写下你的评论..."
+                    :autosize="{ minRows: 6, maxRows: 26}"
+                    v-model="addForm.articleContent">
+                </el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-upload
+                    ref="uploadImg"
+                    accept=".bmp, .gif, .jpg, .jpeg, .png"
+                    action=""
+                    :http-request="uploadFile"
+                    :on-change="handleChange"
+                    :file-list="fileListImg"
+                    :auto-upload="false"
+                    list-type="picture">
+                  <el-button class="upload-btn"
+                             slot="trigger"
+                             icon="iconfont icon-image fe-mr-sm"
+                             size="small"
+                             type="primary">添加图片
+                  </el-button>
+                </el-upload>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
               <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
+            </div>
           </el-dialog>
 
           <!--评论-->
@@ -101,7 +125,8 @@ import 'vue-video-player/src/custom-theme.css'
 import {videoPlayer} from 'vue-video-player'
 import Comment from "@/views/components/Comment";
 import BackTop from "@/views/components/BackTop";
-import {getArticleItem} from "@/api/system/article";
+import {postComment, getCommentList, getArticleItem} from "@/api/system/article";
+import {putFile} from "@/api/common/file";
 
 export default {
   name: "ArticleDetail",
@@ -112,7 +137,15 @@ export default {
   },
   data() {
     return {
-      dialogVisible:false,
+      addForm: {
+        content: '',
+        imgs: [],
+        articleId: '',
+        createBy: '',
+        parentId: '',
+        answerUser: '',
+      },
+      dialogVisible: false,
       detail: {
         nickName: '张三',
         createTime: '2020-12-10',
@@ -158,18 +191,9 @@ export default {
       ],
       SortOption: ['按热度排序', '按时间正序', '按时间倒序', '只看作者'],
       sort: 0,
-      addComment: {
-        "answerUser": null,
-        "articleId": 8,
-        "content": "开始交付给包括积分不够咯技术的功能即可，矮到高i的施工i你哦爱上你的规定，安东滚",
-        "createBy": "admin",
-        "imgs": [
-          "string",
-          "string"
-        ],
-        "parentId": null,
-        "remark": "string"
-      }
+      fileListImg: [],
+      urlListImg: 0,
+      postImg: false,
     }
   },
   computed: {
@@ -197,11 +221,28 @@ export default {
     this.getData()
   },
   methods: {
+    // 基础数据调用，文章详情
     getData() {
       return new Promise((resolve, reject) => {
         getArticleItem(this.$route.query.id).then(res => {
           console.log('文章详情', res)
           this.detail = res.data
+          this.getCommentData()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 查询文章对应评论列表
+    getCommentData() {
+      let data = {
+        articleId: this.$route.query.id
+      }
+      console.log("data",data)
+      return new Promise((resolve, reject) => {
+        getCommentList(data).then(res => {
+          console.log('文章评论列表', res)
+          this.comment = res.data
         }).catch(error => {
           reject(error)
         })
@@ -215,10 +256,58 @@ export default {
       console.log(command)
       this.sort = command
     },
-    //
-    commentDialog(){
-    this.dialogVisible = !this.dialogVisible
-    }
+    // 评论弹窗
+    commentDialog() {
+      this.dialogVisible = !this.dialogVisible
+    },
+    // 上传表单按钮
+    submitUpload() {
+      this.$refs.uploadImg.submit();
+      if (!this.fileListImg.length) {
+        console.log("直接上传")
+        this.postForm()
+      }
+    },
+    // 图片上传
+    async uploadFile(item) {
+      let formData = new FormData()
+      formData.append('file', item.file)
+      formData.append('group', 'system')
+      await putFile(formData).then(res => {
+        console.log("res", res)
+        this.addForm.imgs.push(res.url)
+        console.log()
+        let i = 1
+        this.urlListImg += i
+        if (this.urlListImg === this.fileListImg.length) {
+          this.postImg = true
+          this.postForm()
+        }
+      }).catch(error => {
+        return error
+      })
+    },
+
+    // 评论表单提交
+    postForm() {
+      const param = this.addForm
+      return new Promise((resolve, reject) => {
+        postComment(param).then(res => {
+          this.$message({
+            message: '发布成功！',
+            type: 'success'
+          });
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 文件上传数据新增变化
+    handleChange(file, fileList) {
+      this.fileListImg = fileList.slice(-12);
+    },
+
   }
 }
 </script>
@@ -338,6 +427,17 @@ export default {
   height: 20px;
   background: #9ACAFB;
   margin-right: 12px;
+}
+
+//弹窗
+.upload-btn {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 //评论

@@ -22,7 +22,6 @@ export function getArticleItem(data) {
   return request({
     url: '/system/article/'+data,
     method: 'get',
-    data: data
   })
 }
 
@@ -31,7 +30,7 @@ export function getCommentList(data) {
   return request({
     url: '/system/comment/list',
     method: 'get',
-    data: data
+    params: data
   })
 }
 
