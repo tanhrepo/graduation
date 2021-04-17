@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusiOperationMapper">
+    
+    <resultMap type="BusiOperation" id="BusiOperationResult">
+        <result property="id"    column="id"    />
+        <result property="entityId"    column="entity_id"    />
+        <result property="operationUser"    column="operation_user"    />
+        <result property="operationType"    column="operation_type"    />
+        <result property="operationTime"    column="operation_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="entityType"    column="entity_type"    />
+    </resultMap>
+
+    <sql id="selectBusiOperationVo">
+        select id, entity_id, operation_user, operation_type, operation_time, create_by, create_time, update_by, update_time, entity_type from busi_operation
+    </sql>
+
+    <select id="selectBusiOperationList" parameterType="BusiOperation" resultMap="BusiOperationResult">
+        <include refid="selectBusiOperationVo"/>
+        <where>  
+            <if test="entityId != null "> and entity_id = #{entityId}</if>
+            <if test="operationUser != null "> and operation_user = #{operationUser}</if>
+            <if test="operationType != null "> and operation_type = #{operationType}</if>
+            <if test="operationTime != null "> and operation_time = #{operationTime}</if>
+            <if test="entityType != null "> and entity_type = #{entityType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiOperationById" parameterType="Long" resultMap="BusiOperationResult">
+        <include refid="selectBusiOperationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiOperation" parameterType="BusiOperation" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="entityId != null">entity_id,</if>
+            <if test="operationUser != null">operation_user,</if>
+            <if test="operationType != null">operation_type,</if>
+            <if test="operationTime != null">operation_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="entityType != null">entity_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="entityId != null">#{entityId},</if>
+            <if test="operationUser != null">#{operationUser},</if>
+            <if test="operationType != null">#{operationType},</if>
+            <if test="operationTime != null">#{operationTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="entityType != null">#{entityType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiOperation" parameterType="BusiOperation">
+        update busi_operation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="entityId != null">entity_id = #{entityId},</if>
+            <if test="operationUser != null">operation_user = #{operationUser},</if>
+            <if test="operationType != null">operation_type = #{operationType},</if>
+            <if test="operationTime != null">operation_time = #{operationTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="entityType != null">entity_type = #{entityType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiOperationById" parameterType="Long">
+        delete from busi_operation where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiOperationByIds" parameterType="String">
+        delete from busi_operation where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
