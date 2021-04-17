@@ -33,16 +33,9 @@ export default {
           articleContent:'路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，\n也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
           imgs:[require("@/assets/images/item/item_01.png"),require("@/assets/images/item/item_02.png"),require("@/assets/images/item/item_03.png"),require("@/assets/images/item/item_04.png"),require("@/assets/images/item/item_05.png"),require("@/assets/images/item/item_05.png"),require("@/assets/images/item/item_01.png"),require("@/assets/images/item/item_02.png"),require("@/assets/images/item/item_03.png"),require("@/assets/images/item/item_04.png"),],
           articleViewCount:0,
-        },
-        {
-          articleId:2,
-          username:'li',
-          userImg:require("@/assets/images/user/user_02.svg"),
-          nickName:'李四',
-          signature:'这是李四的签名',
-          articleContent:'ue 路由守卫 (导航守卫)及其具体使用. 导航守卫其实也是路由守卫，也可以是路由拦截，我们可以通过路由拦截，来判断用户是否登录，该页面用户是否有权限浏览，需要结合meta来实现. 所谓的路由守卫可以简单的理解为一座房子的门口的保安，想要进入这个房子就必须通过保安的检查，要告诉路由守卫你从哪里来？. 总不能随便陌生人就给放进去？',
-          imgs:[require("@/assets/images/item/item_01.png"),],
-          articleVediourls:'http://localhost:8080/profile/upload/2021/04/15/4865dbcf-9c35-4b1b-b86e-c97b4f347401.mp4'
+          user:{
+            avatar:''
+          }
         },
       ]
     }

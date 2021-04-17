@@ -98,6 +98,7 @@ export default {
         vedios: [],
         articleVediourls: "",
         createUser: '',
+        createBy:''
       },
       rules: {
         articleTitle: [{required: true, message: '请输入标题', trigger: 'blur'}],
@@ -116,6 +117,7 @@ export default {
   },
   mounted() {
     this.ruleForm.createUser = this.user.userInfo.userName
+    this.ruleForm.createBy = this.user.userInfo.userId
   },
   methods: {
     // 提交表单，发布文章

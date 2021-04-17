@@ -16,3 +16,30 @@ export function addArticle(data) {
     data: data
   })
 }
+
+// 文章详情
+export function getArticleItem(data) {
+  return request({
+    url: '/system/article/'+data,
+    method: 'get',
+    data: data
+  })
+}
+
+// 评论详情
+export function getCommentList(data) {
+  return request({
+    url: '/system/comment/list',
+    method: 'get',
+    data: data
+  })
+}
+
+// 新增评论
+export function postComment(data) {
+  return request({
+    url: '/system/comment',
+    method: 'post',
+    data: data
+  })
+}

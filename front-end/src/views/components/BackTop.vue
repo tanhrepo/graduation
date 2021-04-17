@@ -1,12 +1,15 @@
 <template>
   <div class="right-bottom">
-    <div id='Add' class="page-up" @click="addArticle()" v-show="toTopShow">
+    <div id='Back' class="page-up" @click="backPage()" v-if="this.$route.name === 'detail'">
       <i class="iconfont icon-add"></i>
     </div>
-    <div id='refresh' class="page-up" @click="goAnchor()" v-show="toTopShow">
+    <div id='Add' class="page-up" @click="addArticle()" >
+      <i class="iconfont icon-add"></i>
+    </div>
+    <div id='refresh' class="page-up" @click="refresh()" >
       <i class="iconfont icon-refresh"></i>
     </div>
-    <div id='backTop' class="page-up" @click="goAnchor()" v-show="toTopShow">
+    <div id='backTop' class="page-up" @click="goAnchor()" >
       <i class="iconfont icon-back-top"></i>
     </div>
   </div>
@@ -19,17 +22,12 @@ export default {
   props: ['ID'],
   data(){
     return{
-      toTopShow:true,
       ViewMenu:[],
       orderMenu:[]
     }
   },
   mounted() {
-    if (this.ViewMenu.indexOf(this.$route.name) === -1){
-      this.toTopShow = true
-    }else {
-      this.toTopShow = false
-    }
+
   },
   methods:{
     goAnchor() {
@@ -57,6 +55,12 @@ export default {
     },
     addArticle(){
       this.$router.push({name:'add'})
+    },
+    refresh(){
+      this.$parent.getData();
+    },
+    backPage(){
+      this.$router.go(-1)
     }
   },
 

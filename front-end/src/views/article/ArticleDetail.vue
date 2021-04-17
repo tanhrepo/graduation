@@ -1,55 +1,95 @@
 <template>
   <div class="fe-page">
-    <div class="fe-scroll-y fe-ptd-30">
+    <div id="articleDetail" class="fe-scroll-y fe-ptd-30">
+      <Comment></Comment>
+      <BackTop :ID='"articleDetail"'></BackTop>
       <div class="fe-page-container fe-flex-between ">
-        <div class="fe-container-left fe-shadow article-detail">
-          <h1>{{ detail.articleTitle }}</h1>
-          <div class="detail-title">
-            <img src="~@/assets/images/item/item_01.png" alt="">
-            <div class="detail-text flex-column-between">
-              <!--          昵称-->
-              <span class="fe-url">{{ detail.nickName }}</span>
-              <!--          信息-->
-              <span>
+        <div class="fe-container-left ">
+          <!--文章-->
+          <div class="fe-shadow article-detail">
+            <h1>{{ detail.articleTitle }}</h1>
+            <div class="detail-title">
+              <img src="~@/assets/images/item/item_01.png" alt="">
+              <div class="detail-text flex-column-between">
+                <!--          昵称-->
+                <span class="fe-url">{{ detail.nickName }}</span>
+                <!--          信息-->
+                <span>
                 <span>{{ detail.createTime }}</span>
                 <span>字数: {{ wordCount }}</span>
                 <span>阅读: {{ detail.articleViewCount }}</span>
               </span>
+              </div>
+            </div>
+            <p class="detail-content">{{ detail.articleContent }}</p>
+            <!--    图片-->
+            <div v-if="!detail.articleVediourls">
+              <viewer class="detail-img">
+                <div v-for="(item,index) in detail.imgs" :key="index" class="detail-img-item">
+                  <img :src="item" alt="">
+                </div>
+              </viewer>
+            </div>
+            <!--    视频-->
+            <div v-if="detail.articleVediourls" class="detail-video">
+              <video-player class="video-player vjs-custom-skin"
+                            ref="videoPlayer"
+                            :playsinline="true"
+                            :options="playerOptions"
+              >
+              </video-player>
+            </div>
+            <!--    控件-->
+            <div class="fe-flex-between detail-control">
+              <span><i class="iconfont icon-share"/><span>{{ detail.articleTransmitCount }}</span></span>
+              <span><i class="iconfont icon-star"/><span>{{ detail.articleCollectCount }}</span></span>
+              <span><i class="iconfont icon-message" @click="dialogVisible = !dialogVisible"/><span>{{ detail.articleCommentCount }}</span></span>
+              <span><i class="iconfont icon-like"/><span>{{ detail.praiseCount - detail.articleTrampleCount }}</span><i
+                  class="iconfont icon-step"/></span>
             </div>
           </div>
-          <p class="detail-content">{{ detail.articleContent }}</p>
-          <!--    图片-->
-          <div v-if="!detail.articleVediourls">
-            <viewer class="detail-img">
-              <div v-for="(item,index) in detail.imgs" :key="index" class="detail-img-item">
-                <img :src="item" alt="">
+
+          <el-dialog
+              title="提示"
+              :visible.sync="dialogVisible"
+              width="30%"
+          >
+            <span>这是一段信息</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+          </el-dialog>
+
+          <!--评论-->
+          <div class=" fe-shadow comment-main">
+            <!--            评论的头部选择-->
+            <div class="comment-top fe-flex-between">
+              <div class="fe-align-center">
+                <span class="blue-bar"></span>
+                <span>全部评论</span><span>{{ detail.articleCommentCount }}</span>
               </div>
-            </viewer>
-          </div>
-          <!--    视频-->
-          <div v-if="detail.articleVediourls" class="detail-video">
-            <video-player class="video-player vjs-custom-skin"
-                          ref="videoPlayer"
-                          :playsinline="true"
-                          :options="playerOptions"
-            >
-            </video-player>
-          </div>
-          <!--    控件-->
-          <div class="fe-flex-between detail-control">
-            <span><i class="iconfont icon-share"/><span>{{ detail.articleTransmitCount }}</span></span>
-            <span><i class="iconfont icon-star"/><span>{{ detail.articleCollectCount }}</span></span>
-            <span><i class="iconfont icon-message"/><span>{{ detail.articleCommentCount }}</span></span>
-            <span><i class="iconfont icon-like"/><span>2345</span><i class="iconfont icon-step"/></span>
+              <div>
+                <el-dropdown @command="handleCommand" :hide-on-click="false">
+                  <span class="el-dropdown-link">
+                    {{ SortOption[sort] }}<i class="el-icon-arrow-down el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command='0'>按热度排序</el-dropdown-item>
+                    <el-dropdown-item command='1'>按时间正序</el-dropdown-item>
+                    <el-dropdown-item command='2'>按时间倒序</el-dropdown-item>
+                    <el-dropdown-item command='3'>只看作者</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="fe-container-right " style="background-color: #FFFFFF">
           <img src="~@/assets/images/article/detail.svg" width="100%" alt="">
         </div>
       </div>
-      <footer class="detail-footer">
-        <div class=""></div>
-      </footer>
     </div>
 
   </div>
@@ -59,14 +99,20 @@
 import 'video.js/dist/video-js.css'
 import 'vue-video-player/src/custom-theme.css'
 import {videoPlayer} from 'vue-video-player'
+import Comment from "@/views/components/Comment";
+import BackTop from "@/views/components/BackTop";
+import {getArticleItem} from "@/api/system/article";
 
 export default {
   name: "ArticleDetail",
   components: {
+    BackTop,
+    Comment,
     videoPlayer
   },
   data() {
     return {
+      dialogVisible:false,
       detail: {
         nickName: '张三',
         createTime: '2020-12-10',
@@ -105,6 +151,25 @@ export default {
         notSupportedMessage: '无法播放', // 允许覆盖 Video.js 无法播放媒体源时显示的默认信息。
         controlBar: true // 为 false 时不显示默认的控制按钮
       },
+      comment: [
+        {
+          user: {}
+        }
+      ],
+      SortOption: ['按热度排序', '按时间正序', '按时间倒序', '只看作者'],
+      sort: 0,
+      addComment: {
+        "answerUser": null,
+        "articleId": 8,
+        "content": "开始交付给包括积分不够咯技术的功能即可，矮到高i的施工i你哦爱上你的规定，安东滚",
+        "createBy": "admin",
+        "imgs": [
+          "string",
+          "string"
+        ],
+        "parentId": null,
+        "remark": "string"
+      }
     }
   },
   computed: {
@@ -129,15 +194,40 @@ export default {
   },
   mounted() {
     console.log(this.$route.query.id)
+    this.getData()
   },
-  methods: {}
+  methods: {
+    getData() {
+      return new Promise((resolve, reject) => {
+        getArticleItem(this.$route.query.id).then(res => {
+          console.log('文章详情', res)
+          this.detail = res.data
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    postComment(item) {
+
+    },
+    // 选择排序条件
+    handleCommand(command) {
+      console.log(command)
+      this.sort = command
+    },
+    //
+    commentDialog(){
+    this.dialogVisible = !this.dialogVisible
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .article-detail {
   background-color: #FFFFFF;
-  padding: 20px;
+  padding: 32px;
+  border-radius: 6px;
 
   //标题
   .detail-title {
@@ -186,7 +276,7 @@ export default {
     flex-wrap: wrap;
 
     .detail-img-item {
-      width: 100px;
+      width: 96px;
       height: 100px;
       margin: 12px 12px 0 0;
       border-radius: 5px;
@@ -215,15 +305,19 @@ export default {
   //控件
   .detail-control {
     height: auto;
-    margin-top: 12px;
+    margin-top: 26px;
     font-size: 16px;
 
     span {
       display: flex;
       align-items: center;
 
-      i:hover {
-        color: #169bfa;
+      i {
+        font-size: 18px;
+
+        &:hover {
+          color: #169bfa;
+        }
       }
 
       span {
@@ -235,23 +329,57 @@ export default {
     }
   }
 
-}
-//页脚评论
-.detail-footer{
-  left: 0;
-  right: 16px;
-  bottom: 0;
-  height: 56px;
-  background-color: #169bfa;
-  position: fixed;
 
-  div:nth-child(1){
-    width: 1000px;
-    margin: 0 auto;
-    height: 100%;
-    display: flex;
+}
+
+.blue-bar {
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background: #9ACAFB;
+  margin-right: 12px;
+}
+
+//评论
+.comment-main {
+  margin-top: 20px;
+  background-color: #FFFFFF;
+  width: 100%;
+  padding: 32px;
+  height: auto;
+  border-radius: 6px;
+
+  .comment-top {
+    height: 40px;
+    width: 100%;
     align-items: center;
-    background-color: #30B08F;
+    font-size: 16px;
+
+    span {
+      line-height: 20px;
+
+      &:nth-child(2) {
+        margin-right: 12px;
+      }
+
+      &:nth-child(3) {
+        display: inline-block;
+        padding: 0 4px;
+        font-size: 14px;
+        border-radius: 5px;
+        color: #969696;
+        border: 1px solid #eeeeee;
+      }
+    }
+  }
+
+  .el-dropdown-link {
+    display: inline-block;
+    padding: 0 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #eeeeee;
+    line-height: 20px;
   }
 }
 

@@ -2,12 +2,12 @@
   <div class="text-item fe-bd-b">
     <div class="text-item-title fe-flex-between">
       <div class="title-container">
-        <img :src="ItemData.userImg" alt="">
+        <img v-if="ItemData.user.avatar" :src="'http://localhost:8080' + ItemData.user.avatar" alt="">
         <div class="flex-column-between title-text">
           <!--          标题-->
           <span @click="jumpDetail(ItemData.articleId)" class="fe-url">{{ ItemData.articleTitle }}</span>
           <!--          昵称-->
-          <span>{{ ItemData.nickName }}</span>
+          <span>{{ ItemData.user.nickName }}</span>
         </div>
       </div>
       <p>
@@ -40,7 +40,7 @@
       <span><i class="iconfont icon-share"/><span>{{ ItemData.articleTransmitCount }}</span></span>
       <span><i class="iconfont icon-star"/><span>{{ ItemData.articleCollectCount }}</span></span>
       <span><i class="iconfont icon-message" @click="jumpDetail(ItemData.articleId)" /><span>{{ ItemData.articleCommentCount }}</span></span>
-      <span><i class="iconfont icon-like"/><span>2345</span><i class="iconfont icon-step"/></span>
+      <span><i class="iconfont icon-like"/><span>{{ ItemData.praiseCount - ItemData.articleTrampleCount }}</span><i class="iconfont icon-step"/></span>
     </div>
   </div>
 </template>
