@@ -34,7 +34,7 @@
       <el-dropdown class="h-100">
       <span class="el-dropdown-link user-item fe-flex-center">
 
-        <img :src="avatar" class="user-img" alt="">
+        <img :src="avatar || baseAvatar" class="user-img" alt="">
       </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>黄金糕</el-dropdown-item>
@@ -69,6 +69,7 @@ export default {
       menus: [],
       searchItem:'',
       avatar:store.getters.avatar,
+      baseAvatar:"@/assets/images/user/user_11.jpg"
     }
   },
   watch: {
@@ -167,6 +168,7 @@ export default {
   margin: 0 auto;
   color: $menu_font_color;
   z-index: 2000;
+  transform: translateX(-8px);
 
   .user-item {
     width: 80px;

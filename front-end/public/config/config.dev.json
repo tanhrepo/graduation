@@ -6,5 +6,6 @@
       "alias": "/api_retina_xx",
       "url": "http://10.1.192.95:9800/aiplan"
     }
-  }
+  },
+  "BASE_PRO_URL" : "http://localhost/8080"
 }

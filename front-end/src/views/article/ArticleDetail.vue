@@ -47,8 +47,8 @@
           <img src="~@/assets/images/article/detail.svg" width="100%" alt="">
         </div>
       </div>
-      <footer class="w-100" style="position: relative">
-        <div class="detail-footer"></div>
+      <footer class="detail-footer">
+        <div class=""></div>
       </footer>
     </div>
 
@@ -239,7 +239,7 @@ export default {
 //页脚评论
 .detail-footer{
   left: 0;
-  right: 0;
+  right: 16px;
   bottom: 0;
   height: 56px;
   background-color: #169bfa;

@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     jumpDetail(id){
-      this.router.push({
+      this.$router.push({
         name:'detail',
         query:{
           id,
