@@ -4,6 +4,10 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.BusiOperation;
+import com.ruoyi.system.domain.BusiScore;
+import com.ruoyi.system.service.IBusiOperationService;
+import com.ruoyi.system.service.IBusiScoreService;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.web.controller.tool.StrUtils;
 import io.swagger.annotations.Api;
@@ -44,13 +48,19 @@ public class BusiCommentController extends BaseController
     @Autowired
     private ISysUserService userService;
 
+    @Autowired
+    private IBusiOperationService operationService;
+
+    @Autowired
+    private IBusiScoreService scoreService;
+
     /**
      * 查询【评论】列表
      */
     @ApiOperation("查询【评论】列表")
     @PreAuthorize("@ss.hasPermi('system:comment:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BusiComment busiComment)
+    public TableDataInfo list(@RequestBody  BusiComment busiComment)
     {
         startPage();
         List<BusiComment> list = busiCommentService.selectBusiCommentList(busiComment);
@@ -123,6 +133,33 @@ public class BusiCommentController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody BusiComment busiComment)
     {
+        if(busiComment !=null){
+            //得到 user 创建用户
+            SysUser user = userService.selectUserByUserName(busiComment.getCreateBy());
+            //记录操作
+            BusiOperation operation = new BusiOperation();
+            operation.setEntityId(busiComment.getId());
+            operation.setEntityType(2);//1 文章 2 评论
+            operation.setOperationTime(busiComment.getCreateTime());
+            operation.setOperationType(2);
+            operation.setOperationUser(user.getUserId());
+            operation.setCreateBy(user.getUserName());
+            operationService.insertBusiOperation(operation);
+
+            //记录评论得分
+            BusiScore busiScore = new BusiScore();
+            busiScore.setUid(user.getUserId());
+            busiScore.setAid(busiComment.getArticleId());
+            //检测是否 有其他行为打分
+            List<BusiScore> busiScores = scoreService.selectBusiScoreList(busiScore);//若成功 只会返回一个对象
+            busiScore.setTs(busiComment.getCreateTime());//不能让 ts参与 查询
+            if(busiScore != null && busiScores.size() == 1){//有一条记录 则 修改
+                 busiScore.setScore(busiScores.get(0).getScore()+2);// 原得分基础 +2
+            }else {// 没有打分记录 则 新增
+                busiScore.setScore(2);
+                scoreService.insertBusiScore(busiScore);
+            }
+        }
         //如果有图片
         if(StringUtils.isNotEmpty(busiComment.getImgs())){
             String str = StrUtils.stringArrayToString(busiComment.getImgs());
