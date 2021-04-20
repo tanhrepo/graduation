@@ -204,6 +204,7 @@ export default {
       this.$refs.uploadVideo.submit();
       if (!this.fileListImg.length && !this.fileListVideo.length) {
         console.log("直接上传")
+        this.postForm()
       } else if (this.fileListImg.length && !this.fileListVideo.length) {
         this.postVideo = true
         console.log("没有视频")

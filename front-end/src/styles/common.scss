@@ -255,7 +255,7 @@
 }
 .fe-ptd-30 {
   padding-top: 30px;
-  padding-bottom: 86px;
+  padding-bottom: 30px;
 }
 .fe-pr-md {
   padding-right: $gap-md;
@@ -485,9 +485,8 @@
 // dialog
 .el-dialog {
   width: 600px;
-  min-height: 520px;
   .el-dialog__body {
-    padding: 24px 60px;
+    padding: 24px;
   }
 }
 .dialog-none-pad {
