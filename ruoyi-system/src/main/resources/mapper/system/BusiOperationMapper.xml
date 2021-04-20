@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.BusiOperationMapper">
-    
+
     <resultMap type="BusiOperation" id="BusiOperationResult">
         <result property="id"    column="id"    />
         <result property="entityId"    column="entity_id"    />
@@ -15,28 +15,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="entityType"    column="entity_type"    />
+        <result property="status"    column="status"    />
     </resultMap>
 
     <sql id="selectBusiOperationVo">
-        select id, entity_id, operation_user, operation_type, operation_time, create_by, create_time, update_by, update_time, entity_type from busi_operation
+        select id, entity_id, operation_user, operation_type, operation_time, create_by, create_time, update_by, update_time, entity_type,status from busi_operation
     </sql>
 
     <select id="selectBusiOperationList" parameterType="BusiOperation" resultMap="BusiOperationResult">
         <include refid="selectBusiOperationVo"/>
-        <where>  
+        <where>
             <if test="entityId != null "> and entity_id = #{entityId}</if>
             <if test="operationUser != null "> and operation_user = #{operationUser}</if>
             <if test="operationType != null "> and operation_type = #{operationType}</if>
             <if test="operationTime != null "> and operation_time = #{operationTime}</if>
             <if test="entityType != null "> and entity_type = #{entityType}</if>
+            <if test="status != null "> and status = #{status}</if>
         </where>
     </select>
-    
+
     <select id="selectBusiOperationById" parameterType="Long" resultMap="BusiOperationResult">
         <include refid="selectBusiOperationVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertBusiOperation" parameterType="BusiOperation" useGeneratedKeys="true" keyProperty="id">
         insert into busi_operation
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -49,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="entityType != null">entity_type,</if>
+            <if test="status != null">status,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="entityId != null">#{entityId},</if>
@@ -60,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="entityType != null">#{entityType},</if>
+            <if test="status != null">#{status},</if>
          </trim>
     </insert>
 
@@ -75,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="entityType != null">entity_type = #{entityType},</if>
+            <if test="status != null">status = #{status},</if>
         </trim>
         where id = #{id}
     </update>
@@ -84,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteBusiOperationByIds" parameterType="String">
-        delete from busi_operation where id in 
+        delete from busi_operation where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

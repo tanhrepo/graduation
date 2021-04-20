@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.Arrays;
+
 /**
  * 【评论】对象 busi_comment
  *
@@ -165,19 +167,18 @@ public class BusiComment extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("parentId", getParentId())
-            .append("articleId", getArticleId())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .append("updateBy", getUpdateBy())
-            .append("createBy", getCreateBy())
-            .append("content", getContent())
-            .append("imgurls", getImgurls())
-            .append("praiseCount", getPraiseCount())
-            .append("trampleCount", getTrampleCount())
-            .append("answerUser", getAnswerUser())
-            .toString();
+        return "BusiComment{" +
+                "id=" + id +
+                ", parentId=" + parentId +
+                ", articleId=" + articleId +
+                ", content='" + content + '\'' +
+                ", imgurls='" + imgurls + '\'' +
+                ", praiseCount=" + praiseCount +
+                ", trampleCount=" + trampleCount +
+                ", answerUser=" + answerUser +
+                ", createUser=" + createUser +
+                ", ansUser=" + ansUser +
+                ", imgs=" + Arrays.toString(imgs) +
+                '}';
     }
 }
