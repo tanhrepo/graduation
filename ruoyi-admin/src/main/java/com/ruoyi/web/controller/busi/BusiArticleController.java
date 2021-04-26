@@ -2,14 +2,18 @@ package com.ruoyi.web.controller.busi;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.BusiArticle;
-import com.ruoyi.system.service.IBusiArticleService;
-import com.ruoyi.system.service.IBusiCommentService;
-import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.domain.BusiFollows;
+import com.ruoyi.system.domain.BusiOperation;
+import com.ruoyi.system.domain.BusiScore;
+import com.ruoyi.system.service.*;
 import com.ruoyi.web.controller.tool.RecommendUtils;
 import com.ruoyi.common.constant.RedisConstans;
 import com.ruoyi.web.controller.tool.StrUtils;
@@ -58,6 +62,68 @@ public class BusiArticleController extends BaseController
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private IBusiScoreService scoreService;
+
+    @Autowired
+    private IBusiOperationService operationService;
+
+    @Autowired
+    private IBusiFollowsService followsService;
+
+
+    @ApiOperation("收藏")
+    @GetMapping("/collect")
+    public AjaxResult collect(@PathVariable("articleId") Long articleId,@PathVariable("userId") Long userId){
+        BusiOperation busiOperation = new BusiOperation();
+        busiOperation.setStatus("1");
+        busiOperation.setCreateTime(DateUtils.getNowDate());
+        busiOperation.setOperationTime(DateUtils.getNowDate());
+        busiOperation.setEntityType(5);
+        busiOperation.setEntityType(1);
+        busiOperation.setEntityId(articleId);
+        busiOperation.setOperationUser(userId);
+        operationService.insertBusiOperation(busiOperation);
+        //同步打分
+        BusiScore busiScore = new BusiScore();
+        busiScore.setUid(userId);
+        busiScore.setAid(articleId);
+        //检测是否 有其他行为打分
+        List<BusiScore> busiScores = scoreService.selectBusiScoreList(busiScore);//若成功 只会返回一个对象
+        busiScore.setTs(DateUtils.getNowDate());//不能让 ts参与 查询
+        if(busiScore != null && busiScores.size() == 1){//有一条记录 则 修改
+            busiScore.setScore(busiScores.get(0).getScore()+5);// 原得分基础 +5
+            scoreService.updateBusiScore(busiScore);
+        }else {// 没有打分记录 则 新增
+            busiScore.setScore(5);
+            scoreService.insertBusiScore(busiScore);
+        }
+        return AjaxResult.success();
+    }
+
+
+    @ApiOperation("分享文章")
+    @GetMapping("/share")
+    public AjaxResult share(@PathVariable("articleId") Long articleId,@PathVariable("userId") Long userId){
+        //分享量 自增  若 没有 hk 会不会 报错？
+        stringRedisTemplate.opsForHash().increment(RedisConstans.SHARE_COUNT,String.valueOf(articleId),1L);
+        //同步打分
+        BusiScore busiScore = new BusiScore();
+        busiScore.setUid(userId);
+        busiScore.setAid(articleId);
+        //检测是否 有其他行为打分
+        List<BusiScore> busiScores = scoreService.selectBusiScoreList(busiScore);//若成功 只会返回一个对象
+        busiScore.setTs(DateUtils.getNowDate());//不能让 ts参与 查询
+        if(busiScore != null && busiScores.size() == 1){//有一条记录 则 修改
+            busiScore.setScore(busiScores.get(0).getScore()+3);// 原得分基础 +3
+            scoreService.updateBusiScore(busiScore);
+        }else {// 没有打分记录 则 新增
+            busiScore.setScore(3);
+            scoreService.insertBusiScore(busiScore);
+        }
+        return AjaxResult.success();
+    }
+
     /**
      * 查询【文章】列表
      */
@@ -89,6 +155,52 @@ public class BusiArticleController extends BaseController
             article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
         }
         return getDataTable(list);
+    }
+    /**
+     * 查询关注【文章】列表
+     */
+    @ApiOperation(" 查询关注【文章】列表")
+    @PreAuthorize("@ss.hasPermi('system:article:list')")
+    @GetMapping("/watchList")
+    public TableDataInfo watchList(@PathVariable("userId")Long userId,@PathVariable("userName")String userName)
+    {
+        startPage();
+        List<BusiArticle> res = new ArrayList<>();
+        //获取关注 列表 ids
+        BusiFollows follows = new BusiFollows();
+        follows.setFollowId(userId);
+        List<BusiFollows> busiFollows = followsService.selectBusiFollowsList(follows);
+        for (BusiFollows follow:busiFollows
+             ) {
+            SysUser user = userService.selectUserById(follow.getUserId());
+            BusiArticle article = new BusiArticle();
+            article.setCreateUser(user.getUserName());
+            List<BusiArticle> busiArticles = busiArticleService.selectBusiArticleList(article);
+            res.addAll(busiArticles);
+        }
+        for (BusiArticle article:res
+        ) {
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(article.getArticleImgurls())){
+                String articleImgurls = article.getArticleImgurls();
+                article.setImgs(StrUtils.stringToStringArray(articleImgurls));
+            }
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(article.getArticleVediourls())){
+                String vediourls = article.getArticleVediourls();
+                article.setVedios(StrUtils.stringToStringArray(vediourls));
+            }
+            //创建用户不能为空
+            SysUser user = userService.selectUserByUserName(article.getCreateUser());
+            article.setUser(user);
+
+            //填充 点赞量
+            Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(article.getArticleId()));
+            article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+        }
+        //根据创建时间排序
+        Collections.sort(res,(x,y)->x.getCreateTime().compareTo(y.getCreateTime()));
+        return getDataTable(res);
     }
 
     /**

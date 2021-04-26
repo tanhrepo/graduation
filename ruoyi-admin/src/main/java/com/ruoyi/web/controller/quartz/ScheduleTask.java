@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.quartz;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.BusiArticle;
 import com.ruoyi.system.domain.BusiOperation;
 import com.ruoyi.system.service.IBusiArticleService;
 import com.ruoyi.system.service.IBusiOperationService;
@@ -33,9 +34,21 @@ public class ScheduleTask {
 
     @Autowired
     IBusiArticleService articleService;
-    //每天12点清空数据
-    public void flush(){
 
+    //同步分享量
+    public void updateShare(){
+        System.out.println("同步分享量开始！");
+        Map<Object, Object> shareCount = redisTemplate.opsForHash().entries(RedisConstans.SHARE_COUNT);
+        for (Map.Entry<Object,Object> entry: shareCount.entrySet()
+             ) {
+            Object articleId = entry.getKey();
+            Object count = entry.getValue();
+            BusiArticle article = new BusiArticle();
+            article.setArticleId(Long.valueOf((String)articleId));
+            article.setArticleTransmitCount(Long.valueOf((String)count));
+            articleService.updateBusiArticle(article);
+        }
+        System.out.println("同步分享量结束！");
     }
 
     //同步踩量 数据
