@@ -32,7 +32,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from busi_comment
         where busi_comment.article_id = busi_article.article_id
         ) as article_comment_count,
-        article_collect_count, article_transmit_count, article_trample_count, article_vediourls from busi_article
+        ( SELECT count(*) AS count FROM busi_operation WHERE busi_operation.entity_id = busi_article.article_id and busi_operation.entity_type = 1 and busi_operation.operation_type = 5 and status = 1 ) AS article_collect_count,
+        article_transmit_count, article_trample_count, article_vediourls from busi_article
 
     </sql>
 

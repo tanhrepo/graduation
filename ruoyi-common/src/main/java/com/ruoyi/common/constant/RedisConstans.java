@@ -60,4 +60,6 @@ public class RedisConstans {
      */
     public static final String USER_COMMENT_TOTAL_TRAMPLED_COUNT_KEY = "trample:user.comment.total.trampled.count";
 
+
+    public static final String  SHARE_COUNT = "share:article.shared.count";
 }
