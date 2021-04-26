@@ -50,10 +50,10 @@ public class TrampleController {
             List<BusiScore> busiScores = scoreService.selectBusiScoreList(busiScore);//若成功 只会返回一个对象
             busiScore.setTs(DateUtils.getNowDate());//不能让 ts参与 查询
             if(busiScore != null && busiScores.size() == 1){//有一条记录 则 修改
-                busiScore.setScore(busiScores.get(0).getScore()+4);// 原得分基础 +4
+                busiScore.setScore(busiScores.get(0).getScore()+1);// 原得分基础 +4
                 scoreService.updateBusiScore(busiScore);
             }else {// 没有打分记录 则 新增
-                busiScore.setScore(4);
+                busiScore.setScore(1);
                 scoreService.insertBusiScore(busiScore);
             }
         }
@@ -85,7 +85,7 @@ public class TrampleController {
             //检测是否 有其他行为打分
             List<BusiScore> busiScores = scoreService.selectBusiScoreList(busiScore);//若成功 只会返回一个对象
             busiScore.setTs(DateUtils.getNowDate());//不能让 ts参与 查询
-            busiScore.setScore(busiScores.get(0).getScore()-4);
+            busiScore.setScore(busiScores.get(0).getScore()-1);
             scoreService.updateBusiScore(busiScore);
 //            if(busiScore != null && busiScores.size() == 1){//有一条记录 则 修改
 //                busiScore.setScore(busiScores.get(0).getScore()-4);// 原得分基础 +4
