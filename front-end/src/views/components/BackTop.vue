@@ -1,7 +1,7 @@
 <template>
   <div class="right-bottom">
     <div id='Back' class="page-up" @click="backPage()" v-if="this.$route.name === 'detail'">
-      <i class="iconfont icon-add"></i>
+      <i class="iconfont icon-back" style="font-size: 20px"></i>
     </div>
     <div id='Add' class="page-up" @click="addArticle()" >
       <i class="iconfont icon-add"></i>

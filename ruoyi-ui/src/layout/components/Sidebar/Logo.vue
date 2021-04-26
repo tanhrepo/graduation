@@ -35,8 +35,8 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
-      logo: logoImg
+      title: '社区管理系统',
+      logo: require("@/assets/logo/water_glass.svg")
     }
   }
 }

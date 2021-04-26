@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15282703",
+      "name": "返回",
+      "font_class": "back",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
+    },
+    {
       "icon_id": "10715416",
       "name": "踩",
       "font_class": "step",

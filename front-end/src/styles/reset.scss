@@ -20,7 +20,8 @@ body {
   min-width: 1000px;
   // min-height: 600px;
   color: #455a74;
-  background: #f2f6f8;
+  //background: #f2f6f8;
+  background: #FFFFFF;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   font-size: 12px;
   -webkit-font-smoothing: antialiased;
@@ -279,13 +280,7 @@ a.download {
   }
 }
 
-.el-drawer {
-  outline: none;
-  .el-drawer__header {
-    box-shadow: 0 0 0 1px #e4e7ed;
-    color: #354052;
-  }
-}
+
 
 .el-message {
   min-width: 80px;

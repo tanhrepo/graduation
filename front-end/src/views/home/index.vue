@@ -9,7 +9,9 @@
             <TextItem :item-data="item"></TextItem>
           </div>
         </div>
-        <div class="fe-container-right" style="background-color: #FFFFFF"></div>
+        <div class="fe-container-right">
+          <img src="~@/assets/images/article/5_Sign_up.svg" width="100%" alt="">
+        </div>
       </div>
     </div>
   </div>

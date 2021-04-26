@@ -12,7 +12,7 @@
               <img src="~@/assets/images/item/item_01.png" alt="">
               <div class="detail-text flex-column-between">
                 <!--          昵称-->
-                <span class="fe-url">{{ detail.nickName }}</span>
+                <span class="fe-url"> {{ "张三" || detail.nickName }}</span>
                 <!--          信息-->
                 <span>
                 <span>{{ detail.createTime }}</span>
@@ -44,46 +44,21 @@
               <span><i class="iconfont icon-share"/><span>{{ detail.articleTransmitCount }}</span></span>
               <span><i class="iconfont icon-star"/><span>{{ detail.articleCollectCount }}</span></span>
               <span><i class="iconfont icon-message"
-                       @click="dialogVisible = !dialogVisible"/><span>{{ detail.articleCommentCount }}</span></span>
+                       @click="commentDialog"/><span>{{ detail.articleCommentCount }}</span></span>
               <span><i class="iconfont icon-like"/><span>{{ detail.praiseCount - detail.articleTrampleCount }}</span><i
                   class="iconfont icon-step"/></span>
             </div>
           </div>
 
-          <el-dialog title="评论：" :visible.sync="dialogVisible">
-            <el-form :model="addForm">
-              <el-form-item>
-                <el-input
-                    type="textarea"
-                    placeholder="写下你的评论..."
-                    :autosize="{ minRows: 6, maxRows: 26}"
-                    v-model="addForm.articleContent">
-                </el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-upload
-                    ref="uploadImg"
-                    accept=".bmp, .gif, .jpg, .jpeg, .png"
-                    action=""
-                    :http-request="uploadFile"
-                    :on-change="handleChange"
-                    :file-list="fileListImg"
-                    :auto-upload="false"
-                    list-type="picture">
-                  <el-button class="upload-btn"
-                             slot="trigger"
-                             icon="iconfont icon-image fe-mr-sm"
-                             size="small"
-                             type="primary">添加图片
-                  </el-button>
-                </el-upload>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </div>
-          </el-dialog>
+          <CommentPost
+              ref="CommentPost"
+              :articleId="this.$route.query.id"
+              :createBy="this.user.userInfo.userName"
+              :parentId="parentId"
+              :answerUser="answerUser"
+          >
+
+          </CommentPost>
 
           <!--评论-->
           <div class=" fe-shadow comment-main">
@@ -91,7 +66,7 @@
             <div class="comment-top fe-flex-between">
               <div class="fe-align-center">
                 <span class="blue-bar"></span>
-                <span>全部评论</span><span>{{ detail.articleCommentCount }}</span>
+                <span>全部评论</span><span>{{ comment.length }}</span>
               </div>
               <div>
                 <el-dropdown @command="handleCommand" :hide-on-click="false">
@@ -107,7 +82,28 @@
                 </el-dropdown>
               </div>
             </div>
+            <!--            评论详情-->
+            <ul>
+              <li v-for="item in newTree" :key="item.id">
+                <CommentSub :item="item"></CommentSub>
+              </li>
+            </ul>
           </div>
+
+          <!--          // el-drawer组件-->
+          <el-drawer
+              title="更多评论"
+              :visible.sync="drawer"
+              size="80%"
+              :modal="false"
+              @closed="newTreeSub = []"
+              direction="btt">
+            <ul v-if="newTreeSub.length">
+              <li v-for="item in newTreeSub" :key="item.id" class="comment-item fe-flex">
+                <CommentSub :item="item"></CommentSub>
+              </li>
+            </ul>
+          </el-drawer>
         </div>
 
         <div class="fe-container-right " style="background-color: #FFFFFF">
@@ -125,27 +121,25 @@ import 'vue-video-player/src/custom-theme.css'
 import {videoPlayer} from 'vue-video-player'
 import Comment from "@/views/components/Comment";
 import BackTop from "@/views/components/BackTop";
-import {postComment, getCommentList, getArticleItem} from "@/api/system/article";
-import {putFile} from "@/api/common/file";
+import {getCommentList, getArticleItem} from "@/api/system/article";
+import {mapState} from "vuex";
+import {buildTree} from "@/utils/mapTree"
+import CommentSub from "@/views/components/CommentSub";
+import CommentPost from "@/views/components/CommentPost";
 
 export default {
   name: "ArticleDetail",
   components: {
+    CommentPost,
+    CommentSub,
     BackTop,
     Comment,
     videoPlayer
   },
   data() {
     return {
-      addForm: {
-        content: '',
-        imgs: [],
-        articleId: '',
-        createBy: '',
-        parentId: '',
-        answerUser: '',
-      },
-      dialogVisible: false,
+      parentId: null,
+      answerUser: null,
       detail: {
         nickName: '张三',
         createTime: '2020-12-10',
@@ -186,14 +180,224 @@ export default {
       },
       comment: [
         {
-          user: {}
-        }
+          id: 1,
+          createUser: {
+            avatar: "/profile/upload/2021/04/20/a75f8fe1-1b29-45f5-923a-932b7fc59d98.png",
+            nickName: "李四",
+            userName: "admin",
+            userId: 2
+          },
+
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/90ad9aa0-5d83-43ad-8e24-81b52719b5d6.png", "http://localhost:8080/profile/upload/2021/04/20/a75f8fe1-1b29-45f5-923a-932b7fc59d98.png"],
+          parentId: null,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 2,
+          createUser: {
+            avatar: "/profile/upload/2021/04/20/fb56fba8-b143-433d-8d3f-2d0d0ad671ee.png",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/fb56fba8-b143-433d-8d3f-2d0d0ad671ee.png"],
+          parentId: null,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 3,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: [],
+          parentId: null,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 4,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: [
+            "http://localhost:8080/profile/upload/2021/04/20/7cb49ca0-5e8b-4eba-a50f-14860ad4c6fd.png",
+            "http://localhost:8080/profile/upload/2021/04/19/a774eff0-7a97-45ee-8863-38a96fc4cec1.jpg",
+            "http://localhost:8080/profile/upload/2021/04/20/33fdd237-aaef-4c8b-976f-70ab8a46bb07.png"
+          ],
+          parentId: null,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 5,
+          createUser: {
+            avatar: "/profile/upload/2021/04/20/05513d56-e630-49b3-af91-bcb7a34f610c.png",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/05513d56-e630-49b3-af91-bcb7a34f610c.png", "http://localhost:8080/profile/upload/2021/04/19/a774eff0-7a97-45ee-8863-38a96fc4cec1.jpg"],
+          parentId: 1,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 6,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 2
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/05513d56-e630-49b3-af91-bcb7a34f610c.png", "http://localhost:8080/profile/upload/2021/04/19/a774eff0-7a97-45ee-8863-38a96fc4cec1.jpg"],
+          parentId: 4,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 7,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 2
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/05513d56-e630-49b3-af91-bcb7a34f610c.png", "http://localhost:8080/profile/upload/2021/04/19/a774eff0-7a97-45ee-8863-38a96fc4cec1.jpg"],
+          parentId: 4,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 8,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/7a86a1ef-dfa9-4997-a7b5-27c8820bb7e7.png", "http://localhost:8080/profile/upload/2021/04/19/a774eff0-7a97-45ee-8863-38a96fc4cec1.jpg"],
+          parentId: 4,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 9,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/7a86a1ef-dfa9-4997-a7b5-27c8820bb7e7.png",
+            "http://localhost:8080/profile/upload/2021/04/20/9657b311-dc0a-4a6e-8acf-27310ccd0472.png"],
+          parentId: 3,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 10,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          ansUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin"
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/7a86a1ef-dfa9-4997-a7b5-27c8820bb7e7.png",
+            "http://localhost:8080/profile/upload/2021/04/20/e62a29a6-f90e-4ead-8846-972a1ac20812.png"],
+          parentId: 1,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 11,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 2
+          },
+          ansUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin"
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/fe95a95d-c127-464b-b7de-d1c91a6b2ef2.png",
+            "http://localhost:8080/profile/upload/2021/04/20/1c25b628-f0e8-4273-8df3-ce6d87920709.png"],
+          parentId: 3,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+        {
+          id: 12,
+          createUser: {
+            avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+            nickName: "李四",
+            userName: "admin",
+            userId: 1
+          },
+          createTime: "2021-04-19 23:54:58",
+          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
+          imgs: ["http://localhost:8080/profile/upload/2021/04/20/1c25b628-f0e8-4273-8df3-ce6d87920709.png",
+            "http://localhost:8080/profile/upload/2021/04/20/e62a29a6-f90e-4ead-8846-972a1ac20812.png"],
+          parentId: 1,
+          answerUser: null,
+          praiseCount: 646,
+          trampleCount: 21,
+        },
+
       ],
+      newTree: [],
+      newTreeSub: [],
       SortOption: ['按热度排序', '按时间正序', '按时间倒序', '只看作者'],
       sort: 0,
-      fileListImg: [],
-      urlListImg: 0,
-      postImg: false,
+      isHidden: true,
+      drawer: false,
     }
   },
   computed: {
@@ -214,11 +418,16 @@ export default {
 
       }
       return sLen;
-    }
+    },
+    ...mapState(["user"]),
   },
   mounted() {
-    console.log(this.$route.query.id)
     this.getData()
+    // this.addForm.articleId = this.$route.query.id
+    // this.addForm.createBy = this.user.userInfo.userName
+    this.newTree = buildTree(this.comment)
+    console.log(this.newTree)
+    console.log(typeof (this.newTree))
   },
   methods: {
     // 基础数据调用，文章详情
@@ -227,6 +436,7 @@ export default {
         getArticleItem(this.$route.query.id).then(res => {
           console.log('文章详情', res)
           this.detail = res.data
+          this.playerOptions['sources'][0]['src'] = res.data.articleVediourls
           this.getCommentData()
         }).catch(error => {
           reject(error)
@@ -238,18 +448,15 @@ export default {
       let data = {
         articleId: this.$route.query.id
       }
-      console.log("data",data)
+      console.log("data", data)
       return new Promise((resolve, reject) => {
         getCommentList(data).then(res => {
           console.log('文章评论列表', res)
-          this.comment = res.data
+          this.comment = res.rows
         }).catch(error => {
           reject(error)
         })
       })
-    },
-    postComment(item) {
-
     },
     // 选择排序条件
     handleCommand(command) {
@@ -257,55 +464,26 @@ export default {
       this.sort = command
     },
     // 评论弹窗
-    commentDialog() {
-      this.dialogVisible = !this.dialogVisible
-    },
-    // 上传表单按钮
-    submitUpload() {
-      this.$refs.uploadImg.submit();
-      if (!this.fileListImg.length) {
-        console.log("直接上传")
-        this.postForm()
+    commentDialog(item, index) {
+      console.log("item", item)
+      if (index === 2) {
+        this.$refs.CommentPost.commentDialog(item.parentId, item.createUser.userId)
+      } else if (index === 1) {
+        this.$refs.CommentPost.commentDialog(item.id)
+      } else {
+        this.$refs.CommentPost.commentDialog()
       }
-    },
-    // 图片上传
-    async uploadFile(item) {
-      let formData = new FormData()
-      formData.append('file', item.file)
-      formData.append('group', 'system')
-      await putFile(formData).then(res => {
-        console.log("res", res)
-        this.addForm.imgs.push(res.url)
-        console.log()
-        let i = 1
-        this.urlListImg += i
-        if (this.urlListImg === this.fileListImg.length) {
-          this.postImg = true
-          this.postForm()
-        }
-      }).catch(error => {
-        return error
-      })
+
+      // this.answerUser = item.answerUser
+      // this.parentId = item.parentId
     },
 
-    // 评论表单提交
-    postForm() {
-      const param = this.addForm
-      return new Promise((resolve, reject) => {
-        postComment(param).then(res => {
-          this.$message({
-            message: '发布成功！',
-            type: 'success'
-          });
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
 
-    // 文件上传数据新增变化
-    handleChange(file, fileList) {
-      this.fileListImg = fileList.slice(-12);
+    // 更多评论
+    drawerSub(data) {
+      console.log(data)
+      this.newTreeSub = data
+      this.drawer = true
     },
 
   }
@@ -359,30 +537,6 @@ export default {
     margin-top: 40px;
   }
 
-  //图片
-  .detail-img {
-    display: flex;
-    flex-wrap: wrap;
-
-    .detail-img-item {
-      width: 96px;
-      height: 100px;
-      margin: 12px 12px 0 0;
-      border-radius: 5px;
-      overflow: hidden;
-
-      &:nth-child(6),
-      &:nth-child(12) {
-        margin-right: 0;
-      }
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-  }
 
   //视频
   .detail-video {
@@ -429,16 +583,6 @@ export default {
   margin-right: 12px;
 }
 
-//弹窗
-.upload-btn {
-  width: 100%;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 14px;
-}
 
 //评论
 .comment-main {
@@ -453,7 +597,7 @@ export default {
     height: 40px;
     width: 100%;
     align-items: center;
-    font-size: 16px;
+    font-size: 18px;
 
     span {
       line-height: 20px;
@@ -473,6 +617,32 @@ export default {
     }
   }
 
+  .comment-item-sub {
+    background-color: #F5F5F7;
+    border-radius: 6px;
+    padding: 14px;
+    margin-top: 12px;
+
+    .comment-sub-p {
+      font-size: 14px;
+      color: #2d3e53;
+      line-height: 26px;
+      white-space: pre-line;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .comment-sub-more {
+      font-size: 14px;
+      color: #169bfa;
+      line-height: 26px;
+      cursor: pointer;
+    }
+  }
+
   .el-dropdown-link {
     display: inline-block;
     padding: 0 10px;
@@ -480,6 +650,74 @@ export default {
     border-radius: 5px;
     border: 1px solid #eeeeee;
     line-height: 20px;
+  }
+}
+
+//评论
+.comment-item {
+  width: 100%;
+  height: auto;
+  padding: 20px 0 0;
+
+}
+
+//图片
+.detail-img {
+
+  display: flex;
+  flex-wrap: wrap;
+
+  .detail-img-item {
+    width: 96px;
+    height: 100px;
+    margin: 12px 12px 0 0;
+    border-radius: 5px;
+    overflow: hidden;
+
+    &:nth-child(6),
+    &:nth-child(12) {
+      margin-right: 0;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.grey-bar {
+  display: inline-block;
+  width: 1px;
+  height: 20px;
+  background: #E0E0E0;
+  margin-right: 12px;
+}
+
+::v-deep
+.el-drawer__container {
+  transform: translateX(-158px);
+
+  .el-drawer {
+    height: 70%;
+    width: 700px;
+    margin: 0 auto;
+  }
+
+  .el-drawer__header {
+    padding: 20px 32px;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .el-drawer__body {
+    padding: 0 32px 20px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
