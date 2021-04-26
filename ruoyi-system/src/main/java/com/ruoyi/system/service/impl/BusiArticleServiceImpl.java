@@ -33,6 +33,11 @@ public class BusiArticleServiceImpl implements IBusiArticleService
         return busiArticleMapper.selectBusiArticleById(articleId);
     }
 
+    @Override
+    public List<BusiArticle> selectBusiArticleTop(Long howmany) {
+        return busiArticleMapper.selectBusiArticleTop(howmany);
+    }
+
     /**
      * 查询【文章】列表
      *

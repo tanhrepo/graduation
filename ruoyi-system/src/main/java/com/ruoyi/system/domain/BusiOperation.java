@@ -49,6 +49,16 @@ public class BusiOperation extends BaseEntity
     @Excel(name = "被操作对象类型", readConverterExp = "1=文章2评论")
     private Integer entityType;
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public void setId(Long id)
     {
         this.id = id;

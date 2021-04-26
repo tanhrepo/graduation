@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BusiFollowsMapper">
+    
+    <resultMap type="BusiFollows" id="BusiFollowsResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="followId"    column="follow_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBusiFollowsVo">
+        select id, user_id, follow_id, create_by, create_time, update_by, update_time from busi_follows
+    </sql>
+
+    <select id="selectBusiFollowsList" parameterType="BusiFollows" resultMap="BusiFollowsResult">
+        <include refid="selectBusiFollowsVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="followId != null "> and follow_id = #{followId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFollowsById" parameterType="Long" resultMap="BusiFollowsResult">
+        <include refid="selectBusiFollowsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiFollows" parameterType="BusiFollows" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_follows
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="followId != null">follow_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="followId != null">#{followId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFollows" parameterType="BusiFollows">
+        update busi_follows
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="followId != null">follow_id = #{followId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiFollowsById" parameterType="Long">
+        delete from busi_follows where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFollowsByIds" parameterType="String">
+        delete from busi_follows where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

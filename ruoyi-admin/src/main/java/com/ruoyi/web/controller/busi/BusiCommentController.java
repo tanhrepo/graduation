@@ -131,12 +131,14 @@ public class BusiCommentController extends BaseController
             SysUser user = userService.selectUserByUserName(busiComment.getCreateBy());
             //记录操作
             BusiOperation operation = new BusiOperation();
+            operation.setStatus("1");
             operation.setEntityId(busiComment.getId());
             operation.setEntityType(2);//1 文章 2 评论
             operation.setOperationTime(busiComment.getCreateTime());
             operation.setOperationType(2);
             operation.setOperationUser(user.getUserId());
             operation.setCreateBy(user.getUserName());
+            operation.setCreateTime(busiComment.getCreateTime());
             operationService.insertBusiOperation(operation);
 
             //记录评论得分
@@ -147,7 +149,8 @@ public class BusiCommentController extends BaseController
             List<BusiScore> busiScores = scoreService.selectBusiScoreList(busiScore);//若成功 只会返回一个对象
             busiScore.setTs(busiComment.getCreateTime());//不能让 ts参与 查询
             if(busiScore != null && busiScores.size() == 1){//有一条记录 则 修改
-                 busiScore.setScore(busiScores.get(0).getScore()+2);// 原得分基础 +2
+                busiScore.setScore(busiScores.get(0).getScore()+2);// 原得分基础 +2
+                scoreService.updateBusiScore(busiScore);
             }else {// 没有打分记录 则 新增
                 busiScore.setScore(2);
                 scoreService.insertBusiScore(busiScore);

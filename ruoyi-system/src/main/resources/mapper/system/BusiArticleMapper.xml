@@ -78,7 +78,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where article_vediourls is not null
     </select>
 
-
+    <select id="selectBusiArticleTop" parameterType="Long" resultMap="BusiArticleResult">
+        <include refid="selectBusiArticleCount"/>
+        order by article_view_count desc
+        limit 0,#{howmany}
+    </select>
 
 
     <select id="selectBusiArticleById" parameterType="Long" resultMap="BusiArticleResult">
