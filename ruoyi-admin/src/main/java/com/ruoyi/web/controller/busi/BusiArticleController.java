@@ -1,17 +1,23 @@
 package com.ruoyi.web.controller.busi;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.BusiArticle;
-import com.ruoyi.system.domain.BusiComment;
 import com.ruoyi.system.service.IBusiArticleService;
 import com.ruoyi.system.service.IBusiCommentService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.web.controller.tool.RecommendUtils;
+import com.ruoyi.common.constant.RedisConstans;
 import com.ruoyi.web.controller.tool.StrUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +55,9 @@ public class BusiArticleController extends BaseController
     @Autowired
     private IBusiCommentService commentService;
 
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
     /**
      * 查询【文章】列表
      */
@@ -74,9 +83,66 @@ public class BusiArticleController extends BaseController
             //创建用户不能为空
             SysUser user = userService.selectUserByUserName(article.getCreateUser());
             article.setUser(user);
+
+            //填充 点赞量
+            Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(article.getArticleId()));
+            article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
         }
         return getDataTable(list);
     }
+
+    /**
+     * 查询推荐【文章】列表
+     */
+    @ApiOperation(" 查询推荐【文章】列表")
+    @PreAuthorize("@ss.hasPermi('system:article:list')")
+    @GetMapping("/recommendList")
+    public TableDataInfo watchList(@PathVariable("userId") Long userId, @PathVariable("howmany") Integer howmany) throws SQLException, TasteException {
+        startPage();
+        List<RecommendedItem> recommends = RecommendUtils.recommend(userId, howmany);
+        List<BusiArticle>  result = new ArrayList<>();
+        List<Long>  resIds = new ArrayList<>();
+        Integer remain = 0;//剩余 填充
+        if(recommends != null && recommends.size() == howmany){
+            //把 id 得到的 article  加入 result
+            recommends.forEach(x->result.add(busiArticleService.selectBusiArticleById(x.getItemID())));
+        }else if(recommends == null){
+            remain = howmany;
+        }else {
+            remain = howmany - recommends.size();
+        }
+        //推荐结果不足，需要填充 res Ids
+        if(remain > 0 && remain < howmany){// 推荐结果 不足 howmany
+            recommends.forEach(x->result.add(busiArticleService.selectBusiArticleById(x.getItemID())));
+            List<BusiArticle> remainList = busiArticleService.selectBusiArticleTop(Long.valueOf(remain));
+            result.addAll(remainList);
+        }else if(remain == howmany){// recommends 推荐 无结果
+            List<BusiArticle> remainList = busiArticleService.selectBusiArticleTop(Long.valueOf(remain));
+            result.addAll(remainList);
+        }
+       //处理 img,video url
+        for (BusiArticle article:result
+        ) {
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(article.getArticleImgurls())){
+                String articleImgurls = article.getArticleImgurls();
+                article.setImgs(StrUtils.stringToStringArray(articleImgurls));
+            }
+            //检验是否 empty
+            if(StringUtils.isNotEmpty(article.getArticleVediourls())){
+                String vediourls = article.getArticleVediourls();
+                article.setVedios(StrUtils.stringToStringArray(vediourls));
+            }
+            //创建用户不能为空
+            SysUser user = userService.selectUserByUserName(article.getCreateUser());
+            article.setUser(user);
+            //填充 点赞量
+            Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(article.getArticleId()));
+            article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+        }
+        return getDataTable(result);
+    }
+
 
     /**
      * 查询图文区【文章】列表
@@ -104,7 +170,9 @@ public class BusiArticleController extends BaseController
             SysUser user = userService.selectUserByUserName(busiArticle.getCreateUser());
             busiArticle.setUser(user);
             //点赞量
-
+            //填充 点赞量
+            Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
+            busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
             //评论量
 //            BusiComment comment = new BusiComment();
 //            comment.setArticleId(busiArticle.getArticleId();
@@ -139,6 +207,9 @@ public class BusiArticleController extends BaseController
             //创建用户不能为空
             SysUser user = userService.selectUserByUserName(busiArticle.getCreateUser());
             busiArticle.setUser(user);
+            //填充 点赞量
+            Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
+            busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
         }
         return getDataTable(list);
     }
@@ -176,6 +247,9 @@ public class BusiArticleController extends BaseController
             String vediourls = busiArticle.getArticleVediourls();
             busiArticle.setVedios(StrUtils.stringToStringArray(vediourls));
         }
+        //填充 点赞量
+        Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
+        busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
         return AjaxResult.success(busiArticle);
     }
 

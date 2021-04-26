@@ -20,6 +20,15 @@ public interface IBusiArticleService
      */
     public BusiArticle selectBusiArticleById(Long articleId);
 
+
+    /**
+     * 查询top N【文章】
+     *
+     * @param howmany 【文章】ID
+     * @return 【文章】
+     */
+    public List<BusiArticle> selectBusiArticleTop(Long howmany);
+
     /**
      * 查询【文章】列表
      *
@@ -27,8 +36,6 @@ public interface IBusiArticleService
      * @return 【文章】集合
      */
     public List<BusiArticle> selectBusiArticleList(BusiArticle busiArticle);
-
-
 
     /**
      * 查询视频区【文章】列表

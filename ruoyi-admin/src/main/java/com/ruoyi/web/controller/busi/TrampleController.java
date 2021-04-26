@@ -16,14 +16,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 点赞功能 控制层
+ * 踩一踩功能 控制层
  * @author dfm
  * @create 2021-04-16 18:45
  */
 @Api("点赞模块")
 @RestController
-@RequestMapping("/system/praise")
-public class PraiseController {
+@RequestMapping("/system/trample")
+public class TrampleController {
 
     @Resource
     IBusiPraiseService praiseServicel;
@@ -32,16 +32,16 @@ public class PraiseController {
     private IBusiScoreService scoreService;
 
     /**
-     *用户点赞某篇文章
-     * @param articleId 被点赞文章id
-     * @param likedUserId 被点赞用户id
-     * @param userId 点赞用户id
+     *用户踩一踩某篇文章
+     * @param articleId 被踩一踩文章id
+     * @param trampledUserId 被踩一踩用户id
+     * @param userId 踩一踩用户id
      * @return
      */
-    @ApiOperation("用户点赞某篇文章")
-    @GetMapping("likeArticle")
-    public AjaxResult  likeArticle(Long articleId,Long likedUserId,Long userId){
-        AjaxResult ajaxResult = praiseServicel.doPraise(articleId, likedUserId, userId, 1);
+    @ApiOperation("用户踩一踩某篇文章")
+    @GetMapping("trampleArticle")
+    public AjaxResult  likeArticle(Long articleId,Long trampledUserId,Long userId){
+        AjaxResult ajaxResult = praiseServicel.doPraise(articleId, trampledUserId, userId, 1);
         if(ajaxResult.get("code").equals(200)){
             BusiScore busiScore = new BusiScore();
             busiScore.setUid(userId);
@@ -61,23 +61,23 @@ public class PraiseController {
     }
 
     /**
-     *用户点赞某篇评论
-     * @param commentId 被点赞文章id
-     * @param likedUserId 被点赞用户id
-     * @param userId 点赞用户id
+     *用户踩一踩某篇评论
+     * @param commentId 被踩一踩文章id
+     * @param trampledUserId 被踩一踩用户id
+     * @param userId 踩一踩用户id
      * @return
      */
-    @ApiOperation("用户点赞某篇评论")
-    @GetMapping("likeComment")
-    public AjaxResult  likeComment(Long commentId,Long likedUserId,Long userId){
-        AjaxResult ajaxResult = praiseServicel.doPraise(commentId, likedUserId, userId, 2);
+    @ApiOperation("用户踩一踩某篇评论")
+    @GetMapping("trampleComment")
+    public AjaxResult  likeComment(Long commentId,Long trampledUserId,Long userId){
+        AjaxResult ajaxResult = praiseServicel.doPraise(commentId, trampledUserId, userId, 2);
         return ajaxResult;
     }
 
-    @ApiOperation("用户取消点赞某篇文章")
-    @GetMapping("unLikeArticle")
-    public AjaxResult  unLikeArticle(Long articleId,Long likedUserId,Long userId){
-        AjaxResult ajaxResult = praiseServicel.doUnPraise(articleId, likedUserId, userId, 1);
+    @ApiOperation("用户取消踩一踩某篇文章")
+    @GetMapping("unTrampleArticle")
+    public AjaxResult  unLikeArticle(Long articleId,Long trampledUserId,Long userId){
+        AjaxResult ajaxResult = praiseServicel.doUnPraise(articleId, trampledUserId, userId, 1);
         if(ajaxResult.get("code").equals(String.valueOf(200))){
             BusiScore busiScore = new BusiScore();
             busiScore.setUid(userId);
@@ -98,22 +98,22 @@ public class PraiseController {
         return ajaxResult;
     }
 
-    @ApiOperation("用户取消点赞某条评论")
-    @GetMapping("unLikeComment")
-    public AjaxResult  unLikeComment(Long articleId,Long likedUserId,Long userId){
-        AjaxResult ajaxResult = praiseServicel.doUnPraise(articleId, likedUserId, userId, 2);
+    @ApiOperation("用户取消踩一踩某条评论")
+    @GetMapping("unTrampleComment")
+    public AjaxResult  unLikeComment(Long articleId,Long trampledUserId,Long userId){
+        AjaxResult ajaxResult = praiseServicel.doUnPraise(articleId, trampledUserId, userId, 2);
         return ajaxResult;
     }
 
-    @ApiOperation("统计文章的点赞总数")
-    @GetMapping("countTotalArticle")
+    @ApiOperation("统计文章的踩一踩总数")
+    @GetMapping("countTotalArticleTramples")
     public AjaxResult countTotalLike(Long articleId){
         Long count = praiseServicel.countTotalLike(articleId, 1);
         return AjaxResult.success(count);
     }
 
-    @ApiOperation("统计评论的点赞总数")
-    @GetMapping("countTotalComment")
+    @ApiOperation("统计评论的踩一踩总数")
+    @GetMapping("countTotalCommentTramplse")
     public AjaxResult countTotalComment(Long commentId){
         Long count = praiseServicel.countTotalLike(commentId, 2);
         return AjaxResult.success(count);
@@ -121,26 +121,26 @@ public class PraiseController {
 
 
     /**
-     * 获取用户点赞的文章ids
+     * 获取用户踩一踩的文章ids
      *
-     * @param userId 点赞用户ID
+     * @param userId 踩一踩用户ID
      * @return
      */
-    @ApiOperation("获取用户点赞的文章ids")
-    @GetMapping("userArticleLikes")
+    @ApiOperation("获取用户踩一踩的文章ids")
+    @GetMapping("userArticleTramplse")
     public AjaxResult getUserLikeArticles(Long userId){
         List<Long> userLikeentitys = praiseServicel.getUserLikeentitys(userId, 1);
         return AjaxResult.success(userLikeentitys);
     }
 
     /**
-     * 获取用户点赞的comment ids
+     * 获取用户踩一踩的comment ids
      *
-     * @param userId 点赞用户ID
+     * @param userId 踩一踩用户ID
      * @return
      */
-    @ApiOperation("获取用户点赞的comment ids")
-    @GetMapping("userCommentleLikes")
+    @ApiOperation("获取用户踩一踩的comment ids")
+    @GetMapping("userCommentleTramples")
     public AjaxResult getUserLikeComments(Long userId){
         List<Long> userLikeentitys = praiseServicel.getUserLikeentitys(userId, 2);
         return AjaxResult.success(userLikeentitys);
