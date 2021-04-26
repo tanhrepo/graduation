@@ -96,7 +96,7 @@ export default {
         articleLable: '',
         imgs: [],
         vedios: [],
-        articleVediourls: "",
+        articleVediourls: null,
         createUser: '',
       },
       rules: {

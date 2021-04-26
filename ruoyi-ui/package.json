@@ -1,7 +1,7 @@
 {
   "name": "ruoyi",
   "version": "3.3.0",
-  "description": "若依管理系统",
+  "description": "社区管理系统",
   "author": "若依",
   "license": "MIT",
   "scripts": {
@@ -44,6 +44,7 @@
     "element-ui": "2.15.0",
     "file-saver": "2.0.4",
     "fuse.js": "6.4.3",
+    "highcharts": "^9.0.1",
     "highlight.js": "9.18.5",
     "js-beautify": "1.13.0",
     "js-cookie": "2.2.1",

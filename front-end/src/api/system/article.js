@@ -8,6 +8,22 @@ export function getArticleList() {
   })
 }
 
+// 图文
+export function getPhotoList() {
+  return request({
+    url: '/system/article/photoList',
+    method: 'get'
+  })
+}
+
+// 视频
+export function getVideoList() {
+  return request({
+    url: '/system/article/vedioList',
+    method: 'get'
+  })
+}
+
 // 新增文章
 export function addArticle(data) {
   return request({
