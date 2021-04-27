@@ -152,7 +152,10 @@ public class BusiArticleController extends BaseController
 
             //填充 点赞量
             Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(article.getArticleId()));
-            article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            if(praiseCount != null){
+                article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else article.setPraiseCount(0L);
+
         }
         return getDataTable(list);
     }
@@ -162,7 +165,7 @@ public class BusiArticleController extends BaseController
     @ApiOperation(" 查询关注【文章】列表")
     @PreAuthorize("@ss.hasPermi('system:article:list')")
     @GetMapping("/watchList")
-    public TableDataInfo watchList(@PathVariable("userId")Long userId,@PathVariable("userName")String userName)
+    public TableDataInfo watchList(@PathVariable("userId")Long userId)
     {
         startPage();
         List<BusiArticle> res = new ArrayList<>();
@@ -196,7 +199,9 @@ public class BusiArticleController extends BaseController
 
             //填充 点赞量
             Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(article.getArticleId()));
-            article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            if(praiseCount != null){
+                article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else article.setPraiseCount(0L);
         }
         //根据创建时间排序
         Collections.sort(res,(x,y)->x.getCreateTime().compareTo(y.getCreateTime()));
@@ -250,7 +255,9 @@ public class BusiArticleController extends BaseController
             article.setUser(user);
             //填充 点赞量
             Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(article.getArticleId()));
-            article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            if(praiseCount != null){
+                article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else article.setPraiseCount(0L);
         }
         return getDataTable(result);
     }
@@ -284,12 +291,9 @@ public class BusiArticleController extends BaseController
             //点赞量
             //填充 点赞量
             Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
-            busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
-            //评论量
-//            BusiComment comment = new BusiComment();
-//            comment.setArticleId(busiArticle.getArticleId();
-//            List<BusiComment> busiComments = commentService.selectBusiCommentList(comment);
-//            busiArticle.setArticleCommentCount(Long.valueOf(busiComments.size()) );
+            if(praiseCount != null){
+                busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else busiArticle.setPraiseCount(0L);
         }
         return getDataTable(list);
     }
@@ -321,7 +325,9 @@ public class BusiArticleController extends BaseController
             busiArticle.setUser(user);
             //填充 点赞量
             Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
-            busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            if(praiseCount != null){
+                busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else busiArticle.setPraiseCount(0L);
         }
         return getDataTable(list);
     }
@@ -361,7 +367,9 @@ public class BusiArticleController extends BaseController
         }
         //填充 点赞量
         Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_LIKE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
-        busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+        if(praiseCount != null){
+            busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+        }else busiArticle.setPraiseCount(0L);
         return AjaxResult.success(busiArticle);
     }
 
