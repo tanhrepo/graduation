@@ -74,7 +74,7 @@ public class BusiArticleController extends BaseController
 
     @ApiOperation("收藏")
     @GetMapping("/collect")
-    public AjaxResult collect(@PathVariable("articleId") Long articleId,@PathVariable("userId") Long userId){
+    public AjaxResult collect( Long articleId, Long userId){
         BusiOperation busiOperation = new BusiOperation();
         busiOperation.setStatus("1");
         busiOperation.setCreateTime(DateUtils.getNowDate());
@@ -104,7 +104,7 @@ public class BusiArticleController extends BaseController
 
     @ApiOperation("分享文章")
     @GetMapping("/share")
-    public AjaxResult share(@PathVariable("articleId") Long articleId,@PathVariable("userId") Long userId){
+    public AjaxResult share(Long articleId,Long userId){
         //分享量 自增  若 没有 hk 会不会 报错？
         stringRedisTemplate.opsForHash().increment(RedisConstans.SHARE_COUNT,String.valueOf(articleId),1L);
         //同步打分
