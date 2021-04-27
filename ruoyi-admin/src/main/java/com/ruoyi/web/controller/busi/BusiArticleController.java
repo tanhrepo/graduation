@@ -164,8 +164,8 @@ public class BusiArticleController extends BaseController
      */
     @ApiOperation(" 查询关注【文章】列表")
     @PreAuthorize("@ss.hasPermi('system:article:list')")
-    @GetMapping("/watchList")
-    public TableDataInfo watchList(@PathVariable("userId")Long userId)
+    @GetMapping("/watchList/{userId}")
+    public TableDataInfo watchList(@PathVariable("userId") Long userId)
     {
         startPage();
         List<BusiArticle> res = new ArrayList<>();
@@ -204,7 +204,7 @@ public class BusiArticleController extends BaseController
             }else article.setPraiseCount(0L);
         }
         //根据创建时间排序
-        Collections.sort(res,(x,y)->x.getCreateTime().compareTo(y.getCreateTime()));
+        //Collections.sort(res,(x,y)->x.getCreateTime().compareTo(y.getCreateTime()));
         return getDataTable(res);
     }
 
@@ -214,7 +214,7 @@ public class BusiArticleController extends BaseController
     @ApiOperation(" 查询推荐【文章】列表")
     @PreAuthorize("@ss.hasPermi('system:article:list')")
     @GetMapping("/recommendList")
-    public TableDataInfo watchList(@PathVariable("userId") Long userId, @PathVariable("howmany") Integer howmany) throws SQLException, TasteException {
+    public TableDataInfo watchList(Long userId, Integer howmany) throws SQLException, TasteException {
         startPage();
         List<RecommendedItem> recommends = RecommendUtils.recommend(userId, howmany);
         List<BusiArticle>  result = new ArrayList<>();
