@@ -126,6 +126,7 @@ import {mapState} from "vuex";
 import {buildTree} from "@/utils/mapTree"
 import CommentSub from "@/views/components/CommentSub";
 import CommentPost from "@/views/components/CommentPost";
+import {getUserNameInfo} from "@/api/login";
 
 export default {
   name: "ArticleDetail",
@@ -192,7 +193,7 @@ export default {
           content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房间\n酷酷酷",
           imgs: ["http://localhost:8080/profile/upload/2021/04/20/90ad9aa0-5d83-43ad-8e24-81b52719b5d6.png", "http://localhost:8080/profile/upload/2021/04/20/a75f8fe1-1b29-45f5-923a-932b7fc59d98.png"],
           parentId: null,
-          answerUser: null,
+          answerUser: 1,
           praiseCount: 646,
           trampleCount: 21,
         },
@@ -205,10 +206,10 @@ export default {
             userId: 1
           },
           createTime: "2021-04-19 23:54:58",
-          content: "奥i毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房酷酷酷",
+          content: "奥毒发你打开就发你肯定就爱上了\n案件那就拉的看法呢\ni拿到结果你就骄傲的发你觉得爱哭的房酷酷酷",
           imgs: ["http://localhost:8080/profile/upload/2021/04/20/fb56fba8-b143-433d-8d3f-2d0d0ad671ee.png"],
           parentId: null,
-          answerUser: null,
+          answerUser: 1,
           praiseCount: 646,
           trampleCount: 21,
         },
@@ -392,6 +393,7 @@ export default {
         },
 
       ],
+      // comment:[],
       newTree: [],
       newTreeSub: [],
       SortOption: ['按热度排序', '按时间正序', '按时间倒序', '只看作者'],
@@ -425,19 +427,28 @@ export default {
     this.getData()
     // this.addForm.articleId = this.$route.query.id
     // this.addForm.createBy = this.user.userInfo.userName
-    this.newTree = buildTree(this.comment)
-    console.log(this.newTree)
-    console.log(typeof (this.newTree))
+
   },
   methods: {
     // 基础数据调用，文章详情
     getData() {
       return new Promise((resolve, reject) => {
         getArticleItem(this.$route.query.id).then(res => {
-          console.log('文章详情', res)
+          console.log('文章详情detail', res.data)
           this.detail = res.data
           this.playerOptions['sources'][0]['src'] = res.data.articleVediourls
           this.getCommentData()
+          this.getUserInfo(this.detail.createUser)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 作者信息
+    getUserInfo(userName){
+      return new Promise((resolve, reject) => {
+        getUserNameInfo(userName).then(res => {
+          console.log('文章用户', res)
         }).catch(error => {
           reject(error)
         })
@@ -453,6 +464,10 @@ export default {
         getCommentList(data).then(res => {
           console.log('文章评论列表', res)
           this.comment = res.rows
+          this.newTree = buildTree(this.comment)
+          this.newTree.reverse()
+          console.log(this.newTree)
+          console.log(typeof (this.newTree))
         }).catch(error => {
           reject(error)
         })
@@ -469,9 +484,9 @@ export default {
       if (index === 2) {
         this.$refs.CommentPost.commentDialog(item.parentId, item.createUser.userId)
       } else if (index === 1) {
-        this.$refs.CommentPost.commentDialog(item.id)
+        this.$refs.CommentPost.commentDialog(item.id,item.createUser.userId)
       } else {
-        this.$refs.CommentPost.commentDialog()
+        this.$refs.CommentPost.commentDialog(null,)
       }
 
       // this.answerUser = item.answerUser

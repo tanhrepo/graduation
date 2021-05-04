@@ -1,10 +1,11 @@
 // 获取话题列表
 import request from "@/utils/request";
 
-export function getLabelList() {
+export function getLabelList(data) {
   return request({
     url: '/system/lable/list',
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
 

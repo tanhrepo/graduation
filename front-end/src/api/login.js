@@ -16,13 +16,20 @@ export function login(username, password, code, uuid) {
 }
 
 // 获取用户详细信息
-export function getInfo() {
+export function getInfo(data) {
   return request({
     url: '/getInfo',
-    method: 'get'
+    method: 'get',
+    params:data
   })
 }
-
+// 用户名用户详情
+export function getUserNameInfo(data) {
+  return request({
+    url: '/system/user/:'+data,
+    method: 'get',
+  })
+}
 // 退出方法
 export function logout() {
   return request({

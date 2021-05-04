@@ -7,6 +7,7 @@
 
 // 将相同父级的元素放到2级
 export function buildTree(data){
+  data.reverse()
   let TreeData=[];
   let map = new Map(); //存在id,对应所在的内存地址
   let outputObj,parentId;
