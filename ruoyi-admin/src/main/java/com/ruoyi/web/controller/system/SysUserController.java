@@ -126,8 +126,8 @@ public class SysUserController extends BaseController
      */
     @ApiOperation("根据userName获取详细信息")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping("{userName}")
-    public AjaxResult getInfoByuserName(@PathVariable(value = "userName", required = true) String userName)
+    @GetMapping("byName/{userName}")
+    public AjaxResult getInfoByUserName(@PathVariable(value = "userName", required = true) String userName)
     {
         SysUser user = userService.selectUserByUserName(userName);
         return AjaxResult.success(user);
