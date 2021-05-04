@@ -4,7 +4,34 @@
       <div class="fe-page-container fe-flex-between">
         <div class="fe-container-left fe-shadow add-article">
           <p class="fe-font-lg fe-mb-md">新帖子：</p>
-          <div class="selector-topic"><i class="iconfont icon-topic fe-mr-sm"></i>选择话题</div>
+          <div class="selector-topic" @click="selectTopic"><i class="iconfont icon-topic fe-mr-sm"></i>选择话题</div>
+          <el-dialog
+              class="dialog"
+              title="选择话题："
+              :visible.sync="dialogVisible"
+              width="30%">
+            <el-input
+                @keyup.enter.native="getData(searchItem)"
+                v-model="searchItem"
+                style="margin-bottom: 12px">
+              <i slot="suffix" @click="getData(searchItem)" class="el-input__icon el-icon-search"></i>
+            </el-input>
+            <div
+                v-for="(item,index) in itemData"
+                class="selector-topic fe-flex-between"
+                @click="selectT(item.lableName,index)">
+              <p >
+                <i class="iconfont icon-topic"></i>
+                {{ item.lableName }}
+              </p>
+              <i class="iconfont icon-topic"></i>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="resetForm">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+          </el-dialog>
+
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
             <el-form-item prop="articleTitle">
               <el-input
@@ -68,8 +95,7 @@
 
         </div>
         <div class="fe-container-right " style="background-color: #FFFFFF">
-          <img src="~@/assets/images/article/edit.svg" width="100%" alt="">
-
+          <img src="~@/assets/images/article/add_topic.svg" width="100%" alt="">
         </div>
       </div>
     </div>
@@ -80,11 +106,16 @@
 import {mapState} from "vuex";
 import {addArticle} from "@/api/system/article";
 import {putFile} from "@/api/common/file";
+import {getLabelList} from "@/api/system/label";
 
 export default {
   name: "ArticleAdd",
   data() {
     return {
+      itemData: [],
+      dialogVisible: false,
+      select:null,
+      searchItem: '',
       showImg: false,
       showVideo: false,
       fileListImg: [],
@@ -118,6 +149,29 @@ export default {
     this.ruleForm.createUser = this.user.userInfo.userName
   },
   methods: {
+    selectTopic(){
+      this.dialogVisible = true
+      this.getData()
+    },
+    // 数据获取
+    selectT(item,index) {
+      this.ruleForm.articleLable = item
+      this.select = index
+    },
+
+    // 数据获取
+    getData(item) {
+      let param = {lableName: item}
+      console.log(param)
+      return new Promise((resolve, reject) => {
+        getLabelList(param).then(res => {
+          this.itemData = res.rows
+          console.log(this.itemData)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 提交表单，发布文章
     submitForm() {
       this.$refs["ruleForm"].validate((valid) => {
@@ -163,6 +217,8 @@ export default {
       this.postVideo = false
       this.showImg = false
       this.showVideo = false
+      this.dialogVisible = false
+      this.select = null
     },
     // 图片上传
     async uploadFile(item) {
@@ -283,9 +339,11 @@ export default {
   ::v-deep .el-upload {
     width: 100%;
   }
-  .upload-demo{
+
+  .upload-demo {
     margin-bottom: 12px;
   }
+
   .upload-btn {
     width: 100%;
     text-align: left;
@@ -319,6 +377,6 @@ export default {
     background-color: #78DFE8;
     border-color: #78DFE8;
   }
-
 }
+
 </style>

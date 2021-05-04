@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="fe-container-right">
-          <img src="~@/assets/images/article/5_Sign_up.svg" width="100%" alt="">
+          <img src="~@/assets/images/article/draw_kit.svg" width="100%" alt="">
         </div>
       </div>
     </div>

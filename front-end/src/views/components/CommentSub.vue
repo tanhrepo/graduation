@@ -30,7 +30,7 @@
         {{ item.content }}
       </p>
       <!--                  图片-->
-      <div v-if="item.imgs.length">
+      <div v-if="item.imgs">
         <viewer class="detail-img">
           <div v-for="(Img,index) in item.imgs" :key="index" class="detail-img-item">
             <img :src="Img" alt="">
@@ -51,7 +51,7 @@
         </p>
         <p v-if="item.children[1]" class="comment-sub-p">
           <span class="fe-url" style="color: #169bfa">{{ item.children[1].createUser.nickName }}</span>
-          <span v-if="item.children[1].ansUser">
+          <span v-if="item.children[1].ansUser === item.children[1].parentId">
                         <span style="color:#907e7e;margin: 0 4px">回复</span>
                         <span class="fe-url" style="color: #169bfa">
                           {{ item.children[1].ansUser.nickName }}

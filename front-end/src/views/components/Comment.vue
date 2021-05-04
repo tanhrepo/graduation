@@ -3,13 +3,13 @@
     <div id='Comment' class="page-up" @click="comment()">
       <i class="iconfont icon-message"></i>
     </div>
-    <div id='Like' class="page-up" @click="comment()">
+    <div id='Like' class="page-up" @click="">
       <i class="iconfont icon-like"></i>
     </div>
-    <div id='Star' class="page-up" @click="comment()">
+    <div id='Star' class="page-up" @click="">
       <i class="iconfont icon-star"></i>
     </div>
-    <div id='Share' class="page-up" @click="comment()">
+    <div id='Share' class="page-up" @click="">
       <i class="iconfont icon-share"></i>
     </div>
   </div>

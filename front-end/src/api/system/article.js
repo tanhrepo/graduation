@@ -1,10 +1,11 @@
 // 获取文章列表
 import request from "@/utils/request";
 
-export function getArticleList() {
+export function getArticleList(data) {
   return request({
     url: '/system/article/list',
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
 

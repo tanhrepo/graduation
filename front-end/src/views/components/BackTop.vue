@@ -54,7 +54,11 @@ export default {
       }
     },
     addArticle(){
-      this.$router.push({name:'add'})
+      if(this.$route.name === 'topicIndex'){
+        this.$router.push({name:'addTopic'})
+      }else {
+        this.$router.push({name:'add'})
+      }
     },
     refresh(){
       this.$parent.getData();

@@ -138,7 +138,7 @@ const routes = [
           title: '话题',
           index: 4
         },
-      }
+      },
     ]
   },
   // 消息
@@ -157,7 +157,7 @@ const routes = [
       {
         path: 'index',
         name: 'messageIndex',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/topic/TopicPage'),
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/message/MessagePage'),
         meta: {
           title: '消息',
           index: 5
@@ -216,12 +216,30 @@ const routes = [
         },
       },
       {
+        path: 'addTopic',
+        name: 'addTopic',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/topic/components/TopicAdd'),
+        meta: {
+          title: '新建话题',
+          index: 999
+        },
+      },
+      {
         path: 'detail',
         name: 'detail',
         component: () => import(/* webpackChunkName: "dashboard" */ '@/views/article/ArticleDetail'),
         meta: {
           title: '文章详情',
-          index: 999
+          index: 998
+        },
+      },
+      {
+        path: 'topicDetail',
+        name: 'topicDetail',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/topic/TopicDetail'),
+        meta: {
+          title: '话题详情',
+          index: 990
         },
       }
     ]
