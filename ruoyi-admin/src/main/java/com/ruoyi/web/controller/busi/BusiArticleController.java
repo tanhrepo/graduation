@@ -74,7 +74,7 @@ public class BusiArticleController extends BaseController
 
     @ApiOperation("收藏")
     @GetMapping("/collect")
-    public AjaxResult collect(@PathVariable("articleId") Long articleId,@PathVariable("userId") Long userId){
+    public AjaxResult collect( Long articleId, Long userId){
         BusiOperation busiOperation = new BusiOperation();
         busiOperation.setStatus("1");
         busiOperation.setCreateTime(DateUtils.getNowDate());
@@ -104,7 +104,7 @@ public class BusiArticleController extends BaseController
 
     @ApiOperation("分享文章")
     @GetMapping("/share")
-    public AjaxResult share(@PathVariable("articleId") Long articleId,@PathVariable("userId") Long userId){
+    public AjaxResult share(Long articleId,Long userId){
         //分享量 自增  若 没有 hk 会不会 报错？
         stringRedisTemplate.opsForHash().increment(RedisConstans.SHARE_COUNT,String.valueOf(articleId),1L);
         //同步打分
@@ -164,8 +164,8 @@ public class BusiArticleController extends BaseController
      */
     @ApiOperation(" 查询关注【文章】列表")
     @PreAuthorize("@ss.hasPermi('system:article:list')")
-    @GetMapping("/watchList")
-    public TableDataInfo watchList(@PathVariable("userId")Long userId)
+    @GetMapping("/watchList/{userId}")
+    public TableDataInfo watchList(@PathVariable("userId") Long userId)
     {
         startPage();
         List<BusiArticle> res = new ArrayList<>();
@@ -204,7 +204,7 @@ public class BusiArticleController extends BaseController
             }else article.setPraiseCount(0L);
         }
         //根据创建时间排序
-        Collections.sort(res,(x,y)->x.getCreateTime().compareTo(y.getCreateTime()));
+        //Collections.sort(res,(x,y)->x.getCreateTime().compareTo(y.getCreateTime()));
         return getDataTable(res);
     }
 
@@ -214,7 +214,7 @@ public class BusiArticleController extends BaseController
     @ApiOperation(" 查询推荐【文章】列表")
     @PreAuthorize("@ss.hasPermi('system:article:list')")
     @GetMapping("/recommendList")
-    public TableDataInfo watchList(@PathVariable("userId") Long userId, @PathVariable("howmany") Integer howmany) throws SQLException, TasteException {
+    public TableDataInfo watchList(Long userId, Integer howmany) throws SQLException, TasteException {
         startPage();
         List<RecommendedItem> recommends = RecommendUtils.recommend(userId, howmany);
         List<BusiArticle>  result = new ArrayList<>();
