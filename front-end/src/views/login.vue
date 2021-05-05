@@ -234,7 +234,7 @@ export default {
             message: '注册成功',
             type: 'success'
           });
-          this.resetForm()
+          this.resetForm("signUp")
         }).catch(error => {
           reject(error)
         })
