@@ -65,8 +65,8 @@ public class RegisterService {
         user.setUserName(registerUser.getUsername());
         user.setCreateBy(user.getUserName());//自己注册
         user.setPassword(SecurityUtils.encryptPassword(registerUser.getPassword()));
-        user.setRoleIds(new Long[]{2l});//添加角色为 正常角色
-
+        user.setRoleIds(new Long[]{2l});//添加角色为普通角色
+        user.setDeptId(110L);// 普通部门 获取普通角色数据
         int result = userService.insertUser(user);
         if(result > 0){
             return  AjaxResult.success("注册成功");
