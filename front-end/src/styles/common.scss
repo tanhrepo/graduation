@@ -103,6 +103,12 @@
   flex-direction: column;
   justify-content: space-between;
 }
+/* flex-子元素垂直方向上下居中 */
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 /* flex-子元素水平垂直居中 */
 .fe-flex-center {
   display: flex;

@@ -59,3 +59,12 @@ export function postComment(data) {
     data: data
   })
 }
+
+// 文章收藏
+export function getArticleCollect(data) {
+  return request({
+    url: '/system/article/collect',
+    method: 'get',
+    params: data
+  })
+}

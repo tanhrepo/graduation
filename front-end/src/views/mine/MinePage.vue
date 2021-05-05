@@ -22,7 +22,9 @@
             <el-tab-pane label="帖子" name="first">
               <MineArticle ref="mineArticle" :userInfo="userInfo"></MineArticle>
             </el-tab-pane>
-            <el-tab-pane label="关注" name="second">用户管理</el-tab-pane>
+            <el-tab-pane label="关注" name="second">
+              <MineFollow ref="mineFollow"></MineFollow>
+            </el-tab-pane>
             <el-tab-pane label="评论" name="third">
               <MineComment ref="mineComment" :userInfo="userInfo"></MineComment>
             </el-tab-pane>
@@ -45,10 +47,11 @@ import {mapState} from "vuex";
 import BackTop from "@/views/components/BackTop";
 import MineArticle from "@/views/mine/components/MineArticle";
 import MineComment from "@/views/mine/components/MineComment";
+import MineFollow from "@/views/mine/components/MineFollow";
 
 export default {
   name: "MinePage",
-  components: {MineComment, MineArticle, BackTop},
+  components: {MineFollow, MineComment, MineArticle, BackTop},
   data(){
     return{
       userInfo:{},
@@ -68,6 +71,7 @@ export default {
     getData(){
       this.$refs.mineArticle.getData()
       this.$refs.mineComment.getData()
+      this.$refs.mineFollow.getData()
     },
     handleClick(tab, event) {
       console.log(tab, event);

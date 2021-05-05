@@ -5,6 +5,7 @@
  * @date 2021-04-20 11:06
  */
 
+
 // 将相同父级的元素放到2级
 export function buildTree(data){
   data.reverse()
@@ -28,4 +29,16 @@ export function buildTree(data){
     }
   }
   return TreeData;
+}
+
+
+// 根据时间排序
+export function MsgSort(arr,name) {
+  arr.sort((a, b) => {
+    let t1 = new Date(a[name])
+    let t2 = new Date(b[name])
+
+    return t2.getTime() - t1.getTime()
+  })
+  return arr
 }

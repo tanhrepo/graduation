@@ -10,10 +10,13 @@
             <h1>{{ detail.articleTitle }}</h1>
             <div class="detail-title">
               <div class="fe-flex">
-                <img @click="jumpDetail('userPage',createUser.userId)" :src="'http://localhost:8080'+ createUser.avatar" alt="">
+                <img @click="jumpDetail('userPage',createUser.userId)" :src="'http://localhost:8080'+ createUser.avatar"
+                     alt="">
                 <div class="detail-text flex-column-between">
                   <!--          昵称-->
-                  <span @click="jumpDetail('userPage',createUser.userId)" class="fe-url"> {{  createUser.nickName ||"张三" }}</span>
+                  <span @click="jumpDetail('userPage',createUser.userId)" class="fe-url"> {{
+                      createUser.nickName || "张三"
+                    }}</span>
                   <!--          信息-->
                   <span>
                   <span>{{ detail.createTime }}</span>
@@ -22,8 +25,10 @@
                 </span>
                 </div>
               </div>
-              <p style="float: right">
-                <el-button type="primary" plain size="mini">关注</el-button>
+              <p>
+                <el-button type="primary" v-if="!followView" @click="follow(createUser.userId)" plain size="mini">关注
+                </el-button>
+                <el-button type="primary" v-else disabled plain size="mini">已关注</el-button>
               </p>
             </div>
             <p class="detail-content">{{ detail.articleContent }}</p>
@@ -47,11 +52,13 @@
             <!--    控件-->
             <div class="fe-flex-between detail-control">
               <span><i class="iconfont icon-share"/><span>{{ detail.articleTransmitCount }}</span></span>
-              <span><i class="iconfont icon-star"/><span>{{ detail.articleCollectCount }}</span></span>
+              <span><i class="iconfont icon-star"
+                       @click="collect(detail.articleId)"/><span>{{ detail.articleCollectCount }}</span></span>
               <span><i class="iconfont icon-message"
                        @click="commentDialog"/><span>{{ detail.articleCommentCount }}</span></span>
-              <span><i class="iconfont icon-like"/><span>{{ detail.praiseCount - detail.articleTrampleCount }}</span><i
-                  class="iconfont icon-step"/></span>
+              <span><i class="iconfont icon-like"
+                       @click="praiseArticle(detail.articleId,createUser.userId)"/><span>{{detail.praiseCount - detail.articleTrampleCount}}</span>
+                <i @click="trampleArticle(detail.articleId,createUser.userId)" class="iconfont icon-step"/></span>
             </div>
           </div>
 
@@ -126,12 +133,13 @@ import 'vue-video-player/src/custom-theme.css'
 import {videoPlayer} from 'vue-video-player'
 import Comment from "@/views/components/Comment";
 import BackTop from "@/views/components/BackTop";
-import {getCommentList, getArticleItem} from "@/api/system/article";
+import {getCommentList, getArticleItem, getArticleCollect} from "@/api/system/article";
 import {mapState} from "vuex";
 import {buildTree} from "@/utils/mapTree"
 import CommentSub from "@/views/components/CommentSub";
 import CommentPost from "@/views/components/CommentPost";
 import {getUserNameInfo} from "@/api/login";
+import {getFollowList, UserFollow, ArticlePraise,unArticlePraise,ArticleTrample} from "@/api/system/operation"
 
 export default {
   name: "ArticleDetail",
@@ -153,7 +161,7 @@ export default {
         userId: 2
       },
       detail: {
-        createUser:"",
+        createUser: "",
         createTime: '2020-12-10',
         articleTitle: '这是一个淡淡的标题',
         articleContent: '一只公鸡，由于不愿参加一场斗鸡比赛，用身上绑着的刀，刺中其主人，最终导致对方因失血过多死亡。\n' +
@@ -411,6 +419,7 @@ export default {
       sort: 0,
       isHidden: true,
       drawer: false,
+      followView: null,
     }
   },
   computed: {
@@ -454,21 +463,51 @@ export default {
         })
       })
     },
-    jumpDetail(name,id){
+
+    follow(userId) {
+      let data = {
+        createBy: this.user.userInfo.userName,
+        followId: this.user.userInfo.userId,
+        userId: userId
+      }
+      return new Promise((resolve, reject) => {
+        UserFollow(data).then(res => {
+          console.log('关注用户', res.data)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    jumpDetail(name, id) {
       this.$router.push({
         name,
-        query:{
+        query: {
           id,
         }
       })
     },
     // 作者信息
-    getUserInfo(userName){
+    getUserInfo(userName) {
       return new Promise((resolve, reject) => {
         getUserNameInfo(userName).then(res => {
           console.log('文章用户', res.data)
           this.createUser = res.data
           this.getCommentData()
+          this.getFollowData(this.createUser.userId)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    getFollowData(userId) {
+      let data = {
+        followId: this.user.userInfo.userId,
+        userId: userId
+      }
+      return new Promise((resolve, reject) => {
+        getFollowList(data).then(res => {
+          console.log("关注没有", res)
+          this.followView = res.total
         }).catch(error => {
           reject(error)
         })
@@ -498,21 +537,79 @@ export default {
       console.log(command)
       this.sort = command
     },
+    // 收藏文章
+    collect(id) {
+      let data = {
+        articleId: id,
+        userId: this.user.userInfo.userId,
+      }
+      return new Promise((resolve, reject) => {
+        getArticleCollect(data).then(res => {
+          console.log('文章收藏', res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 评论弹窗
     commentDialog(item, index) {
       console.log("item", item)
       if (index === 2) {
         this.$refs.CommentPost.commentDialog(item.parentId, item.createUser.userId)
       } else if (index === 1) {
-        this.$refs.CommentPost.commentDialog(item.id,item.createUser.userId)
+        this.$refs.CommentPost.commentDialog(item.id, item.createUser.userId)
       } else {
-        this.$refs.CommentPost.commentDialog(null,this.createUser.userId)
+        this.$refs.CommentPost.commentDialog(null, this.createUser.userId)
       }
 
       // this.answerUser = item.answerUser
       // this.parentId = item.parentId
     },
-
+    // 点赞文章
+    praiseArticle(articleId, likedUserId) {
+      let data = {
+        articleId: articleId,
+        likedUserId: likedUserId,
+        userId: this.user.userInfo.userId,
+      }
+      return new Promise((resolve, reject) => {
+        ArticlePraise(data).then(res => {
+          console.log('文章点赞', res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 取消文章点赞
+    unPraiseArticle(articleId, likedUserId) {
+      let data = {
+        articleId: articleId,
+        likedUserId: likedUserId,
+        userId: this.user.userInfo.userId,
+      }
+      return new Promise((resolve, reject) => {
+        unArticlePraise(data).then(res => {
+          console.log('文章点赞', res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 踩文章
+    trampleArticle(articleId, likedUserId){
+      let data = {
+        articleId: articleId,
+        likedUserId: likedUserId,
+        userId: this.user.userInfo.userId,
+      }
+      return new Promise((resolve, reject) => {
+        ArticleTrample(data).then(res => {
+          console.log('文章踩', res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
 
     // 更多评论
     drawerSub(data) {
