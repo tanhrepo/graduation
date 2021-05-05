@@ -26,10 +26,20 @@ export function getInfo(data) {
 // 用户名用户详情
 export function getUserNameInfo(data) {
   return request({
-    url: '/system/user/:'+data,
+    url: '/system/user/byName/'+data,
     method: 'get',
   })
 }
+// id用户详情
+export function getIdUserInfo(data) {
+  return request({
+    url: '/system/user/'+data,
+    method: 'get',
+  })
+}
+
+
+
 // 退出方法
 export function logout() {
   return request({

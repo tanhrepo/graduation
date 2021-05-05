@@ -44,8 +44,9 @@
 
         </div>
         <div class="fe-container-right " style="background-color: #FFFFFF">
-          <img src="~@/assets/images/article/edit.svg" width="100%" alt="">
-
+          <div class="fe-fixed-right">
+            <img src="~@/assets/images/article/edit.svg" width="100%" alt="">
+          </div>
         </div>
       </div>
     </div>

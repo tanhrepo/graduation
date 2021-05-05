@@ -37,10 +37,8 @@
         <img :src="avatar || baseAvatar" class="user-img" alt="">
       </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item @click="handleLogout" divided>退出登录</el-dropdown-item>
+          <el-dropdown-item>修改资料</el-dropdown-item>
+          <el-dropdown-item :hide-on-click="false" @click="handleLogout()" divided>退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -125,6 +123,7 @@ export default {
     },
     // 退出登录
     handleLogout() {
+      console.log(1)
       deleteAction(loginOut).then(() => {
         this.$confirm('是否确定退出登录?', '提示', {
           confirmButtonText: '确定',

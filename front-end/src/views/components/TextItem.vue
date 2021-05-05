@@ -1,18 +1,16 @@
 <template>
   <div class="text-item fe-bd-b">
-    <div class="text-item-title fe-flex-between">
+    <div class="text-item-title">
       <div class="title-container">
-        <img v-if="ItemData.user.avatar" :src="'http://localhost:8080' + ItemData.user.avatar" alt="">
+        <img class="fe-url" @click="jumpDetail('userPage',ItemData.user.userId)" v-if="ItemData.user.avatar" :src="'http://localhost:8080' + ItemData.user.avatar" alt="">
         <div class="flex-column-between title-text">
           <!--          标题-->
-          <span @click="jumpDetail(ItemData.articleId)" class="fe-url">{{ ItemData.articleTitle }}</span>
+          <span @click="jumpDetail('detail',ItemData.articleId)" class="fe-url">{{ ItemData.articleTitle }}</span>
           <!--          昵称-->
-          <span>{{ ItemData.user.nickName }}</span>
+          <span @click="jumpDetail('userPage',ItemData.user.userId)" class="fe-url">{{ ItemData.user.nickName }}</span>
         </div>
       </div>
-      <p>
-        <el-button type="primary" plain size="mini">关注</el-button>
-      </p>
+
     </div>
     <!--    文章内容-->
     <p class="text-item-content" @click="isHidden = !isHidden" :class="{'text-item-content-hidden':isHidden}">
@@ -39,7 +37,7 @@
     <div class="fe-flex-between item-control">
       <span><i class="iconfont icon-share"/><span>{{ ItemData.articleTransmitCount }}</span></span>
       <span><i class="iconfont icon-star"/><span>{{ ItemData.articleCollectCount }}</span></span>
-      <span><i class="iconfont icon-message" @click="jumpDetail(ItemData.articleId)" /><span>{{ ItemData.articleCommentCount }}</span></span>
+      <span><i class="iconfont icon-message" @click="jumpDetail('detail',ItemData.articleId)" /><span>{{ ItemData.articleCommentCount }}</span></span>
       <span><i class="iconfont icon-like"/><span>{{ ItemData.praiseCount - ItemData.articleTrampleCount }}</span><i class="iconfont icon-step"/></span>
     </div>
   </div>
@@ -82,9 +80,9 @@ export default {
     this.playerOptions['sources'][0]['src'] = this.ItemData.articleVediourls
   },
   methods: {
-    jumpDetail(id){
+    jumpDetail(name,id){
       this.$router.push({
-        name:'detail',
+        name,
         query:{
           id,
         }
@@ -135,9 +133,6 @@ export default {
       }
     }
 
-    .el-button {
-      border-radius: 12px;
-    }
   }
 
   .text-item-content {

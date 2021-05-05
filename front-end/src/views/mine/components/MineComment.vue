@@ -1,34 +1,30 @@
 <template>
-  <div class="fe-page">
-    <div id="ImageText" class="fe-scroll-y fe-ptd-30">
-      <BackTop :ID='"ImageText"'></BackTop>
-      <div class="fe-page-container fe-flex-between">
-        <div class="fe-container-left" style="background-color: #FFFFFF">
-          <div v-for="(item,index) in itemData" :key="index">
-            <MessageItem :ItemData="item"></MessageItem>
-          </div>
-        </div>
-        <div class="fe-container-right">
-          <div class="fe-fixed-right">
-            <img src="~@/assets/images/article/message.svg" width="100%" alt="">
-          </div>
-        </div>
-      </div>
+  <div>
+    <div v-for="(item,index) in itemData" :key="index">
+      <MessageItem :ItemData="item"></MessageItem>
     </div>
   </div>
 </template>
 
 <script>
-import BackTop from "@/views/components/BackTop";
-import {getCommentList} from "@/api/system/article";
-import {mapState} from "vuex";
 import MessageItem from "@/views/message/components/MessageItem";
+import {getCommentList} from "@/api/system/article";
 
 export default {
-  name: "MessagePage",
-  components: {MessageItem, BackTop},
-  data() {
-    return {
+  name: "MineComment",
+  props: ["userInfo"],
+  watch: {
+    'userInfo': {
+      deep: true,
+      handler (val) {
+        console.log("val",val)
+        this.getData()
+      }
+    }
+  },
+  components: {MessageItem},
+  data(){
+    return{
       itemData: [
         {
           id: 19,
@@ -52,17 +48,11 @@ export default {
       ]
     }
   },
-  created() {
-    this.getData()
-  },
-  computed: {
-    ...mapState(["user"]),
-  },
   methods: {
     // 数据获取
     getData() {
       let data = {
-        answerUser: this.user.userInfo.userId
+        createBy: this.userInfo.userName
       }
       return new Promise((resolve, reject) => {
         getCommentList(data).then(res => {

@@ -1,0 +1,37 @@
+.user-title {
+  position: relative;
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+
+  .user-title-bg{
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    top: -40px;
+    right: -30px;
+  }
+  img {
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    margin-right: 28px;
+  }
+  .userInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 90px;
+    span{
+      font-size: 26px;
+    }
+  }
+  p{
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+  }
+}

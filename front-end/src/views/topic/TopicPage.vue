@@ -10,14 +10,16 @@
           </div>
         </div>
         <div class="fe-container-right">
-          <img src="~@/assets/images/article/growth.svg" width="100%" alt="">
-          <div class="fe-flex-between h-auto fe-font-lg refresh-q">
-            <span>推荐话题</span>
-            <span @click="refresh" class="refresh"><i class="iconfont icon-refresh"></i>换一批</span>
-          </div>
-          <div v-for="(item,index) in itemData.slice(start,stop)" class="top" :class="topicRight[index]">
-            <p># {{ item.lableName }}</p>
-            <img :src="img[index]" alt="">
+          <div class="fe-fixed-right">
+            <img src="~@/assets/images/article/growth.svg" width="100%" alt="">
+            <div class="fe-flex-between h-auto fe-font-lg refresh-q">
+              <span>推荐话题</span>
+              <span @click="refresh" class="refresh"><i class="iconfont icon-refresh"></i>换一批</span>
+            </div>
+            <div v-for="(item,index) in itemData.slice(start,stop)" class="top" :class="topicRight[index]">
+              <p># {{ item.lableName }}</p>
+              <img :src="img[index]" alt="">
+            </div>
           </div>
         </div>
       </div>

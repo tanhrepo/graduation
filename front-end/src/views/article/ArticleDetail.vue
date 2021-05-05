@@ -9,17 +9,22 @@
           <div class="fe-shadow article-detail">
             <h1>{{ detail.articleTitle }}</h1>
             <div class="detail-title">
-              <img src="~@/assets/images/item/item_01.png" alt="">
-              <div class="detail-text flex-column-between">
-                <!--          昵称-->
-                <span class="fe-url"> {{ "张三" || detail.nickName }}</span>
-                <!--          信息-->
-                <span>
-                <span>{{ detail.createTime }}</span>
-                <span>字数: {{ wordCount }}</span>
-                <span>阅读: {{ detail.articleViewCount }}</span>
-              </span>
+              <div class="fe-flex">
+                <img @click="jumpDetail('userPage',createUser.userId)" :src="'http://localhost:8080'+ createUser.avatar" alt="">
+                <div class="detail-text flex-column-between">
+                  <!--          昵称-->
+                  <span @click="jumpDetail('userPage',createUser.userId)" class="fe-url"> {{  createUser.nickName ||"张三" }}</span>
+                  <!--          信息-->
+                  <span>
+                  <span>{{ detail.createTime }}</span>
+                  <span>字数: {{ wordCount }}</span>
+                  <span>阅读: {{ detail.articleViewCount }}</span>
+                </span>
+                </div>
               </div>
+              <p style="float: right">
+                <el-button type="primary" plain size="mini">关注</el-button>
+              </p>
             </div>
             <p class="detail-content">{{ detail.articleContent }}</p>
             <!--    图片-->
@@ -141,8 +146,14 @@ export default {
     return {
       parentId: null,
       answerUser: null,
+      createUser: {
+        avatar: "/profile/avatar/2021/04/19/6988e1c5-ba19-4de5-9092-700db4a7bee6.jpeg",
+        nickName: "",
+        userName: "admin",
+        userId: 2
+      },
       detail: {
-        nickName: '张三',
+        createUser:"",
         createTime: '2020-12-10',
         articleTitle: '这是一个淡淡的标题',
         articleContent: '一只公鸡，由于不愿参加一场斗鸡比赛，用身上绑着的刀，刺中其主人，最终导致对方因失血过多死亡。\n' +
@@ -437,18 +448,27 @@ export default {
           console.log('文章详情detail', res.data)
           this.detail = res.data
           this.playerOptions['sources'][0]['src'] = res.data.articleVediourls
-          this.getCommentData()
           this.getUserInfo(this.detail.createUser)
         }).catch(error => {
           reject(error)
         })
       })
     },
+    jumpDetail(name,id){
+      this.$router.push({
+        name,
+        query:{
+          id,
+        }
+      })
+    },
     // 作者信息
     getUserInfo(userName){
       return new Promise((resolve, reject) => {
         getUserNameInfo(userName).then(res => {
-          console.log('文章用户', res)
+          console.log('文章用户', res.data)
+          this.createUser = res.data
+          this.getCommentData()
         }).catch(error => {
           reject(error)
         })
@@ -486,7 +506,7 @@ export default {
       } else if (index === 1) {
         this.$refs.CommentPost.commentDialog(item.id,item.createUser.userId)
       } else {
-        this.$refs.CommentPost.commentDialog(null,)
+        this.$refs.CommentPost.commentDialog(null,this.createUser.userId)
       }
 
       // this.answerUser = item.answerUser
@@ -497,7 +517,7 @@ export default {
     // 更多评论
     drawerSub(data) {
       console.log(data)
-      this.newTreeSub = data
+      this.newTreeSub = data.reverse()
       this.drawer = true
     },
 
@@ -516,6 +536,7 @@ export default {
     margin-top: 12px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     img {
       object-fit: cover;

@@ -19,7 +19,7 @@
 /* 页面滚动 */
 .fe-scroll-y {
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 /* 左边内容 */
 .fe-container-left {
@@ -30,6 +30,12 @@
 .fe-container-right {
   width: 280px;
   height: auto;
+}
+.fe-fixed-right{
+  position: fixed;
+  top: 90px;
+  width: 280px;
+  transition: all .2s;
 }
 /* 主视图区域 */
 .fe-view {

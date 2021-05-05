@@ -21,7 +21,7 @@
       </div>
       <!--                  内容-->
       <p class="right-content" @click="isHidden = !isHidden" :class="{'right-content-hidden':isHidden}">
-        <span v-if="item.ansUser">
+        <span v-if="item.ansUser && item.parentId && item.answerUser !== item.createUser.userId">
             <span style="color:#907e7e;margin: 0 4px 0 0">回复</span>
             <span class="fe-url" style="color: #169bfa">
               {{ item.ansUser.nickName }}：
@@ -41,7 +41,7 @@
       <div v-if="item.children" class="comment-item-sub">
         <p class="comment-sub-p">
           <span class="fe-url" style="color: #169bfa">{{ item.children[0].createUser.nickName }}</span>
-          <span v-if="item.children[0].ansUser">
+          <span v-if="item.children[0].ansUser && item.children[0].answerUser !== item.children[0].createUser.userId">
             <span style="color:#907e7e;margin: 0 4px">回复</span>
             <span class="fe-url" style="color: #169bfa">
               {{ item.children[0].ansUser.nickName }}
@@ -51,7 +51,7 @@
         </p>
         <p v-if="item.children[1]" class="comment-sub-p">
           <span class="fe-url" style="color: #169bfa">{{ item.children[1].createUser.nickName }}</span>
-          <span v-if="item.children[1].ansUser === item.children[1].parentId">
+          <span v-if="item.children[1].ansUser && item.children[1].answerUser !== item.children[1].createUser.userId">
                         <span style="color:#907e7e;margin: 0 4px">回复</span>
                         <span class="fe-url" style="color: #169bfa">
                           {{ item.children[1].ansUser.nickName }}

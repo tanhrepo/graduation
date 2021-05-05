@@ -10,7 +10,9 @@
           </div>
         </div>
         <div class="fe-container-right">
-          <img src="~@/assets/images/article/Social_Media.svg" width="100%" alt="">
+          <div class="fe-fixed-right">
+            <img src="~@/assets/images/article/Social_Media.svg" width="100%" alt="">
+          </div>
         </div>
       </div>
     </div>

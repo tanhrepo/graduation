@@ -1,7 +1,7 @@
 <template>
   <div class="fe-page">
-    <div id="MinePage" class="fe-scroll-y fe-ptd-30">
-      <BackTop :ID='"MinePage"'></BackTop>
+    <div id="UserPage" class="fe-scroll-y fe-ptd-30">
+      <BackTop :ID='"UserPage"'></BackTop>
       <div class="fe-page-container fe-flex-between">
         <div class="fe-container-left" style="background-color: #FFFFFF">
           <div class="fe-shadow user-title">
@@ -14,25 +14,23 @@
               </div>
             </div>
             <div style="z-index: 100;">
-              <el-button @click="jumpUser">编辑个人资料</el-button>
+              <el-button>+点击关注</el-button>
             </div>
-            <img class="user-title-bg" src="~@/assets/images/article/space_user.svg" alt="">
+            <img class="user-title-bg" src="~@/assets/images/article/user_space.svg" alt="">
           </div>
           <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
             <el-tab-pane label="帖子" name="first">
-              <MineArticle ref="mineArticle" :userInfo="userInfo"></MineArticle>
+              <MineArticle :userInfo="userInfo"></MineArticle>
             </el-tab-pane>
-            <el-tab-pane label="关注" name="second">用户管理</el-tab-pane>
             <el-tab-pane label="评论" name="third">
-              <MineComment ref="mineComment" :userInfo="userInfo"></MineComment>
+              <MineComment :userInfo="userInfo"></MineComment>
             </el-tab-pane>
-            <el-tab-pane label="收藏" name="fourth">角色管理</el-tab-pane>
             <el-tab-pane label="点赞" name="fifth">定时任务补偿</el-tab-pane>
           </el-tabs>
         </div>
         <div class="fe-container-right">
           <div class="fe-fixed-right">
-            <img src="~@/assets/images/article/mine.svg" width="100%" alt="">
+            <img src="~@/assets/images/article/space_detail.svg" width="100%" alt="">
           </div>
         </div>
       </div>
@@ -41,13 +39,13 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
-import BackTop from "@/views/components/BackTop";
-import MineArticle from "@/views/mine/components/MineArticle";
 import MineComment from "@/views/mine/components/MineComment";
+import MineArticle from "@/views/mine/components/MineArticle";
+import BackTop from "@/views/components/BackTop";
+import {getIdUserInfo} from "@/api/login";
 
 export default {
-  name: "MinePage",
+  name: "UserPage",
   components: {MineComment, MineArticle, BackTop},
   data(){
     return{
@@ -55,27 +53,27 @@ export default {
       activeName:'first',
     }
   },
-  computed: {
-    ...mapState(["user"]),
-  },
   created() {
-    this.userInfo = this.user.userInfo
-  },
-  mounted() {
     this.getData()
   },
-  methods:{
-    getData(){
-      this.$refs.mineArticle.getData()
-      this.$refs.mineComment.getData()
+  methods: {
+    // 数据获取
+    getData() {
+      let data = this.$route.query.id
+      return new Promise((resolve, reject) => {
+        getIdUserInfo(data).then(res => {
+          this.userInfo = res.data
+          console.log("userInfo",this.userInfo)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
     handleClick(tab, event) {
       console.log(tab, event);
-    },
-    jumpUser(){
-      this.$router.push({name:'userItem'})
     }
   }
+
 }
 </script>
 

@@ -195,8 +195,8 @@ const routes = [
   },
   // 新建文章
   {
-    path: '/article',
-    name: 'article',
+    path: '/system',
+    name: 'system',
     component: Main,
     meta: {
       title: '编辑',
@@ -240,6 +240,24 @@ const routes = [
         meta: {
           title: '话题详情',
           index: 990
+        },
+      },
+      {
+        path: 'userPage',
+        name: 'userPage',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/mine/UserPage'),
+        meta: {
+          title: '个人主页',
+          index: 991
+        },
+      },
+      {
+        path: 'userItem',
+        name: 'userItem',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/mine/user/index'),
+        meta: {
+          title: '个人主页',
+          index: 992
         },
       }
     ]

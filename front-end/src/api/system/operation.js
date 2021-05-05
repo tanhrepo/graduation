@@ -10,3 +10,11 @@ export function ArticlePraise(data) {
   })
 }
 
+// 关注用户
+export function UserFollow(data) {
+  return request({
+    url: '/system/praise/likeArticle',
+    method: 'get',
+    params: data
+  })
+}
