@@ -38,14 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectBusiArticleList" parameterType="BusiArticle" resultMap="BusiArticleResult">
-        select article_id, article_content, article_imgurls, create_user, create_time, update_time, article_lable, article_title, article_view_count,
-        (
-        SELECT count(*) as count
-        from busi_comment
-        where busi_comment.article_id = busi_article.article_id
-        ) as article_comment_count,
-        article_collect_count, article_transmit_count, article_trample_count, article_vediourls from busi_article
-
+        <include refid="selectBusiArticleCount"/>
         <where>
             <if test="articleContent != null  and articleContent != ''">
                 and article_content  like concat('%', #{articleContent}, '%')
