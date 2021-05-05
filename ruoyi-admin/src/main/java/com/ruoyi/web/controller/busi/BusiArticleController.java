@@ -79,8 +79,8 @@ public class BusiArticleController extends BaseController
         busiOperation.setStatus("1");
         busiOperation.setCreateTime(DateUtils.getNowDate());
         busiOperation.setOperationTime(DateUtils.getNowDate());
-        busiOperation.setEntityType(5);
         busiOperation.setEntityType(1);
+        busiOperation.setOperationType(5);
         busiOperation.setEntityId(articleId);
         busiOperation.setOperationUser(userId);
         operationService.insertBusiOperation(busiOperation);
@@ -159,6 +159,11 @@ public class BusiArticleController extends BaseController
             if(praiseCount != null){
                 article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
             }else article.setPraiseCount(0L);
+            //填充 踩一踩量
+            Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
+            if(praiseCount != null){
+                article.setArticleTrampleCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else article.setArticleTrampleCount(0L);
 
         }
         return getDataTable(list);
@@ -206,6 +211,11 @@ public class BusiArticleController extends BaseController
             if(praiseCount != null){
                 article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
             }else article.setPraiseCount(0L);
+            //填充 踩一踩量
+            Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(article.getArticleId()));
+            if(praiseCount != null){
+                article.setArticleTrampleCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else article.setArticleTrampleCount(0L);
         }
         //根据创建时间排序
         //Collections.sort(res,(x,y)->x.getCreateTime().compareTo(y.getCreateTime()));
@@ -262,6 +272,11 @@ public class BusiArticleController extends BaseController
             if(praiseCount != null){
                 article.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
             }else article.setPraiseCount(0L);
+            //填充 踩一踩量
+            Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(article.getArticleId()));
+            if(praiseCount != null){
+                article.setArticleTrampleCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else article.setArticleTrampleCount(0L);
         }
         return getDataTable(result);
     }
@@ -298,6 +313,11 @@ public class BusiArticleController extends BaseController
             if(praiseCount != null){
                 busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
             }else busiArticle.setPraiseCount(0L);
+            //填充 踩一踩量
+            Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
+            if(praiseCount != null){
+                busiArticle.setArticleTrampleCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else busiArticle.setArticleTrampleCount(0L);
         }
         return getDataTable(list);
     }
@@ -332,6 +352,11 @@ public class BusiArticleController extends BaseController
             if(praiseCount != null){
                 busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
             }else busiArticle.setPraiseCount(0L);
+            //填充 踩一踩量
+            Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
+            if(praiseCount != null){
+                busiArticle.setArticleTrampleCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else busiArticle.setArticleTrampleCount(0L);
         }
         return getDataTable(list);
     }
@@ -374,6 +399,12 @@ public class BusiArticleController extends BaseController
         if(praiseCount != null){
             busiArticle.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
         }else busiArticle.setPraiseCount(0L);
+
+        //填充 踩一踩量
+        Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.ARTICLE_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(busiArticle.getArticleId()));
+        if(praiseCount != null){
+            busiArticle.setArticleTrampleCount(Long.valueOf(String.valueOf(praiseCount)));
+        }else busiArticle.setArticleTrampleCount(0L);
         return AjaxResult.success(busiArticle);
     }
 
