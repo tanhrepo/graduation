@@ -22,20 +22,15 @@
 <script>
 import BackTop from "@/views/components/BackTop";
 import TextItem from "@/views/components/TextItem";
-import {getArticleList} from "@/api/system/article";
-import { getFollowList } from "@/api/system/operation"
-import { getIdUserInfo } from "@/api/login"
+import { getFollowArticleList } from "@/api/system/operation"
 import {mapState} from "vuex";
-import {MsgSort} from  "@/utils/mapTree.js"
 
 export default {
 name: "Following",
   components: {BackTop, TextItem},
   data() {
     return {
-      itemData: [
-
-      ]
+      itemData: []
     }
   },
   created() {
@@ -47,47 +42,15 @@ name: "Following",
   methods: {
     // 数据获取
     getData() {
-      let data = {
-        followId:this.user.userInfo.userId,
-      }
       return new Promise((resolve, reject) => {
-        getFollowList(data).then(res => {
+        getFollowArticleList(this.user.userInfo.userId).then(res => {
           console.log("关注列表",res.rows)
-          for(let i = 0,j = res.rows.length;i<j;i++){
-            this.getUserInfo(res.rows[i].userId)
-          }
+          this.itemData = res.rows
         }).catch(error => {
           reject(error)
         })
       })
     },
-    getUserInfo(id){
-      return new Promise((resolve, reject) => {
-        getIdUserInfo(id).then(res => {
-          console.log("关注用户",res.data)
-          this.getArticle(res.data.userName)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-    // 文章数据获取
-    getArticle(userName){
-      let data = {
-        createUser:userName,
-      }
-      return new Promise((resolve, reject) => {
-        getArticleList(data).then(res => {
-          console.log(res)
-          this.itemData.push.apply(this.itemData,res.rows)
-          console.log("this.itemData",this.itemData)
-          this.itemData = MsgSort(this.itemData,'createTime')
-          console.log("new",this.itemData)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    }
   }
 }
 </script>

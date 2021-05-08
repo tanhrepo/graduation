@@ -13,9 +13,9 @@
         <div class="top-right">
           <span @click="reply(item)" class="reply fe-align-center"><i class="iconfont icon-message"> 回复</i></span>
           <span class="grey-bar"></span>
-          <i class="iconfont icon-like"/>
+          <i @click="praiseComment(item.id,item.createUser.userId)" class="iconfont icon-like"/>
           <span>{{ item.praiseCount - item.trampleCount }}</span>
-          <i class="iconfont icon-step"/>
+          <i @click="trampleComment(item.id,item.createUser.userId)" class="iconfont icon-step"/>
         </div>
 
       </div>
@@ -66,6 +66,9 @@
 </template>
 
 <script>
+import {CommentPraise,CommentTrample} from "@/api/system/operation";
+import {mapState} from "vuex";
+
 export default {
   name: "CommentSub",
   props: ["item"],
@@ -74,7 +77,40 @@ export default {
       isHidden:true
     }
   },
+  computed:{
+    ...mapState(["user"]),
+  },
   methods: {
+    // 点赞评论
+    praiseComment(commentId, likedUserId) {
+      let data = {
+        commentId: commentId,
+        likedUserId: likedUserId,
+        userId: this.user.userInfo.userId,
+      }
+      return new Promise((resolve, reject) => {
+        CommentPraise(data).then(res => {
+          console.log('评论点赞', res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 踩评论
+    trampleComment(commentId,trampledUserId){
+      let data = {
+        commentId: commentId,
+        trampledUserId: trampledUserId,
+        userId: this.user.userInfo.userId,
+      }
+      return new Promise((resolve, reject) => {
+        CommentTrample(data).then(res => {
+          console.log('评论点赞', res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     drawerSub(data) {
       this.$parent.drawerSub(data)
     },

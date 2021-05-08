@@ -25,7 +25,9 @@
             <el-tab-pane label="评论" name="third">
               <MineComment :userInfo="userInfo"></MineComment>
             </el-tab-pane>
-            <el-tab-pane label="点赞" name="fifth">定时任务补偿</el-tab-pane>
+            <el-tab-pane label="收藏" name="fourth">
+              <MineStar ref="mineStar" :userInfo="userInfo"></MineStar>
+            </el-tab-pane>
           </el-tabs>
         </div>
         <div class="fe-container-right">
@@ -43,10 +45,11 @@ import MineComment from "@/views/mine/components/MineComment";
 import MineArticle from "@/views/mine/components/MineArticle";
 import BackTop from "@/views/components/BackTop";
 import {getIdUserInfo} from "@/api/login";
+import MineStar from "@/views/mine/components/MineStar";
 
 export default {
   name: "UserPage",
-  components: {MineComment, MineArticle, BackTop},
+  components: {MineStar, MineComment, MineArticle, BackTop},
   data(){
     return{
       userInfo:{},

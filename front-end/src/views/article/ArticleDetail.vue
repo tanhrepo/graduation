@@ -51,7 +51,8 @@
             </div>
             <!--    控件-->
             <div class="fe-flex-between detail-control">
-              <span><i class="iconfont icon-share"/><span>{{ detail.articleTransmitCount }}</span></span>
+              <span><i class="iconfont icon-share"
+              @click="share(detail.articleId)"/><span>{{ detail.articleTransmitCount }}</span></span>
               <span><i class="iconfont icon-star"
                        @click="collect(detail.articleId)"/><span>{{ detail.articleCollectCount }}</span></span>
               <span><i class="iconfont icon-message"
@@ -133,7 +134,7 @@ import 'vue-video-player/src/custom-theme.css'
 import {videoPlayer} from 'vue-video-player'
 import Comment from "@/views/components/Comment";
 import BackTop from "@/views/components/BackTop";
-import {getCommentList, getArticleItem, getArticleCollect} from "@/api/system/article";
+import {getCommentList, getArticleItem, getArticleCollect,getArticleShare} from "@/api/system/article";
 import {mapState} from "vuex";
 import {buildTree} from "@/utils/mapTree"
 import CommentSub from "@/views/components/CommentSub";
@@ -537,6 +538,20 @@ export default {
       console.log(command)
       this.sort = command
     },
+    // 分享文章
+    share(id){
+      let data = {
+        articleId: id,
+        userId: this.user.userInfo.userId,
+      }
+      return new Promise((resolve, reject) => {
+        getArticleShare(data).then(res => {
+          console.log('文章分享', res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 收藏文章
     collect(id) {
       let data = {
@@ -580,6 +595,7 @@ export default {
         })
       })
     },
+
     // 取消文章点赞
     unPraiseArticle(articleId, likedUserId) {
       let data = {
@@ -590,16 +606,17 @@ export default {
       return new Promise((resolve, reject) => {
         unArticlePraise(data).then(res => {
           console.log('文章点赞', res)
+          this.getData()
         }).catch(error => {
           reject(error)
         })
       })
     },
     // 踩文章
-    trampleArticle(articleId, likedUserId){
+    trampleArticle(articleId, trampledUserId){
       let data = {
         articleId: articleId,
-        likedUserId: likedUserId,
+        trampledUserId: trampledUserId,
         userId: this.user.userInfo.userId,
       }
       return new Promise((resolve, reject) => {

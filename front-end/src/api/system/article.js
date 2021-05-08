@@ -61,6 +61,15 @@ export function postComment(data) {
 }
 
 // 文章收藏
+export function getArticleShare(data) {
+  return request({
+    url: '/system/article/share',
+    method: 'get',
+    params: data
+  })
+}
+
+// 文章收藏
 export function getArticleCollect(data) {
   return request({
     url: '/system/article/collect',

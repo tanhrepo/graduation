@@ -1,10 +1,10 @@
 <template>
 <div class="follow-item">
   <div class="fe-flex">
-    <img :src="'http://localhost:8080' + itemData.avatar" alt="">
+    <img @click="jumpDetail('userPage',itemData.userId)" :src="'http://localhost:8080' + itemData.avatar" alt="">
     <div class="flex-column-between">
-      <p>{{ itemData.nickName }}</p>
-      <span>{{ itemData.createTime }}</span>
+      <span class="fe-url">{{ itemData.nickName }}</span>
+      <p>{{ itemData.createTime }}</p>
     </div>
   </div>
 
@@ -34,6 +34,14 @@ export default {
     this.getFollowData(this.itemData.userId)
   },
   methods:{
+    jumpDetail(name,id){
+      this.$router.push({
+        name,
+        query:{
+          id,
+        }
+      })
+    },
     follow(userId){
       let data = {
         createBy:this.user.userInfo.userName,
@@ -42,7 +50,6 @@ export default {
       }
       return new Promise((resolve, reject) => {
         UserFollow(data).then(res => {
-          console.log('关注用户', res)
           this.getFollowData(userId)
         }).catch(error => {
           reject(error)
@@ -56,7 +63,6 @@ export default {
       }
       return new Promise((resolve, reject) => {
         getFollowList(data).then(res => {
-          console.log("关注没有",res)
           this.followView = res.total
         }).catch(error => {
           reject(error)
@@ -76,7 +82,6 @@ export default {
 
 
   &:hover{
-    cursor: pointer;
     background-color: #EBEBEB;
     border-radius: 12px;
     transition: 0.4s background-color;
@@ -87,7 +92,7 @@ export default {
     border-radius: 50%;
     margin-right: 12px;
   }
-  P{
+  span{
     font-size: 14px;
   }
 }

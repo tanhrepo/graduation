@@ -28,8 +28,12 @@
             <el-tab-pane label="评论" name="third">
               <MineComment ref="mineComment" :userInfo="userInfo"></MineComment>
             </el-tab-pane>
-            <el-tab-pane label="收藏" name="fourth">角色管理</el-tab-pane>
-            <el-tab-pane label="点赞" name="fifth">定时任务补偿</el-tab-pane>
+            <el-tab-pane label="收藏" name="fourth">
+              <MineStar ref="mineStar" :userInfo="userInfo"></MineStar>
+            </el-tab-pane>
+<!--            <el-tab-pane label="点赞" name="fifth">-->
+<!--              <MinePraise ref="minePraise" :userInfo="userInfo"></MinePraise>-->
+<!--            </el-tab-pane>-->
           </el-tabs>
         </div>
         <div class="fe-container-right">
@@ -48,10 +52,12 @@ import BackTop from "@/views/components/BackTop";
 import MineArticle from "@/views/mine/components/MineArticle";
 import MineComment from "@/views/mine/components/MineComment";
 import MineFollow from "@/views/mine/components/MineFollow";
+import MinePraise from "@/views/mine/components/MinePraise";
+import MineStar from "@/views/mine/components/MineStar";
 
 export default {
   name: "MinePage",
-  components: {MineFollow, MineComment, MineArticle, BackTop},
+  components: {MineStar, MinePraise, MineFollow, MineComment, MineArticle, BackTop},
   data(){
     return{
       userInfo:{},
@@ -72,6 +78,8 @@ export default {
       this.$refs.mineArticle.getData()
       this.$refs.mineComment.getData()
       this.$refs.mineFollow.getData()
+      // this.$refs.minePraise.getData()
+      this.$refs.mineStar.getData()
     },
     handleClick(tab, event) {
       console.log(tab, event);

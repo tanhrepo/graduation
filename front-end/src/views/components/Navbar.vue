@@ -37,8 +37,8 @@
         <img :src="avatar || baseAvatar" class="user-img" alt="">
       </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>修改资料</el-dropdown-item>
-          <el-dropdown-item :hide-on-click="false" @click="handleLogout()" divided>退出登录</el-dropdown-item>
+          <el-dropdown-item @click.native="jump">修改资料</el-dropdown-item>
+          <el-dropdown-item :hide-on-click="false" @click.native="logout" divided>退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -122,39 +122,19 @@ export default {
       }
     },
     // 退出登录
-    handleLogout() {
-      console.log(1)
-      deleteAction(loginOut).then(() => {
-        this.$confirm('是否确定退出登录?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '退出登录成功!'
-          })
-          this.setUserInfo({
-            account: '',
-            role: '',
-          })
-          // 清空缓存
-          sessionStorage.clear()
-          localStorage.clear()
-          // 清空cookie
-          removeToken()
-          Cookies.remove('username')
-          Cookies.remove('password')
-          Cookies.remove('rememberMe')
-          // 重定向到登录页
-          this.$router.replace('/login')
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消退出登录'
-          })
+    async logout() {
+      this.$confirm('确定注销并退出系统吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('LogOut').then(() => {
+          location.href = '/index';
         })
       })
+    },
+    jump(){
+      this.$router.push({name:"userItem"})
     }
   }
 }

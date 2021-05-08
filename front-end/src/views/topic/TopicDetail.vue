@@ -25,7 +25,9 @@
           </div>
         </div>
         <div class="fe-container-right">
+          <div class="fe-fixed-right">
           <img src="~@/assets/images/article/topic_page.svg" width="100%" alt="">
+          </div>
         </div>
       </div>
     </div>

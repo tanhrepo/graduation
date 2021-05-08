@@ -35,6 +35,15 @@ export function CommentPraise(data) {
   })
 }
 
+// 踩评论
+export function CommentTrample(data) {
+  return request({
+    url: '/system/trample/trampleComment',
+    method: 'get',
+    params: data
+  })
+}
+
 // 取消点赞评论
 export function unCommentPraise(data) {
   return request({
@@ -57,5 +66,33 @@ export function getFollowList(data) {
     url: '/system/follows/list',
     method: 'get',
     params: data
+  })
+}
+
+// 收藏列表
+export function getOperationList(data) {
+  return request({
+    url: '/system/operation/list',
+    method: 'get',
+    params: data
+  })
+}
+
+// 点赞列表
+export function getPraiseList(data) {
+  return request({
+    url: '/system/praise/userArticleLikes',
+    method: 'get',
+    params: data
+  })
+}
+
+// 关注者文章
+
+// 文章详情
+export function getFollowArticleList(data) {
+  return request({
+    url: '/system/article/watchList/'+data,
+    method: 'get',
   })
 }

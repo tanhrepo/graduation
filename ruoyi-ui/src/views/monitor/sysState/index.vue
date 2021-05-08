@@ -217,5 +217,10 @@ export default {
 <style lang="scss" scoped>
 ::v-deep text.highcharts-credits{
   display: none;
+
+
+  .chart-con{
+    padding: 50px;
+  }
 }
 </style>
