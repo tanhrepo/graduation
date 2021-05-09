@@ -2,6 +2,7 @@ package com.ruoyi.web.controller.busi;
 
 import java.util.List;
 
+import com.ruoyi.common.constant.RedisConstans;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.BusiOperation;
@@ -12,6 +13,7 @@ import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.web.controller.tool.StrUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +49,9 @@ public class BusiCommentController extends BaseController
     @Autowired
     private IBusiScoreService scoreService;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     /**
      * 查询【评论】列表
      */
@@ -74,6 +79,17 @@ public class BusiCommentController extends BaseController
                 String[] strings = StrUtils.stringToStringArray(comment.getImgurls());
                 comment.setImgs(strings);
             }
+            //填充 点赞量
+            Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.COMMENT_TOTAL_LIKE_COUNT_KEY, String.valueOf(comment.getId()));
+            if(praiseCount != null){
+                comment.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+            }else comment.setPraiseCount(0L);
+
+            //填充 踩一踩量
+            Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.COMMENT_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(comment.getId()));
+            if(trampleCount != null){
+                comment.setTrampleCount(Long.valueOf(String.valueOf(trampleCount)));
+            }else comment.setTrampleCount(0L);
         }
         return getDataTable(list);
     }
@@ -114,6 +130,17 @@ public class BusiCommentController extends BaseController
             String[] strings = StrUtils.stringToStringArray(comment.getImgurls());
             comment.setImgs(strings);
         }
+        //填充 点赞量
+        Object praiseCount = stringRedisTemplate.opsForHash().get(RedisConstans.COMMENT_TOTAL_LIKE_COUNT_KEY, String.valueOf(comment.getId()));
+        if(praiseCount != null){
+            comment.setPraiseCount(Long.valueOf(String.valueOf(praiseCount)));
+        }else comment.setPraiseCount(0L);
+
+        //填充 踩一踩量
+        Object trampleCount = stringRedisTemplate.opsForHash().get(RedisConstans.COMMENT_TOTAL_TRAMPLE_COUNT_KEY, String.valueOf(comment.getId()));
+        if(trampleCount != null){
+            comment.setTrampleCount(Long.valueOf(String.valueOf(trampleCount)));
+        }else comment.setTrampleCount(0L);
         return AjaxResult.success();
     }
 
