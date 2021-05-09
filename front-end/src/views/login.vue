@@ -34,7 +34,7 @@
                         v-model="signIn.code">
               </el-input>
               <div class="verification">
-                <img :src="codeUrl" @click="getCode" />
+                <img :src="codeUrl" @click="getCode"/>
               </div>
             </el-form-item>
             <el-row class="fe-flex-between">
@@ -88,7 +88,7 @@
                         v-model="signUp.code">
               </el-input>
               <div class="verification">
-                <img :src="codeUrl" @click="getCode" />
+                <img :src="codeUrl" @click="getCode"/>
               </div>
             </el-form-item>
             <el-row class="fe-flex-between">
@@ -108,7 +108,7 @@
 
 import Cookies from "js-cookie";
 import {getCodeImg, login} from "@/api/login";
-import { register } from "@/api/system/register";
+import {register} from "@/api/system/register";
 import {decrypt, encrypt} from "@/utils/jsencrypt";
 import {setToken} from "@/utils/auth";
 
@@ -189,7 +189,7 @@ export default {
           // alert('submit!');
           if (formName === 'signIn') {
             this.getSignIn()
-          }else {
+          } else {
             this.postSignUp()
           }
         } else {
@@ -223,13 +223,13 @@ export default {
     },
     // 注册
     postSignUp() {
-      const username = this.signUp.username.trim()
-      const password = this.signUp.password
-      const nickName = this.signUp.nickName
-      const code = this.signUp.code
-      const uuid = this.signUp.uuid
+      const username = this.signUp.username.trim();
+      const password = this.signUp.password;
+      const nickName = this.signUp.nickName;
+      const code = this.signUp.code;
+      const uuid = this.signUp.uuid;
       return new Promise((resolve, reject) => {
-        register(username, password,nickName, code, uuid).then(res => {
+        register(username, password, nickName, code, uuid).then(res => {
           this.$message({
             message: '注册成功',
             type: 'success'
@@ -249,7 +249,7 @@ export default {
       });
     },
     getCookie() {
-      if(Cookies.get("username")){
+      if (Cookies.get("username")) {
         const username = Cookies.get("username");
         const password = Cookies.get("password");
         this.signIn = {

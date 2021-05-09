@@ -9,6 +9,16 @@ export function getArticleList(data) {
   })
 }
 
+// 推荐
+export function getRecommendList(data) {
+  return request({
+    url: '/system/article/recommendList',
+    method: 'get',
+    params: data
+  })
+}
+
+
 // 图文
 export function getPhotoList() {
   return request({
