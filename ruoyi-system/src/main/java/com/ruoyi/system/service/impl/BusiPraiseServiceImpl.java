@@ -44,8 +44,8 @@ public class BusiPraiseServiceImpl implements IBusiPraiseService {
     public AjaxResult doPraise(Long entityId, Long likedUserId, Long userId, Integer eneityType) {
         if(eneityType == 1){// article
             //只有未点赞的用户才可以进行点赞
-            Object status = redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
-            if(status !=null && status != "0")//不存在 点赞 或 取消点赞记录
+            String status =(String) redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
+            if(status !=null && status.equals("0")  )//不存在 点赞 或 取消点赞记录
             {
 
                 //进行点赞 status 置 1
@@ -71,8 +71,8 @@ public class BusiPraiseServiceImpl implements IBusiPraiseService {
             }
         }else {// entityType == 2 comment
             //只有未点赞的用户才可以进行点赞
-            Object status =  redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
-            if(status !=null && status != "0")//不存在 点赞 或 取消点赞记录
+            String status =(String)redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
+            if(status !=null &&  status.equals("0"))//不存在 点赞 或 取消点赞记录
             {
                 //进行点赞 status 置 1
                 redisTemplate.opsForHash().put(RedisConstans.USER_LIKE_COMMENT_KEY, String.valueOf(userId + "::" + entityId),"1");
@@ -101,8 +101,8 @@ public class BusiPraiseServiceImpl implements IBusiPraiseService {
     @Override
     public AjaxResult doUnPraise(Long entityId, Long likedUserId, Long userId, Integer eneityType) {
         if(eneityType == 1){//article
-            Object status = redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
-            if(status != null && status != "0"){
+            String status =(String)redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
+            if(status != null &&  status.equals("0")){
                 //修改 点赞状态为 0
                 redisTemplate.opsForHash().put(RedisConstans.USER_LIKE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId),"0");
                 //被点赞用户的 总被点赞数-1
@@ -114,7 +114,7 @@ public class BusiPraiseServiceImpl implements IBusiPraiseService {
                 return AjaxResult.error("该用户未对本文章点赞！");
             }
         }else {// comment
-            Object status = redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
+            String status =(String) redisTemplate.opsForHash().get(RedisConstans.USER_LIKE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
             if(status != null && status != "0"){
                 //修改 点赞状态为 0
                 redisTemplate.opsForHash().put(RedisConstans.USER_LIKE_COMMENT_KEY, String.valueOf(userId + "::" + entityId),"0");
