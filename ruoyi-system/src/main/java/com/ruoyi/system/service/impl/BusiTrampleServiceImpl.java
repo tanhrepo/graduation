@@ -45,8 +45,8 @@ public class BusiTrampleServiceImpl implements IBusiTrampleService {
     public AjaxResult doPraise(Long entityId, Long likedUserId, Long userId, Integer eneityType) {
         if(eneityType == 1){// article
             //只有未踩的用户才可以进行踩
-            Object status = redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
-            if(status !=null && status != "0")//不存在 踩或 取消踩记录
+            String status =(String) redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
+            if(status !=null && status.equals("0"))//不存在 踩或 取消踩记录
             {
 
                 //进行踩status 置 1
@@ -72,8 +72,8 @@ public class BusiTrampleServiceImpl implements IBusiTrampleService {
             }
         }else {// entityType == 2 comment
             //只有未踩的用户才可以进行踩
-            Object status =  redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
-            if(status !=null && status != "0")//不存在 踩或 取消踩记录
+            String status =(String)  redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
+            if(status !=null && status.equals("0"))//不存在 踩或 取消踩记录
             {
                 //进行踩status 置 1
                 redisTemplate.opsForHash().put(RedisConstans.USER_TRAMPLE_COMMENT_KEY, String.valueOf(userId + "::" + entityId),"1");
@@ -102,8 +102,8 @@ public class BusiTrampleServiceImpl implements IBusiTrampleService {
     @Override
     public AjaxResult doUnPraise(Long entityId, Long likedUserId, Long userId, Integer eneityType) {
         if(eneityType == 1){//article
-            Object status = redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
-            if(status != null && status != "0"){
+            String status =(String) redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId));
+            if(status != null && status.equals("0")){
                 //修改 踩状态为 0
                 redisTemplate.opsForHash().put(RedisConstans.USER_TRAMPLE_ARTICLE_KEY, String.valueOf(userId + "::" + entityId),"0");
                 //被踩用户的 总被踩数-1
@@ -115,8 +115,8 @@ public class BusiTrampleServiceImpl implements IBusiTrampleService {
                 return AjaxResult.error("该用户未对本文章踩！");
             }
         }else {// comment
-            Object status = redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
-            if(status != null && status != "0"){
+            String status =(String) redisTemplate.opsForHash().get(RedisConstans.USER_TRAMPLE_COMMENT_KEY, String.valueOf(userId + "::" + entityId));
+            if(status != null && status.equals("0")){
                 //修改 踩状态为 0
                 redisTemplate.opsForHash().put(RedisConstans.USER_TRAMPLE_COMMENT_KEY, String.valueOf(userId + "::" + entityId),"0");
                 //被踩用户的 总被踩数-1
