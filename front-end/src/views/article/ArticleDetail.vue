@@ -52,23 +52,36 @@
             <!--    控件-->
             <div class="fe-flex-between detail-control">
               <span><i class="iconfont icon-share"
-              @click="share(detail.articleId)"/><span>{{ detail.articleTransmitCount }}</span></span>
+                       @click="share(detail.articleId)"/><span>{{ detail.articleTransmitCount }}</span></span>
               <span><i class="iconfont icon-star"
                        @click="collect(detail.articleId)"/><span>{{ detail.articleCollectCount }}</span></span>
               <span><i class="iconfont icon-message"
                        @click="commentDialog"/><span>{{ detail.articleCommentCount }}</span></span>
               <span><i class="iconfont icon-like"
-                       @click="praiseArticle(detail.articleId,createUser.userId)"/><span>{{detail.praiseCount - detail.articleTrampleCount}}</span>
+                       @click="praiseArticle(detail.articleId,createUser.userId)"/><span>{{
+                  detail.praiseCount - detail.articleTrampleCount
+                }}</span>
                 <i @click="trampleArticle(detail.articleId,createUser.userId)" class="iconfont icon-step"/></span>
             </div>
+
+            <!--            分享-->
+            <el-dialog
+              title="分享"
+              :visible.sync="searchView"
+              width="30%">
+              <el-row class="fe-flex-between">
+                <el-input ref="code" :value="searchVal" readonly></el-input>
+                <el-button @click="copyBtn" class="cursor">复制</el-button>
+              </el-row>
+            </el-dialog>
           </div>
 
           <CommentPost
-              ref="CommentPost"
-              :articleId="this.$route.query.id"
-              :createBy="this.user.userInfo.userName"
-              :parentId="parentId"
-              :answerUser="answerUser"
+            ref="CommentPost"
+            :articleId="this.$route.query.id"
+            :createBy="this.user.userInfo.userName"
+            :parentId="parentId"
+            :answerUser="answerUser"
           >
 
           </CommentPost>
@@ -105,12 +118,12 @@
 
           <!--          // el-drawer组件-->
           <el-drawer
-              title="更多评论"
-              :visible.sync="drawer"
-              size="80%"
-              :modal="false"
-              @closed="newTreeSub = []"
-              direction="btt">
+            title="更多评论"
+            :visible.sync="drawer"
+            size="80%"
+            :modal="false"
+            @closed="newTreeSub = []"
+            direction="btt">
             <ul v-if="newTreeSub.length">
               <li v-for="item in newTreeSub" :key="item.id" class="comment-item fe-flex">
                 <CommentSub :item="item"></CommentSub>
@@ -134,13 +147,13 @@ import 'vue-video-player/src/custom-theme.css'
 import {videoPlayer} from 'vue-video-player'
 import Comment from "@/views/components/Comment";
 import BackTop from "@/views/components/BackTop";
-import {getCommentList, getArticleItem, getArticleCollect,getArticleShare} from "@/api/system/article";
+import {getCommentList, getArticleItem, getArticleCollect, getArticleShare} from "@/api/system/article";
 import {mapState} from "vuex";
 import {buildTree} from "@/utils/mapTree"
 import CommentSub from "@/views/components/CommentSub";
 import CommentPost from "@/views/components/CommentPost";
 import {getUserNameInfo} from "@/api/login";
-import {getFollowList, UserFollow, ArticlePraise,unArticlePraise,ArticleTrample} from "@/api/system/operation"
+import {getFollowList, UserFollow, ArticlePraise, unArticlePraise, ArticleTrample} from "@/api/system/operation"
 
 export default {
   name: "ArticleDetail",
@@ -166,14 +179,14 @@ export default {
         createTime: '2020-12-10',
         articleTitle: '这是一个淡淡的标题',
         articleContent: '一只公鸡，由于不愿参加一场斗鸡比赛，用身上绑着的刀，刺中其主人，最终导致对方因失血过多死亡。\n' +
-            '\n' +
-            '这起有些匪夷所思的事件，于2月23日发生在印度特伦甘纳邦的贾格尔地区。\n' +
-            '\n' +
-            '这只公鸡主人给它起名叫‘’拉贾"。由于主人萨蒂什带它到郊区参加一场斗鸡比赛。萨蒂什在公鸡的腿上绑了一把3英寸（约7.6厘米）的刀子，然后将其送入赛场。\n' +
-            '\n' +
-            '但这只公鸡却不愿意参加比赛，在它试图逃离时，主人萨蒂什抓住了它，但公鸡腿上的刀刃刚好刺穿了萨蒂什的腹股沟。在被送往医院的途中，萨蒂什因失血过多身亡。\n' +
-            '\n' +
-            '自案发以来，这只公鸡一直被当地警察局拘留。未来它将现身法庭，作为一起有15人参加非法斗鸡的起诉证据的一部分。当地警察表示，警方正在寻找参与此次组织非法斗鸡的另外15人。根据印度法律，这些参与者将为过失导致萨蒂什的死亡承担部分责任，他们还可能被指控过失杀人，非法赌博和举办斗鸡比赛等罪名。\n',
+          '\n' +
+          '这起有些匪夷所思的事件，于2月23日发生在印度特伦甘纳邦的贾格尔地区。\n' +
+          '\n' +
+          '这只公鸡主人给它起名叫‘’拉贾"。由于主人萨蒂什带它到郊区参加一场斗鸡比赛。萨蒂什在公鸡的腿上绑了一把3英寸（约7.6厘米）的刀子，然后将其送入赛场。\n' +
+          '\n' +
+          '但这只公鸡却不愿意参加比赛，在它试图逃离时，主人萨蒂什抓住了它，但公鸡腿上的刀刃刚好刺穿了萨蒂什的腹股沟。在被送往医院的途中，萨蒂什因失血过多身亡。\n' +
+          '\n' +
+          '自案发以来，这只公鸡一直被当地警察局拘留。未来它将现身法庭，作为一起有15人参加非法斗鸡的起诉证据的一部分。当地警察表示，警方正在寻找参与此次组织非法斗鸡的另外15人。根据印度法律，这些参与者将为过失导致萨蒂什的死亡承担部分责任，他们还可能被指控过失杀人，非法赌博和举办斗鸡比赛等罪名。\n',
         imgs: [require('@/assets/images/item/item_01.png'), require('@/assets/images/item/item_02.png'), require('@/assets/images/item/item_03.png'), require('@/assets/images/item/item_04.png'), require('@/assets/images/item/item_05.png'), require('@/assets/images/item/item_01.png'), require('@/assets/images/item/item_02.png'), require('@/assets/images/item/item_03.png'), require('@/assets/images/item/item_04.png'), require('@/assets/images/item/item_05.png'),],
         articleVediourls: '',
         articleCommentCount: 6545,
@@ -421,6 +434,8 @@ export default {
       isHidden: true,
       drawer: false,
       followView: null,
+      searchView: false,
+      searchVal:"http://localhost:8060/system/detail?id=" + this.$route.query.id,
     }
   },
   computed: {
@@ -474,6 +489,7 @@ export default {
       return new Promise((resolve, reject) => {
         UserFollow(data).then(res => {
           console.log('关注用户', res.data)
+          this.getData();
         }).catch(error => {
           reject(error)
         })
@@ -539,7 +555,7 @@ export default {
       this.sort = command
     },
     // 分享文章
-    share(id){
+    share(id) {
       let data = {
         articleId: id,
         userId: this.user.userInfo.userId,
@@ -547,10 +563,17 @@ export default {
       return new Promise((resolve, reject) => {
         getArticleShare(data).then(res => {
           console.log('文章分享', res)
+          this.searchView = true
         }).catch(error => {
           reject(error)
         })
       })
+    },
+    // 复制邀请码
+    copyBtn() {
+      let copyText = this.$refs.code;
+      copyText.select(); // 选择对象
+      document.execCommand("Copy");
     },
     // 收藏文章
     collect(id) {
@@ -561,6 +584,9 @@ export default {
       return new Promise((resolve, reject) => {
         getArticleCollect(data).then(res => {
           console.log('文章收藏', res)
+          if (res.code === 200) {
+            this.getData();
+          }
         }).catch(error => {
           reject(error)
         })
@@ -590,6 +616,9 @@ export default {
       return new Promise((resolve, reject) => {
         ArticlePraise(data).then(res => {
           console.log('文章点赞', res)
+          if (res.code === 200) {
+            this.getData();
+          }
         }).catch(error => {
           reject(error)
         })
@@ -606,14 +635,16 @@ export default {
       return new Promise((resolve, reject) => {
         unArticlePraise(data).then(res => {
           console.log('文章点赞', res)
-          this.getData()
+          if (res.code === 200) {
+            this.getData();
+          }
         }).catch(error => {
           reject(error)
         })
       })
     },
     // 踩文章
-    trampleArticle(articleId, trampledUserId){
+    trampleArticle(articleId, trampledUserId) {
       let data = {
         articleId: articleId,
         trampledUserId: trampledUserId,
@@ -622,6 +653,9 @@ export default {
       return new Promise((resolve, reject) => {
         ArticleTrample(data).then(res => {
           console.log('文章踩', res)
+          if (res.code === 200) {
+            this.getData();
+          }
         }).catch(error => {
           reject(error)
         })
@@ -634,7 +668,6 @@ export default {
       this.newTreeSub = data.reverse()
       this.drawer = true
     },
-
   }
 }
 </script>
@@ -870,5 +903,7 @@ export default {
     }
   }
 }
-
+.cursor{
+  margin-left: 12px;
+}
 </style>

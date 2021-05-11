@@ -105,7 +105,7 @@ export default {
       }
       return new Promise((resolve, reject) => {
         CommentTrample(data).then(res => {
-          console.log('评论点赞', res)
+          console.log('评论踩', res)
         }).catch(error => {
           reject(error)
         })

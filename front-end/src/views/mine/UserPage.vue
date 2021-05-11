@@ -14,7 +14,9 @@
               </div>
             </div>
             <div style="z-index: 100;">
-              <el-button>+点击关注</el-button>
+              <el-button type="primary" v-if="!followView" @click="follow(userInfo.userId)" plain size="mini">+点击关注
+              </el-button>
+              <el-button type="primary" v-else disabled plain size="mini">已关注</el-button>
             </div>
             <img class="user-title-bg" src="~@/assets/images/article/user_space.svg" alt="">
           </div>
@@ -46,6 +48,8 @@ import MineArticle from "@/views/mine/components/MineArticle";
 import BackTop from "@/views/components/BackTop";
 import {getIdUserInfo} from "@/api/login";
 import MineStar from "@/views/mine/components/MineStar";
+import {getFollowList, UserFollow} from "@/api/system/operation";
+import {mapState} from "vuex";
 
 export default {
   name: "UserPage",
@@ -54,10 +58,16 @@ export default {
     return{
       userInfo:{},
       activeName:'first',
+      followView: null,
+
     }
   },
   created() {
-    this.getData()
+    this.getData();
+
+  },
+  computed:{
+    ...mapState(["user"]),
   },
   methods: {
     // 数据获取
@@ -67,6 +77,7 @@ export default {
         getIdUserInfo(data).then(res => {
           this.userInfo = res.data
           console.log("userInfo",this.userInfo)
+          this.getFollowData(this.$route.query.id)
         }).catch(error => {
           reject(error)
         })
@@ -74,7 +85,38 @@ export default {
     },
     handleClick(tab, event) {
       console.log(tab, event);
-    }
+    },
+    // 是否关注
+    getFollowData(userId) {
+      let data = {
+        followId: this.user.userInfo.userId,
+        userId: userId
+      }
+      return new Promise((resolve, reject) => {
+        getFollowList(data).then(res => {
+          console.log("关注没有", res)
+          this.followView = res.total
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 关注
+    follow(userId) {
+      let data = {
+        createBy: this.user.userInfo.userName,
+        followId: this.user.userInfo.userId,
+        userId: userId
+      }
+      return new Promise((resolve, reject) => {
+        UserFollow(data).then(res => {
+          console.log('关注用户', res.data)
+          this.getData();
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
   }
 
 }
