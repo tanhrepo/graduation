@@ -39,31 +39,39 @@ button {
   cursor: pointer;
   background: transparent;
 }
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
 a.download {
   color: inherit;
   text-decoration: none;
 }
+
 .el-menu {
   flex-shrink: 0;
   border-bottom: 0;
   background-color: $menu_bg_color;
+
   .el-menu-item,
   .el-submenu__title {
     padding: 0 16px;
   }
+
   .el-submenu__title i {
     color: #fff;
   }
+
   .el-submenu .el-submenu__icon-arrow {
     margin-left: 4px;
   }
+
   .is-active .el-submenu__title i {
     color: $menu_font_active_color;
   }
+
   .el-icon-arrow-down::before {
     content: '\e790';
   }
@@ -77,25 +85,30 @@ a.download {
     color: $menu_font_active_color;
   }
 }
+
 .el-menu.el-menu--popup.el-menu--popup-bottom-start,
 .el-menu.el-menu--popup.el-menu--popup-right-start,
 .el-menu.el-menu--popup.el-menu--popup-right-start .el-submenu,
 .el-menu.el-menu--popup.el-menu--popup-right-start .el-menu-item {
   min-width: 120px;
 }
-.el-menu.el-menu--horizontal{
+
+.el-menu.el-menu--horizontal {
   border-bottom: 0;
 }
+
 .el-menu.el-menu--popup.el-menu--popup-bottom-start
 .el-submenu
 .el-submenu__title
 .el-submenu__icon-arrow {
   right: 10px;
 }
+
 .el-menu--horizontal .el-menu .el-menu-item {
   width: auto;
 
 }
+
 .el-menu--horizontal {
   > .el-menu-item,
   > .el-submenu .el-submenu__title,
@@ -106,16 +119,19 @@ a.download {
     line-height: 60px;
     color: $menu_font_color;
   }
+
   .el-menu-item.is-active,
   .el-submenu.is-active .el-submenu__title {
     border-width: 3px;
   }
+
   .el-menu .el-menu-item,
   .el-menu .el-submenu__title,
   .el-menu-item:not(.is-disabled):focus,
   .el-menu-item:not(.is-disabled):hover {
     color: $menu_font_color;
   }
+
   > .el-menu-item:not(.is-disabled):focus,
   > .el-menu-item:not(.is-disabled):hover,
   > .el-submenu .el-submenu__title:hover,
@@ -124,6 +140,7 @@ a.download {
     color: $menu_font_active_color;
     background-color: $menu_bg_color;
   }
+
   > .el-submenu.is-active .el-submenu__title,
   &.el-menu .el-menu-item.is-active,
   .el-menu .el-menu-item.is-active,
@@ -131,6 +148,7 @@ a.download {
     color: $menu_font_active_color;
     background-color: $menu_bg_color;
   }
+
   .el-menu--popup-bottom-start {
     .el-submenu__title,
     .el-menu-item {
@@ -148,12 +166,15 @@ a.download {
 .element-pager {
   position: relative;
   text-align: right;
+
   .el-pagination.is-background {
     padding: 0;
+
     .el-pagination__sizes {
       position: absolute;
       top: 0;
       left: 0;
+
       .el-select .el-input {
         margin: 0;
       }
@@ -166,17 +187,20 @@ a.download {
     border-color: $--color-primary;
     overflow: hidden;
   }
+
   .el-button {
     height: 32px;
     color: #fff;
     background-color: $--color-primary;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+
     &:hover,
     &:focus {
       background-color: #57adff;
     }
   }
+
   &.el-input--mini {
     .el-button {
       height: 28px;
@@ -188,22 +212,27 @@ a.download {
   .el-popconfirm {
     font-size: 13px;
   }
+
   .el-popconfirm__action .el-button {
     padding: 4px 10px;
     margin-top: 10px;
   }
+
   .el-button + .el-button {
     margin-left: 10px;
   }
 }
+
 .el-input-group__append,
 .el-input-group__prepend {
   background-color: #fff;
   color: $--color-text-regular;
 }
+
 /* 修改elemnt-table */
 .wind .el-table {
   color: $--color-text-regular;
+
   &::before,
   &:after,
   .el-table__fixed-right::before,
@@ -211,9 +240,11 @@ a.download {
     display: none;
     height: 0;
   }
+
   table {
     font-size: 12px;
   }
+
   th,
   th.is-leaf,
   td {
@@ -221,16 +252,20 @@ a.download {
     border: 0;
     font-weight: 400;
   }
+
   thead.is-group th {
     border-bottom: 1px solid $--border-color-base;
     border-right: 1px solid $--border-color-base;
   }
+
   thead {
     color: $--color-text-secondary;
   }
+
   .cell {
     line-height: 1.5;
   }
+
   .el-table__header {
     th {
       height: 42px;
@@ -238,14 +273,17 @@ a.download {
       overflow: hidden;
     }
   }
+
   .el-table__body {
     td {
       position: relative;
       height: 42px;
     }
+
     tr:nth-child(even) {
       background-color: #f9f9f9;
     }
+
     tr.current-row td:first-child:before {
       position: absolute;
       content: '';
@@ -255,10 +293,12 @@ a.download {
       width: 3px;
       background: $--color-primary;
     }
+
     tr.current-row > td {
       // background-color: #f4faff;
       background-color: #e0eefe;
     }
+
     /* tr:hover td 修复fixed列hover样式不一致 */
     tr.hover-row td,
     tr:hover > td {
@@ -271,9 +311,11 @@ a.download {
     .cell {
       line-height: 1.3;
     }
+
     .el-table__header th {
       height: 32px;
     }
+
     .el-table__body td {
       height: 34px;
     }
@@ -281,10 +323,10 @@ a.download {
 }
 
 
-
 .el-message {
   min-width: 80px;
   padding: 15px;
+
   .el-message__content {
     white-space: nowrap;
   }
@@ -295,6 +337,7 @@ a.download {
 .el-popup-parent--hidden {
   padding: 0 !important;
 }
+
 .el-dialog__wrapper {
   min-height: 100px;
   display: flex;
@@ -302,6 +345,7 @@ a.download {
   justify-content: center;
   overflow: hidden;
 }
+
 .el-dialog {
   margin: 0 !important;
   display: flex;
@@ -310,16 +354,19 @@ a.download {
   max-height: calc(100vh - 100px);
   border-radius: 4px;
   overflow: hidden;
+
   .el-dialog__header {
     height: 40px;
     flex-shrink: 0;
     padding: 15px 12px 10px;
     border-bottom: 1px solid #dcdfe6;
+
     .el-dialog__headerbtn {
       top: 10px;
       right: 12px;
     }
   }
+
   .el-dialog__title {
     position: relative;
     line-height: 1;
@@ -349,6 +396,7 @@ a.download {
       }
     }
   }
+
   .el-dialog__footer {
     flex-shrink: 0;
     padding: 12px;
@@ -373,11 +421,14 @@ a.download {
   .el-scrollbar {
     height: 100%;
   }
+
   .el-scrollbar__wrap {
     overflow-x: hidden;
   }
+
   .el-scrollbar__bar {
     width: 4px !important;
+
     &.is-horizontal {
       display: none;
     }
@@ -389,35 +440,43 @@ a.download {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .el-transfer-panel {
     flex: 1;
   }
+
   .el-transfer-panel__header,
   .el-transfer-panel__header .el-checkbox {
     height: 30px;
     line-height: 30px;
+
     .el-checkbox__label {
       font-size: 14px;
       color: #606266;
+
       span {
         font-size: 14px;
         color: #606266;
       }
     }
   }
+
   .el-transfer-panel__filter.el-input {
     padding: 0;
     width: calc(100% - 24px);
     margin: 8px 12px;
+
     .el-input__inner {
       border-radius: 4px;
       height: 32px;
     }
   }
+
   .el-transfer-panel__footer {
     height: 32px;
     text-align: right;
     padding-right: 12px;
+
     .el-button.transfer-footer {
       height: 20px;
       width: 38px;
@@ -428,9 +487,11 @@ a.download {
       padding: 0;
     }
   }
+
   .el-transfer__buttons {
     flex-shrink: 0;
     padding: 0 16px;
+
     .el-button {
       display: block;
       margin: 0;
@@ -438,10 +499,12 @@ a.download {
       padding: 4px 8px;
       border: 0;
     }
+
     .el-button:nth-of-type(1) {
       position: relative;
       top: 32px;
     }
+
     .el-button:nth-of-type(2) {
       position: relative;
       top: -32px;
@@ -452,9 +515,11 @@ a.download {
 /* fix 时间选择器clear位置bug */
 .el-date-editor.el-range-editor--small {
   padding-right: 0;
+
   .el-range-input {
     width: 45%;
   }
+
   .el-range-separator {
     width: 2em;
   }
@@ -463,9 +528,11 @@ a.download {
 .el-form-item__label {
   padding-right: 8px;
 }
+
 .el-form-item--small.el-form-item {
   margin-bottom: 24px;
 }
+
 .el-select .el-input__inner {
   overflow: hidden;
   white-space: nowrap;
@@ -476,17 +543,21 @@ a.download {
 .el-tree-node__label {
   font-size: 12px;
 }
+
 .el-tree-node__content:hover {
   background-color: #f5f8fa;
 }
+
 .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
   background-color: #f4faff;
 }
+
 .el-tree-node:focus > .el-tree-node__content,
 .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
   background-color: rgba(45, 152, 255, 0.1) !important;
   color: #169bfa;
 }
+
 .el-tree-node__expand-icon {
   color: #455a74;
 }
@@ -497,9 +568,11 @@ a.download {
     height: 22px;
     line-height: 22px;
   }
+
   .el-input__suffix {
     top: 2px;
   }
+
   .el-select .el-input .el-select__caret.is-reverse {
     transform: rotateZ(0deg) translateY(-4px);
   }
@@ -509,10 +582,12 @@ a.download {
 .el-tree-node__content {
   height: 32px;
 }
+
 .el-tree__empty-text {
   font-size: 12px;
   color: rgba(123, 147, 167, 0.8);
 }
+
 .el-table__empty-block {
   background: url('~@/assets/images/page-no-data-s.svg') center 100px no-repeat;
   padding-top: 210px;
@@ -524,29 +599,35 @@ a.download {
 .vue-treeselect {
   line-height: 30px;
 }
+
 .vue-treeselect__control {
   border-color: #ebebeb !important;
   height: 30px !important;
   padding-right: 8px !important;
 }
+
 .vue-treeselect__option-arrow {
   color: #455a74 !important;
   width: 7px !important;
 }
+
 .vue-treeselect__menu {
   border-color: #ebebeb !important;
   max-height: 200px !important;
   padding-top: 0 !important;
 }
+
 .vue-treeselect__option {
   line-height: 32px !important;
   color: #455a74 !important;
 }
+
 .vue-treeselect--single .vue-treeselect__option--selected {
   background: rgba(45, 152, 255, 0.1) !important;
   font-weight: normal !important;
 }
-.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control{
+
+.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
   box-shadow: none !important;
 }
 
@@ -554,15 +635,18 @@ a.download {
 .el-message-box__btns {
   padding: 20px 15px 0;
 }
+
 .el-message--success,
 .el-message--warning,
 .el-message--error {
   background-color: #fff;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.15);
   border-color: #fff;
+
   .el-message__content {
     color: #455a74;
   }
+
   .el-message__icon {
     font-size: 14px;
   }
