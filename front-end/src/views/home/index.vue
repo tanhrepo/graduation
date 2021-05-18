@@ -22,7 +22,8 @@
 <script>
 import TextItem from "@/views/components/TextItem";
 import BackTop from "@/views/components/BackTop";
-import {getArticleList} from "@/api/system/article";
+import {getRecommendList} from "@/api/system/article";
+import {mapState} from "vuex";
 export default {
   components: {BackTop, TextItem},
   data(){
@@ -47,11 +48,18 @@ export default {
   created() {
     this.getData()
   },
+  computed: {
+    ...mapState(["user"]),
+  },
   methods:{
     // 数据获取
     getData(){
+      let data = {
+        userId: this.user.userInfo.userId,
+        howmany: 5
+      }
       return new Promise((resolve, reject) => {
-        getArticleList().then(res => {
+        getRecommendList(data).then(res => {
           console.log(res)
           this.itemData = res.rows
         }).catch(error => {

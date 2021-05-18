@@ -19,6 +19,7 @@
             <div
                 v-for="(item,index) in itemData"
                 class="selector-topic fe-flex-between"
+                :key="index"
                 @click="selectT(item.lableName,index)">
               <p >
                 <i class="iconfont icon-topic"></i>
@@ -370,8 +371,11 @@ export default {
   &:hover {
     background-color: #78DFE8;
   }
-}
 
+}
+.selector-topic:focus{
+  background-color: #78DFE8;
+}
 ::v-deep .el-button--primary {
   background-color: #37C1D3;
   border-color: #37C1D3;

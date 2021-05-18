@@ -3,13 +3,13 @@
     <div id='Comment' class="page-up" @click="comment()">
       <i class="iconfont icon-message"></i>
     </div>
-    <div id='Like' class="page-up" @click="">
+    <div id='Like' class="page-up" @click="PraiseArticle(Detail.articleId,CreateUser.userId)">
       <i class="iconfont icon-like"></i>
     </div>
-    <div id='Star' class="page-up" @click="">
+    <div id='Star' class="page-up" @click="Collect(Detail.articleId)">
       <i class="iconfont icon-star"></i>
     </div>
-    <div id='Share' class="page-up" @click="">
+    <div id='Share' class="page-up" @click="Share(Detail.articleId)">
       <i class="iconfont icon-share"></i>
     </div>
   </div>
@@ -18,7 +18,28 @@
 <script>
 export default {
   name: "Comment",
-
+  props:{
+    Detail:{
+      type: Object,
+      default: null
+    },
+    CreateUser:{
+      type: Object,
+      default: null
+    },
+    PraiseArticle:{
+      type:Function,
+      default: null
+    },
+    Collect:{
+      type:Function,
+      default: null
+    },
+    Share:{
+      type:Function,
+      default: null
+    }
+  },
   methods: {
     comment() {
       this.$parent.commentDialog()
