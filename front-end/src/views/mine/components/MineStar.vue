@@ -32,6 +32,7 @@ export default {
   methods: {
     // 数据获取
     getData() {
+      this.reset()
       let data = {
         operationType: 5,
         operationUser: this.userInfo.userId,
@@ -60,6 +61,10 @@ export default {
         })
       })
     },
+    // 重置列表
+    reset(){
+      this.itemData = []
+    }
   },
 }
 </script>
