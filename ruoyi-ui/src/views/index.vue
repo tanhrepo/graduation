@@ -2,16 +2,10 @@
   <div class="app-container home">
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
-        <h2>风物社区管理系统</h2>
-        <pre style="font-size: 16px">
-            本文设计的网络社区系统是以内容为核心的系统。该系统使用了基于用户行为
-          的协同过滤算法进行内容推荐，并用 Highcharts 对用户的行为数据进行可视
-          化。
-            系统通过前后端分离的开发模式，基于 MVVM 模型，MySQL，Axios 和
-          Vue 等技术栈进行设计。分别从用户端和管理端两个方面设计功能模块，其中用
-          户端包含推荐、图文、视频、关注、话题、消息、个人中心等模块，管理端则由
-          用户管理、角色管理、文章管理、话题管理、菜单管理、系统监控等模块构成。
-        </pre>
+        <h2>社区管理系统</h2>
+        <p class="inform">
+          {{ inform }}
+        </p>
       </el-col>
 
       <el-col :sm="24" :lg="12" style="padding-left: 50px">
@@ -23,9 +17,9 @@
         <el-row>
           <el-col :span="6">
             <ul class="list-ul">
-              <li>Vue</li>
-              <li>Vuex</li>
-              <li>HighCharts</li>
+              <li>SpringBoot</li>
+              <li>Redis</li>
+              <li>Java</li>
               <li>Element-ui</li>
               <li>Axios</li>
               <li>Sass</li>
@@ -64,30 +58,33 @@
 <script>
 import PieCharts from "@/views/wCharts/pieCharts";
 import PackedCharts from "@/views/wCharts/packedCharts";
+
 export default {
   name: "index",
-  components: {PackedCharts, PieCharts},
+  components: { PackedCharts, PieCharts },
   data() {
     return {
       // 版本号
       version: "3.3.0",
+      inform: ""
     };
   },
   methods: {
     goTarget(href) {
       window.open(href, "_blank");
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped lang="scss">
-.list-ul{
-  li{
+.list-ul {
+  li {
     font-size: 16px;
     line-height: 22px;
   }
 }
+
 .home {
   blockquote {
     padding: 10px 20px;
@@ -95,12 +92,14 @@ export default {
     font-size: 17.5px;
     border-left: 5px solid #eee;
   }
+
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
   }
+
   .col-item {
     margin-bottom: 20px;
   }
@@ -149,5 +148,16 @@ export default {
     }
   }
 }
+.inform{
+  font-size: 16px;
+  font-weight: 400;
+  color: #2d3e53;
+  line-height: 26px;
+  white-space: pre-line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+}
 </style>
-
